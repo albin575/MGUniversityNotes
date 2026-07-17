@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Finance for Daily Life - MG University B.Com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #ffffff;
+            --text-muted: #ffffff;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Sans Malayalam', 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: #ffffff;
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+        }
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 26, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 3px solid rgba(59, 130, 246, 0.4);
+            padding: 1.5rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            min-height: 90px;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.7));
+            letter-spacing: 1px;
+        }
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 800px;
+            min-width: 300px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.6), 0 0 80px rgba(139, 92, 246, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.03);
+        }
+        .search-input::placeholder { color: #ffffff; }
+        .search-icon {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffffff;
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 1));
+        }
+        .search-results {
+            position: absolute;
+            top: calc(100% + 20px);
+            left: 0; right: 0;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 3px solid rgba(59, 130, 246, 0.5);
+            border-radius: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.4), 0 0 100px rgba(139, 92, 246, 0.3);
+            z-index: 1001;
+            padding: 1rem;
+        }
+        .search-results.active { display: block; animation: slideDown 0.3s ease; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .search-result-item {
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            margin-bottom: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .search-result-item:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+            transform: translateX(12px) scale(1.02);
+            border-left: 5px solid #60a5fa;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+        .search-result-item:last-child { border-bottom: none; }
+        .search-result-title {
+            font-weight: 800;
+            color: #60a5fa;
+            margin-bottom: 0.75rem;
+            font-size: 1.4rem;
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+            letter-spacing: 0.5px;
+        }
+        .search-result-text {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10rem 2rem 4rem;
+            position: relative;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: #ffffff;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffffff;
+            font-size: 0.85rem;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+        .scroll-indicator svg { width: 24px; height: 24px; }
+        .nav-container {
+            position: fixed;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: none;
+        }
+        @media (min-width: 1200px) { .nav-container { display: block; } }
+        .nav-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+            margin: 0.75rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-dot.active {
+            background: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+        .nav-dot:hover::after {
+            content: attr(data-title);
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+        }
+        .content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .section {
+            margin-bottom: 4rem;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid;
+            border-image: var(--accent-gradient) 1;
+        }
+        .section-number {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--accent-gradient);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .section h2 {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+        .section h3 {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin: 2rem 0 1rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent-primary);
+        }
+        .section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 1.5rem 0 0.75rem;
+        }
+        .section p {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        .section ul, .section ol {
+            margin: 1rem 0 1rem 1.5rem;
+            color: #ffffff;
+        }
+        .section li {
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            color: #ffffff;
+        }
+        .card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        th {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-primary);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        td {
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: #ffffff;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(59, 130, 246, 0.05); }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.25rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+        .highlight-box p {
+            margin: 0;
+            color: #ffffff;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 1.5rem 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-gradient);
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            border: 3px solid var(--bg-primary);
+            transform: translateX(-5px);
+        }
+        .timeline-year {
+            font-weight: 700;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+        }
+        .feedback-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+        .feedback-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 20px rgba(220, 39, 67, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .feedback-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(220, 39, 67, 0.5);
+        }
+        .feedback-btn svg { width: 24px; height: 24px; fill: white; }
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem; left: 2rem;
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+        }
+        .back-to-top.visible { opacity: 1; }
+        .back-to-top:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border-color);
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+        .footer a { color: var(--accent-primary); text-decoration: none; }
+        @media (max-width: 768px) {
+            .header { padding: 0.75rem 1rem; }
+            .search-container { order: 3; width: 100%; max-width: none; }
+            .hero { padding: 7rem 1rem 3rem; }
+            .content-wrapper { padding: 1rem; }
+            .feedback-float { bottom: 1rem; right: 1rem; }
+            .feedback-btn { padding: 0.75rem 1rem; font-size: 0.85rem; }
+            .feedback-btn span { display: none; }
+            .back-to-top { bottom: 1rem; left: 1rem; }
+        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%); box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+        ::selection { background: rgba(59, 130, 246, 0.3); color: #ffffff; }
+        .loading {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .loading.hidden { opacity: 0; pointer-events: none; }
+        .loading-spinner {
+            width: 50px; height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .section, .section *, .card, .card *, .timeline, .timeline *, 
+        table, table *, .highlight-box, .highlight-box *,
+        .hero, .hero *, .footer, .footer * { color: #ffffff !important; }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading"><div class="loading-spinner"></div></div>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="bg-animation"></div>
+    <header class="header">
+        <div class="logo">💰 Basic Finance</div>
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="തിരയുക... (Search notes)">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </header>
+    <nav class="nav-container" id="navContainer"></nav>
+    <section class="hero">
+        <div class="hero-badge"><span>✨</span> AI-Powered Study Notes</div>
+        <h1>Basic Finance for Daily Life</h1>
+        <p>Mahatma Gandhi University - B.Com<br>വിശദമായ നോട്ടുകൾ - സമ്പൂർണ്ണ പാഠ്യപദ്ധതി</p>
+        <div class="scroll-indicator">
+            <span>സ്ക്രോൾ ചെയ്യുക</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+    </section>
+    <main class="content-wrapper" id="content">
+
+        <!-- MODULE I: PERSONAL FINANCE BASICS -->
+        <section class="section" id="module1">
+            <div class="section-header">
+                <span class="section-number">Module I</span>
+                <h2>PERSONAL FINANCE BASICS (വ്യക്തിഗത ധനകാര്യ അടിസ്ഥാനങ്ങൾ)</h2>
+            </div>
+
+            <h3>1. സ്വന്തം ധനകാര്യ പ്ലാനിംഗിന്റെ പ്രാധാന്യം</h3>
+            <p>ധനകാര്യ പ്ലാനിംഗ് എന്നത് നമ്മുടെ ഭാവി ലക്ഷ്യങ്ങൾ നേടാനും ആർതിക സുരക്ഷ ഉറപ്പാക്കാനും ചെയ്യുന്ന ആസൂത്രണമാണ്.</p>
+
+            <h4>പ്രാധാന്യം:</h4>
+            <div class="card">
+                <ul>
+                    <li>✅ <strong>ലക്ഷ്യ നിർണ്ണയം:</strong> വീട് വാങ്ങൽ, വിദ്യാഭ്യാസം, വിവാഹം തുടങ്ങിയ ലക്ഷ്യങ്ങൾക്ക് പണം കണ്ടെത്താൻ സാധിക്കും</li>
+                    <li>✅ <strong>ആർതിക സുരക്ഷ:</strong> അപ്രതീക്ഷിത സാഹചര്യങ്ങളിൽ നിന്ന് സംരക്ഷണം</li>
+                    <li>✅ <strong>അധിക ചെലവ് തടയൽ:</strong> ആവശ്യമില്ലാത്ത ചെലവുകൾ കുറയ്ക്കാം</li>
+                    <li>✅ <strong>സമ്പത്ത് വർദ്ധന:</strong> പണം ശരിയായി നിക്ഷേപിച്ച് വളർത്താം</li>
+                    <li>✅ <strong>സ്വാതന്ത്ര്യം:</strong> സാമ്പത്തിക സ്വാതന്ത്ര്യം നേടാൻ സഹായിക്കും</li>
+                </ul>
+            </div>
+
+            <h4>ധനകാര്യ പ്ലാനിംഗിന്റെ ഘട്ടങ്ങൾ:</h4>
+            <div class="timeline">
+                <div class="timeline-item"><div class="timeline-year">1</div><p>നിലവിലെ സാമ്പത്തിക സ്ഥിതി വിലയിരുത്തൽ</p></div>
+                <div class="timeline-item"><div class="timeline-year">2</div><p>ചെറുതും വലുതുമായ ലക്ഷ്യങ്ങൾ തിരിച്ചറിയൽ</p></div>
+                <div class="timeline-item"><div class="timeline-year">3</div><p>ബജറ്റ് തയ്യാറാക്കൽ</p></div>
+                <div class="timeline-item"><div class="timeline-year">4</div><p>സേവിംഗ്സ് പ്ലാൻ ഉണ്ടാക്കൽ</p></div>
+                <div class="timeline-item"><div class="timeline-year">5</div><p>നിക്ഷേപങ്ങൾ തിരഞ്ഞെടുക്കൽ</p></div>
+                <div class="timeline-item"><div class="timeline-year">6</div><p>നിയമപരമായ ആവശ്യങ്ങൾ പരിഹരിക്കൽ</p></div>
+                <div class="timeline-item"><div class="timeline-year">7</div><p>പരിശോധനയും തിരുത്തലും</p></div>
+            </div>
+
+            <h3>2. ബജറ്റിംഗ് - വരുമാനവും ചെലവും കണക്കാക്കൽ</h3>
+            <p>ബജറ്റ് എന്നത് ഒരു നിശ്ചിത കാലയളവിൽ (സാധാരണയായി ഒരു മാസം) നമ്മുടെ വരുമാനവും ചെലവും കണക്കാക്കി തയ്യാറാക്കുന്ന പദ്ധതിയാണ്.</p>
+
+            <h4>ബജറ്റിന്റെ പ്രധാന ഘടകങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>ഘടകം</th><th>വിശദീകരണം</th></tr>
+                    <tr><td><strong>വരുമാനം (Income)</strong></td><td>ശമ്പളം, ബിസിനസ് ലാഭം, വാടക, പലിശ തുടങ്ങിയവ</td></tr>
+                    <tr><td><strong>ചെലവുകൾ (Expenses)</strong></td><td>ഭക്ഷണം, വീട് വാടക, വാഹനം, വിദ്യാഭ്യാസം, വൈദ്യുതി, വെള്ളം</td></tr>
+                    <tr><td><strong>സേവിംഗ്സ് (Savings)</strong></td><td>വരുമാനത്തിൽ നിന്ന് ചെലവുകൾ കഴിച്ച് ബാക്കി വരുന്നത്</td></tr>
+                    <tr><td><strong>നിക്ഷേപങ്ങൾ (Investments)</strong></td><td>ഭാവി ലാഭത്തിനായി പണം മാറ്റിവയ്ക്കൽ</td></tr>
+                </table>
+            </div>
+
+            <h4>50-30-20 നിയം (Popular Budgeting Rule):</h4>
+            <div class="card">
+                <ul>
+                    <li>🔵 <strong>50%</strong> - ആവശ്യങ്ങൾ (Needs) - ഭക്ഷണം, വാടക, വൈദ്യുതി</li>
+                    <li>🟢 <strong>30%</strong> - ആഗ്രഹങ്ങൾ (Wants) - വിനോദം, ഷോപ്പിംഗ്</li>
+                    <li>🔴 <strong>20%</strong> - സേവിംഗ്സ് & നിക്ഷേപങ്ങൾ</li>
+                </ul>
+            </div>
+
+            <h4>ബജറ്റിംഗ് നുറുങ്ങുകൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>📱 മൊബൈൽ ആപ്പുകൾ ഉപയോഗിച്ച് ചെലവുകൾ ട്രാക്ക് ചെയ്യുക</li>
+                    <li>📝 എല്ലാ ചെലവുകളും രേഖപ്പെടുത്തുക</li>
+                    <li>🎯 ഓരോ മാസവും ബജറ്റ് അവലോകനം ചെയ്യുക</li>
+                    <li>💰 ചെറിയ ചെലവുകൾ പോലും കണക്കിലെടുക്കുക</li>
+                </ul>
+            </div>
+
+            <h3>3. സേവിംഗ്സിന്റെ പ്രാധാന്യം</h3>
+            <p>സേവിംഗ്സ് എന്നത് നമ്മുടെ വരുമാനത്തിൽ നിന്ന് ചെലവുകൾ കഴിഞ്ഞ് ബാക്കി വരുന്ന പണമാണ്.</p>
+
+            <h4>സേവിംഗ്സ് എന്തിന്?</h4>
+            <div class="card">
+                <ul>
+                    <li>🏥 അപ്രതീക്ഷിത ആരോഗ്യ പ്രശ്നങ്ങൾ</li>
+                    <li>🎓 മക്കളുടെ വിദ്യാഭ്യാസം</li>
+                    <li>🏠 ഭാവി നിക്ഷേപങ്ങൾ</li>
+                    <li>👴 വിരമിക്കൽ കാലം</li>
+                    <li>🚗 വാഹനം വാങ്ങൽ</li>
+                </ul>
+            </div>
+
+            <h4>സേവിംഗ്സിന്റെ വിവിധ രീതികൾ:</h4>
+            <div class="timeline">
+                <div class="timeline-item"><div class="timeline-year">1</div><p><strong>സ്വയംപ്രേരിത സേവിംഗ്സ്:</strong> ശമ്പളം ലഭിക്കുമ്പോൾ തന്നെ ഒരു നിശ്ചിത തുക മാറ്റിവയ്ക്കുക</p></div>
+                <div class="timeline-item"><div class="timeline-year">2</div><p><strong>ഓട്ടോമാറ്റിക് ട്രാൻസ്ഫർ:</strong> ബാങ്കിൽ സ്റ്റാൻഡിംഗ് ഇൻസ്ട്രക്ഷൻ നൽകുക</p></div>
+                <div class="timeline-item"><div class="timeline-year">3</div><p><strong>പെട്ടെന്നുള്ള ചെലവ് ഒഴിവാക്കൽ:</strong> ആവശ്യമില്ലാത്ത വസ്തുക്കൾ വാങ്ങരുത്</p></div>
+                <div class="timeline-item"><div class="timeline-year">4</div><p><strong>ചെറിയ തുകയിൽ തുടങ്ങുക:</strong> ആദ്യം ചെറുതായി തുടങ്ങി പതിയെ വർദ്ധിപ്പിക്കുക</p></div>
+            </div>
+
+            <h3>4. എമർജൻസി ഫണ്ട് (അടിയന്തര ഫണ്ട്)</h3>
+            <p>എമർജൻസി ഫണ്ട് എന്നത് അപ്രതീക്ഷിത സാഹചര്യങ്ങൾക്ക് ഉപയോഗിക്കാൻ വേണ്ടി മാറ്റിവയ്ക്കുന്ന പണമാണ്.</p>
+
+            <h4>എന്തിന് വേണ്ടി?</h4>
+            <div class="card">
+                <ul>
+                    <li>🏥 അപകടം/അസുഖം</li>
+                    <li>😞 തൊഴിൽ നഷ്ടം</li>
+                    <li>🏠 വീട് അറ്റകുറ്റപ്പണി</li>
+                    <li>🚗 വാഹന അറ്റകുറ്റപ്പണി</li>
+                </ul>
+            </div>
+
+            <h4>എത്ര തുക വേണം?</h4>
+            <div class="card">
+                <ul>
+                    <li>📌 കുറഞ്ഞത് 3-6 മാസത്തെ ചെലവുകൾ വരെ</li>
+                    <li>📌 കുടുംബത്തിലെ കൂടുതൽ ആശ്രിതർ ഉണ്ടെങ്കിൽ 6-12 മാസം</li>
+                    <li>📌 സ്ഥിരമായ വരുമാനമില്ലാത്തവർ കൂടുതൽ വേണം</li>
+                </ul>
+            </div>
+
+            <h4>എമർജൻസി ഫണ്ട് സൂക്ഷിക്കേണ്ട രീതി:</h4>
+            <div class="card">
+                <ul>
+                    <li>💳 ലിക്വിഡ് (ഉടനടി ലഭ്യമാകുന്ന) രൂപത്തിൽ</li>
+                    <li>🏦 സേവിംഗ്സ് അക്കൗണ്ട് അല്ലെങ്കിൽ ഫിക്സഡ് ഡിപ്പോസിറ്റ്</li>
+                    <li>📈 ഓഹരികളിലോ മ്യൂച്വൽ ഫണ്ടുകളിലോ സൂക്ഷിക്കരുത് (വില കുറയാം)</li>
+                    <li>🔒 എളുപ്പത്തിൽ എടുക്കാൻ കഴിയുന്ന രീതിയിൽ</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MODULE II: BANKING AND FINANCIAL INSTITUTIONS -->
+        <section class="section" id="module2">
+            <div class="section-header">
+                <span class="section-number">Module II</span>
+                <h2>BANKING AND FINANCIAL INSTITUTIONS (ബാങ്കിംഗും ധനകാര്യ സ്ഥാപനങ്ങളും)</h2>
+            </div>
+
+            <h3>1. വ്യാപാര ബാങ്കുകളുടെ പ്രവർത്തനങ്ങൾ</h3>
+            <p>വ്യാപാര ബാങ്കുകൾ എന്നത് ലാഭം നേടുന്നതിനായി പ്രവർത്തിക്കുന്ന ബാങ്കുകളാണ്.</p>
+
+            <h4>പ്രധാന പ്രവർത്തനങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>പ്രവർത്തനം</th><th>വിശദീകരണം</th></tr>
+                    <tr><td><strong>നിക്ഷേപ സ്വീകരണം</strong></td><td>പൊതുജനങ്ങളിൽ നിന്ന് പണം സ്വീകരിക്കൽ (Savings, FD, RD)</td></tr>
+                    <tr><td><strong>വായ്പ നൽകൽ</strong></td><td>വ്യക്തികൾക്കും കമ്പനികൾക്കും വായ്പ നൽകൽ</td></tr>
+                    <tr><td><strong>റെമിറ്റൻസ്</strong></td><td>പണം അയയ്ക്കൽ, ഡ്രാഫ്റ്റുകൾ, ചെക്കുകൾ</td></tr>
+                    <tr><td><strong>ഫോറിൻ എക്സ്ചേഞ്ച്</strong></td><td>വിദേശ കറൻസി കൈമാറ്റം</td></tr>
+                    <tr><td><strong>ലോക്ക്ബോക്സ്</strong></td><td>വിലയേറിയ വസ്തുക്കൾ സൂക്ഷിക്കൽ</td></tr>
+                    <tr><td><strong>ഇ-സേവനങ്ങൾ</strong></td><td>ഇന്റർനെറ്റ് ബാങ്കിംഗ്, മൊബൈൽ ബാങ്കിംഗ്</td></tr>
+                </table>
+            </div>
+
+            <h4>ഇന്ത്യയിലെ പ്രധാന ബാങ്ക് തരങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>🏛️ <strong>പബ്ലിക് സെക്ടർ ബാങ്കുകൾ</strong> - SBI, PNB, Canara Bank (സർക്കാർ നിയന്ത്രണം)</li>
+                    <li>🏢 <strong>പ്രൈവറ്റ് സെക്ടർ ബാങ്കുകൾ</strong> - HDFC, ICICI, Axis (സ്വകാര്യ ഉടമസ്ഥത)</li>
+                    <li>🌏 <strong>ഫോറിൻ ബാങ്കുകൾ</strong> - HSBC, Standard Chartered</li>
+                    <li>🤝 <strong>റീജണൽ റൂറൽ ബാങ്കുകൾ</strong> - ഗ്രാമീണ മേഖലയിൽ പ്രവർത്തിക്കുന്നവ</li>
+                    <li>🏘️ <strong>സഹകരണ ബാങ്കുകൾ</strong> - കോ-ഓപ്പറേറ്റീവ് സൊസൈറ്റികൾ</li>
+                </ul>
+            </div>
+
+            <h3>2. വിവിധ തരം ബാങ്ക് അക്കൗണ്ടുകൾ</h3>
+
+            <h4>📘 സേവിംഗ്സ് അക്കൗണ്ട് (Savings Account)</h4>
+            <div class="card">
+                <ul>
+                    <li>സാധാരണ ജനങ്ങൾക്ക് പണം സൂക്ഷിക്കാനും പലിശ ലഭിക്കാനും</li>
+                    <li>പലിശ നിരക്ക്: 2.5% - 4% വരെ</li>
+                    <li>എ.ടി.എം കാർഡ്, ചെക്ക് ബുക്ക്, ഇന്റർനെറ്റ് ബാങ്കിംഗ് ലഭ്യം</li>
+                    <li>മിനിമം ബാലൻസ് നിർബന്ധമാണ് (ചില ബാങ്കുകളിൽ)</li>
+                </ul>
+            </div>
+
+            <h4>📗 കറന്റ് അക്കൗണ്ട് (Current Account)</h4>
+            <div class="card">
+                <ul>
+                    <li>ബിസിനസ്സുകൾക്കും കമ്പനികൾക്കും</li>
+                    <li>പലിശ ലഭിക്കില്ല</li>
+                    <li>എത്ര തവണ പണം എടുക്കാം/നിക്ഷേപിക്കാം</li>
+                    <li>ഓവർഡ്രാഫ്റ്റ് സൗകര്യം ലഭ്യം</li>
+                </ul>
+            </div>
+
+            <h4>📙 ഫിക്സഡ് ഡിപ്പോസിറ്റ് (FD - കാലാവധി നിക്ഷേപം)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഒരു നിശ്ചിത കാലയളവിന് പണം നിക്ഷേപിക്കൽ</li>
+                    <li>കാലാവധി: 7 ദിവസം മുതൽ 10 വർഷം വരെ</li>
+                    <li>പലിശ നിരക്ക്: 5% - 8% വരെ (കാലാവധിയനുസരിച്ച്)</li>
+                    <li>കാലാവധിക്ക് മുമ്പ് പണം എടുത്താൽ പെനാൽറ്റി</li>
+                    <li>Tax Saver FD: 5 വർഷം കാലാവധി, 80C പ്രയോജനം</li>
+                </ul>
+            </div>
+
+            <h4>📕 റിക്കറിംഗ് ഡിപ്പോസിറ്റ് (RD - ആവർത്തന നിക്ഷേപം)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഓരോ മാസവും ഒരു നിശ്ചിത തുക നിക്ഷേപിക്കൽ</li>
+                    <li>കാലാവധി: 6 മാസം മുതൽ 10 വർഷം വരെ</li>
+                    <li>ചെറിയ തുകയിൽ തുടങ്ങാം</li>
+                    <li>പലിശ നിരക്ക്: FD-യ്ക്ക് സമാനം</li>
+                </ul>
+            </div>
+
+            <h3>3. എ.ടി.എം, ഡെബിറ്റ്/ക്രെഡിറ്റ് കാർഡുകൾ</h3>
+
+            <h4>💳 എ.ടി.എം കാർഡ് (Automated Teller Machine)</h4>
+            <div class="card">
+                <ul>
+                    <li>24 മണിക്കൂറും പണം എടുക്കാൻ സാധിക്കും</li>
+                    <li>ബാലൻസ് അറിയാൻ, മിനി സ്റ്റേറ്റ്മെന്റ് എടുക്കാൻ</li>
+                    <li>സ്വന്തം ബാങ്കിന്റെ എ.ടി.എം - സൗജന്യം</li>
+                    <li>മറ്റ് ബാങ്കുകളുടെ എ.ടി.എം - ചിലപ്പോൾ ചാർജ് ഉണ്ടാകും</li>
+                </ul>
+            </div>
+
+            <h4>💳 ഡെബിറ്റ് കാർഡ്</h4>
+            <div class="card">
+                <ul>
+                    <li>നിങ്ങളുടെ ബാങ്ക് അക്കൗണ്ടിൽ നിന്ന് നേരിട്ട് പണം കുറയ്ക്കും</li>
+                    <li>ഷോപ്പിംഗ്, ഓൺലൈൻ പേയ്മെന്റ്, എ.ടി.എം വിത്ഡ്രോയൽ</li>
+                    <li>പലിശ ലഭിക്കില്ല, പക്ഷേ ചില കാർഡുകളിൽ ക്യാഷ്ബാക്ക് ഉണ്ട്</li>
+                </ul>
+            </div>
+
+            <h4>💳 ക്രെഡിറ്റ് കാർഡ്</h4>
+            <div class="card">
+                <ul>
+                    <li>ബാങ്ക് നൽകുന്ന വായ്പ - "Buy Now, Pay Later"</li>
+                    <li>ഓരോ മാസവും ബില്ല് അടയ്ക്കണം</li>
+                    <li>സമയത്ത് അടച്ചില്ലെങ്കിൽ കനത്ത പലിശ (36% - 48% വരെ)</li>
+                    <li>റിവാർഡ് പോയിന്റുകൾ, ക്യാഷ്ബാക്ക്, ഡിസ്കൗണ്ട് എന്നിവ ലഭ്യം</li>
+                </ul>
+            </div>
+
+            <h3>4. ഇ-ബാങ്കിംഗ്, മൊബൈൽ ബാങ്കിംഗ്</h3>
+
+            <h4>🌐 ഇ-ബാങ്കിംഗ് (Internet Banking)</h4>
+            <div class="card">
+                <ul>
+                    <li>കംപ്യൂട്ടർ വെബ്സൈറ്റ് വഴി ബാങ്കിംഗ്</li>
+                    <li>ഫണ്ട് ട്രാൻസ്ഫർ, ബില്ല് പേയ്മെന്റ്, FD തുടങ്ങിയവ</li>
+                    <li>NEFT, RTGS, IMPS ട്രാൻസ്ഫറുകൾ</li>
+                </ul>
+            </div>
+
+            <h4>📱 മൊബൈൽ ബാങ്കിംഗ്</h4>
+            <div class="card">
+                <ul>
+                    <li>മൊബൈൽ ആപ്പ് വഴി ബാങ്കിംഗ്</li>
+                    <li>യു.പി.ഐ പേയ്മെന്റുകൾ</li>
+                    <li>ചെക്ക് ബുക്ക് അപ്ലൈ, ലോൺ അപ്ലൈ ചെയ്യാം</li>
+                    <li>QR കോഡ് സ്കാൻ ചെയ്ത് പേയ്മെന്റ്</li>
+                </ul>
+            </div>
+
+            <h3>5. ചെക്കുകൾ, ഡ്രാഫ്റ്റുകൾ</h3>
+
+            <h4>📝 ചെക്ക് (Cheque)</h4>
+            <div class="card">
+                <ul>
+                    <li>ബാങ്കിന് നൽകുന്ന പേയ്മെന്റ് നിർദ്ദേശം</li>
+                    <li><strong>ബിയറർ ചെക്ക്:</strong> ആർക്കും പണം ലഭിക്കും</li>
+                    <li><strong>ആർഡർ ചെക്ക്:</strong> നിർദ്ദിഷ്ട വ്യക്തിക്ക് മാത്രം</li>
+                    <li><strong>ക്രോസ്ഡ് ചെക്ക്:</strong> അക്കൗണ്ടിൽ മാത്രം നിക്ഷേപിക്കാം</li>
+                    <li><strong>അക്കൗണ്ട് പേയ് ചെക്ക്:</strong> "Account Payee" എന്ന് എഴുതണം</li>
+                    <li>ചെക്ക് ബൗ൸ ചെയ്താൽ നിയമനടപടി</li>
+                </ul>
+            </div>
+
+            <h4>📝 ഡിമാൻഡ് ഡ്രാഫ്റ്റ് (DD)</h4>
+            <div class="card">
+                <ul>
+                    <li>ബാങ്ക് തയ്യാറാക്കുന്ന പേയ്മെന്റ് ഉറപ്പ്</li>
+                    <li>ചെക്ക് ബൗ൸ ആകില്ല</li>
+                    <li>വിദ്യാഭ്യാസ ഫീസ്, വാടക തുടങ്ങിയവയ്ക്ക് ഉപയോഗിക്കാം</li>
+                    <li>ചെക്കിനേക്കാൾ സുരക്ഷിതം</li>
+                </ul>
+            </div>
+
+            <h3>6. ബാങ്കിംഗ് ഓംബഡ്സ്മാൻ സ്കീം</h3>
+            <p>ബാങ്കിംഗ് ഓംബഡ്സ്മാൻ എന്നത് ബാങ്കുമായി ബന്ധപ്പെട്ട പരാതികൾ പരിഹരിക്കാൻ നിയമിച്ച വ്യക്തിയാണ്.</p>
+
+            <h4>എന്തിന് പരാതി നൽകാം?</h4>
+            <div class="card">
+                <ul>
+                    <li>❌ ബാങ്ക് പലിശ നിരക്കിൽ അസന്തുഷ്ടി</li>
+                    <li>❌ ലോൺ അപ്ലിക്കേഷൻ തള്ളിക്കളഞ്ഞു</li>
+                    <li>❌ അക്കൗണ്ടിൽ നിന്ന് തെറ്റായി പണം കുറഞ്ഞു</li>
+                    <li>❌ ATM ട്രാൻസാക്ഷൻ പരാജയപ്പെട്ടു, പക്ഷേ പണം കുറഞ്ഞു</li>
+                    <li>❌ ക്രെഡിറ്റ് കാർഡ് ബില്ലിൽ അസന്തുഷ്ടി</li>
+                </ul>
+            </div>
+
+            <h4>പരാതി നൽകേണ്ട രീതി:</h4>
+            <div class="timeline">
+                <div class="timeline-item"><div class="timeline-year">1</div><p>ആദ്യം ബാങ്കിനോട് പരാതി പറയുക (30 ദിവസത്തിനുള്ളിൽ മറുപടി വേണം)</p></div>
+                <div class="timeline-item"><div class="timeline-year">2</div><p>ബാങ്ക് പരിഹരിച്ചില്ലെങ്കിൽ ഓംബഡ്സ്മാനെ സമീപിക്കുക</p></div>
+                <div class="timeline-item"><div class="timeline-year">3</div><p>പരാതി ഓൺലൈനായി (cms.rbi.org.in) അല്ലെങ്കിൽ പോസ്റ്റൽ വഴി</p></div>
+                <div class="timeline-item"><div class="timeline-year">4</div><p>പരമാവധി പരിഹാര തുക: ₹20 ലക്ഷം</p></div>
+            </div>
+        </section>
+
+        <!-- MODULE III: INVESTMENT OPTIONS -->
+        <section class="section" id="module3">
+            <div class="section-header">
+                <span class="section-number">Module III</span>
+                <h2>INVESTMENT OPTIONS (നിക്ഷേപ മാർഗ്ഗങ്ങൾ)</h2>
+            </div>
+
+            <h3>1. പോസ്റ്റ് ഓഫീസ് സേവിംഗ്സ് സ്കീമുകൾ</h3>
+            <p>ഇന്ത്യൻ പോസ്റ്റൽ വകുപ്പ് നടത്തുന്ന സുരക്ഷിത നിക്ഷേപ പദ്ധതികൾ:</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>സ്കീം</th><th>പലിശ നിരക്ക്</th><th>പ്രത്യേകത</th></tr>
+                    <tr><td>പോസ്റ്റ് ഓഫീസ് സേവിംഗ്സ് അക്കൗണ്ട്</td><td>4%</td><td>സാധാരണ സേവിംഗ്സ്</td></tr>
+                    <tr><td>5-വർഷ പോസ്റ്റ് ഓഫീസ് RD</td><td>5.8%</td><td>മാസം തോറും നിക്ഷേപം</td></tr>
+                    <tr><td>പോസ്റ്റ് ഓഫീസ് TD (Time Deposit)</td><td>5.5% - 6.7%</td><td>FD പോലെ</td></tr>
+                    <tr><td>പോസ്റ്റ് ഓഫീസ് MIS</td><td>6.6%</td><td>മാസം തോറും വരുമാനം</td></tr>
+                    <tr><td>സീനിയർ സിറ്റിസൺ സേവിംഗ്സ്</td><td>7.4%</td><td>60 വയസ്സിന് മുകളിലുള്ളവർക്ക്</td></tr>
+                    <tr><td>സുകന്യ സമൃദ്ധി</td><td>7.6%</td><td>പെൺകുട്ടികൾക്ക്</td></tr>
+                    <tr><td>പബ്ലിക് പ്രോവിഡന്റ് ഫണ്ട്</td><td>7.1%</td><td>ദീർഘകാല നിക്ഷേപം</td></tr>
+                </table>
+            </div>
+
+            <h4>പ്രധാന പ്രയോജനങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>✅ സർക്കാർ ഗാരന്റി - പൂർണ്ണ സുരക്ഷ</li>
+                    <li>✅ ചെറിയ തുകയിൽ തുടങ്ങാം</li>
+                    <li>✅ ചില സ്കീമുകളിൽ 80C നികുതി പ്രയോജനം</li>
+                    <li>✅ ഗ്രാമീണ മേഖലയിലും ലഭ്യം</li>
+                </ul>
+            </div>
+
+            <h3>2. പബ്ലിക് പ്രോവിഡന്റ് ഫണ്ട് (PPF)</h3>
+            <p>PPF എന്നത് ദീർഘകാല നിക്ഷേപത്തിനുള്ള മികച്ച പദ്ധതിയാണ്.</p>
+
+            <h4>പ്രധാന വിശേഷതകൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>📅 <strong>കാലാവധി:</strong> 15 വർഷം (5 വർഷം വീതം രണ്ട് തവണ നീട്ടാം)</li>
+                    <li>💰 <strong>പലിശ നിരക്ക്:</strong> 7.1% (2024-25, ത്രൈമാസികമായി മാറാം)</li>
+                    <li>💵 <strong>ഏറ്റവും കുറഞ്ഞ നിക്ഷേപം:</strong> ₹500/വർഷം</li>
+                    <li>💵 <strong>ഏറ്റവും കൂടുതൽ നിക്ഷേപം:</strong> ₹1.5 ലക്ഷം/വർഷം</li>
+                    <li>🏦 <strong>എവിടെ:</strong> പോസ്റ്റ് ഓഫീസ്, ബാങ്കുകൾ</li>
+                    <li>📝 <strong>80C പ്രയോജനം:</strong> ₹1.5 ലക്ഷം വരെ നികുതി കുറവ്</li>
+                    <li>💸 <strong>പലിശ & Maturity തുക:</strong> പൂർണ്ണമായി നികുതി രഹിതം (EEE Status)</li>
+                </ul>
+            </div>
+
+            <h4>PPF അക്കൗണ്ട് തുടങ്ങേണ്ട രീതി:</h4>
+            <div class="timeline">
+                <div class="timeline-item"><div class="timeline-year">1</div><p>പോസ്റ്റ് ഓഫീസ്/ബാങ്കിൽ അപ്ലൈ ചെയ്യുക</p></div>
+                <div class="timeline-item"><div class="timeline-year">2</div><p>KYC രേഖകൾ (Aadhaar, PAN, ഫോട്ടോ) സമർപ്പിക്കുക</p></div>
+                <div class="timeline-item"><div class="timeline-year">3</div><p>അക്കൗണ്ട് തുറന്നതിന് ശേഷം ഓൺലൈനായി നിക്ഷേപിക്കാം</p></div>
+                <div class="timeline-item"><div class="timeline-year">4</div><p>ഓരോ വർഷവും ഏപ്രിൽ 5-ന് മുമ്പ് പൂർണ്ണ തുക നിക്ഷേപിച്ചാൽ കൂടുതൽ പലിശ</p></div>
+            </div>
+
+            <h3>3. നാഷണൽ സേവിംഗ്സ് സർട്ടിഫിക്കറ്റ് (NSC)</h3>
+            <p>NSC എന്നത് പോസ്റ്റ് ഓഫീസ് വഴി ലഭിക്കുന്ന നിക്ഷേപ സർട്ടിഫിക്കറ്റാണ്.</p>
+
+            <h4>വിശേഷതകൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>💰 <strong>പലിശ നിരക്ക്:</strong> 6.8% (2024-25)</li>
+                    <li>📅 <strong>കാലാവധി:</strong> 5 വർഷം</li>
+                    <li>💵 <strong>ഏറ്റവും കുറഞ്ഞ നിക്ഷേപം:</strong> ₹1,000</li>
+                    <li>📝 <strong>80C പ്രയോജനം:</strong> ₹1.5 ലക്ഷം വരെ</li>
+                    <li>🏦 <strong>എവിടെ:</strong> പോസ്റ്റ് ഓഫീസ്</li>
+                    <li>📜 <strong>സർട്ടിഫിക്കറ്റ് രൂപത്തിൽ:</strong> വായ്പയ്ക്ക് ഗാരന്റിയായി ഉപയോഗിക്കാം</li>
+                </ul>
+            </div>
+
+            <h4>പ്രധാന നിയമങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>🔒 5 വർഷം കാലാവധിക്ക് മുമ്പ് പണം എടുക്കാൻ കഴിയില്ല</li>
+                    <li>💀 അക്കൗണ്ട് ഉടമയുടെ മരണത്തിൽ നോമിനിക്ക് ലഭിക്കും</li>
+                    <li>🔄 പലിശ വാർഷികമായി ചേർക്കപ്പെടുന്നു</li>
+                </ul>
+            </div>
+
+            <h3>4. മ്യൂച്വൽ ഫണ്ടുകൾ</h3>
+            <p>മ്യൂച്വൽ ഫണ്ട് എന്നത് പല ആളുകളുടെയും പണം ചേർത്ത് പ്രൊഫഷണൽ ഫണ്ട് മാനേജർമാർ നിക്ഷേപിക്കുന്ന പദ്ധതി.</p>
+
+            <h4>മ്യൂച്വൽ ഫണ്ടുകളുടെ തരങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>തരം</th><th>നിക്ഷേപം</th><th>അപകടം</th><th>പലിശ</th></tr>
+                    <tr><td><strong>ഡെബ്റ്റ് ഫണ്ട്</strong></td><td>ബോണ്ടുകൾ, ഗവൺമെന്റ് സെക്യൂരിറ്റികൾ</td><td>കുറവ്</td><td>6% - 9%</td></tr>
+                    <tr><td><strong>ഇക്വിറ്റി ഫണ്ട്</strong></td><td>ഓഹരികൾ</td><td>കൂടുതൽ</td><td>12% - 15% (അസ്ഥിരം)</td></tr>
+                    <tr><td><strong>ഹൈബ്രിഡ് ഫണ്ട്</strong></td><td>ഓഹരികൾ + ബോണ്ടുകൾ</td><td>മിതം</td><td>8% - 12%</td></tr>
+                    <tr><td><strong>ലിക്വിഡ് ഫണ്ട്</strong></td><td>ഹ്രസ്വകാല ബോണ്ടുകൾ</td><td>വളരെ കുറവ്</td><td>4% - 6%</td></tr>
+                </table>
+            </div>
+
+            <h4>SIP (Systematic Investment Plan):</h4>
+            <div class="card">
+                <ul>
+                    <li>📅 ഓരോ മാസവും ഒരു നിശ്ചിത തുക നിക്ഷേപിക്കൽ</li>
+                    <li>💰 ₹500 മുതൽ തുടങ്ങാം</li>
+                    <li>📉 മാർക്കറ്റ് താഴുമ്പോൾ കൂടുതൽ യൂണിറ്റുകൾ ലഭിക്കും</li>
+                    <li>📈 ദീർഘകാലത്തിൽ മികച്ച വരുമാനം</li>
+                </ul>
+            </div>
+
+            <h4>ELSS (Equity Linked Savings Scheme):</h4>
+            <div class="card">
+                <ul>
+                    <li>📊 ഇക്വിറ്റി മ്യൂച്വൽ ഫണ്ട്</li>
+                    <li>📝 80C പ്രയോജനം: ₹1.5 ലക്ഷം വരെ</li>
+                    <li>🔒 3 വർഷം ലോക്ക്-ഇൻ കാലാവധി</li>
+                    <li>💹 മറ്റ് 80C പദ്ധതികളേക്കാൾ കൂടുതൽ വരുമാന സാധ്യത</li>
+                </ul>
+            </div>
+
+            <h3>5. ഓഹരികൾ (Shares) - അടിസ്ഥാന അറിവ്</h3>
+            <p>ഓഹരി (Share/Stock) എന്നത് ഒരു കമ്പനിയുടെ ഉടമസ്ഥാവകാശത്തിന്റെ ചെറിയ ഭാഗമാണ്.</p>
+
+            <h4>ഓഹരി വാങ്ങുന്നത് എങ്ങനെ?</h4>
+            <div class="timeline">
+                <div class="timeline-item"><div class="timeline-year">1</div><p>ഡിമാറ്റ് അക്കൗണ്ട് തുറക്കുക (ബ്രോക്കറുടെ മുഖേന)</p></div>
+                <div class="timeline-item"><div class="timeline-year">2</div><p>ട്രേഡിംഗ് അക്കൗണ്ട് തുറക്കുക</p></div>
+                <div class="timeline-item"><div class="timeline-year">3</div><p>ഓഹരികൾ വാങ്ങുക/വിൽക്കുക</p></div>
+            </div>
+
+            <h4>ഓഹരി വിപണിയിലെ പ്രധാന പദങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>പദം</th><th>അർത്ഥം</th></tr>
+                    <tr><td><strong>BSE/NSE</strong></td><td>ബോംബെ/നാഷണൽ സ്റ്റോക്ക് എക്സ്ചേഞ്ച്</td></tr>
+                    <tr><td><strong>Sensex/Nifty</strong></td><td>മാർക്കറ്റ് ഇൻഡക്സ് (30/50 കമ്പനികൾ)</td></tr>
+                    <tr><td><strong>IPO</strong></td><td>Initial Public Offering - പുതിയ ഓഹരി</td></tr>
+                    <tr><td><strong>Dividend</strong></td><td>ലാഭവിഹിതം</td></tr>
+                    <tr><td><strong>Bull Market</strong></td><td>വിപണി ഉയരുന്നു</td></tr>
+                    <tr><td><strong>Bear Market</strong></td><td>വിപണി താഴുന്നു</td></tr>
+                </table>
+            </div>
+
+            <h4>അപകടങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>⚠️ വിപണി അസ്ഥിരത</li>
+                    <li>⚠️ കമ്പനി നഷ്ടത്തിൽ പോയാൽ ഓഹരി വില കുറയും</li>
+                    <li>⚠️ ദീർഘകാല നിക്ഷേപമാണ് നല്ലത്</li>
+                </ul>
+            </div>
+
+            <h3>6. ഇൻഷുറൻസ് പോളിസികൾ</h3>
+            <div class="highlight-box">
+                <p>(വിശദമായി മൊഡ്യൂൾ VI-ൽ)</p>
+            </div>
+        </section>
+
+        <!-- MODULE IV: LOANS AND CREDIT -->
+        <section class="section" id="module4">
+            <div class="section-header">
+                <span class="section-number">Module IV</span>
+                <h2>LOANS AND CREDIT (വായ്പകളും ക്രെഡിറ്റും)</h2>
+            </div>
+
+            <h3>1. വിവിധ തരം ലോണുകൾ</h3>
+
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>ലോൺ തരം</th><th>ഉദ്ദേശ്യം</th><th>പലിശ നിരക്ക്</th><th>കാലാവധി</th></tr>
+                    <tr><td><strong>Personal Loan</strong></td><td>വിവിധ ആവശ്യങ്ങൾക്ക്</td><td>10% - 24%</td><td>1-5 വർഷം</td></tr>
+                    <tr><td><strong>Education Loan</strong></td><td>വിദ്യാഭ്യാസം</td><td>7% - 14%</td><td>കോഴ്സ് + 1 വർഷം</td></tr>
+                    <tr><td><strong>Home Loan</strong></td><td>വീട് വാങ്ങൽ/നിർമ്മാണം</td><td>8% - 11%</td><td>15-30 വർഷം</td></tr>
+                    <tr><td><strong>Vehicle Loan</strong></td><td>വാഹനം വാങ്ങൽ</td><td>7% - 14%</td><td>1-7 വർഷം</td></tr>
+                    <tr><td><strong>Gold Loan</strong></td><td>സ്വർണ്ണം ഗാരന്റിയായി</td><td>7% - 15%</td><td>6 മാസം - 3 വർഷം</td></tr>
+                    <tr><td><strong>Business Loan</strong></td><td>ബിസിനസ്സിന്</td><td>10% - 20%</td><td>വ്യത്യാസം</td></tr>
+                </table>
+            </div>
+
+            <h4>ലോൺ എടുക്കുമ്പോൾ ശ്രദ്ധിക്കേണ്ടത്:</h4>
+            <div class="card">
+                <ul>
+                    <li>📊 പലിശ നിരക്ക് കുറഞ്ഞത് തിരഞ്ഞെടുക്കുക</li>
+                    <li>📋 പ്രോസസ്സിംഗ് ഫീസ്, പ്രീപേയ്മെന്റ് ചാർജ് എന്നിവ പരിശോധിക്കുക</li>
+                    <li>🏦 വിവിധ ബാങ്കുകളുടെ നിരക്ക് താരതമ്യം ചെയ്യുക</li>
+                    <li>📄 CIBIL സ്കോർ നല്ലതാണോ എന്ന് പരിശോധിക്കുക</li>
+                </ul>
+            </div>
+
+            <h3>2. പലിശ നിരക്കുകൾ</h3>
+
+            <h4>📐 ലഘു പലിശ (Simple Interest - SI)</h4>
+            <div class="highlight-box">
+                <p><strong>SI = (P × R × T) / 100</strong></p>
+                <p>P = പ്രധാന തുക (Principal)</p>
+                <p>R = പലിശ നിരക്ക് (Rate)</p>
+                <p>T = കാലാവധി (Time)</p>
+            </div>
+
+            <div class="card">
+                <p><strong>ഉദാഹരണം:</strong> ₹10,000, 5% നിരക്കിൽ 2 വർഷം</p>
+                <p>SI = (10000 × 5 × 2) / 100 = <strong>₹1,000</strong></p>
+                <p>മൊത്തം = ₹10,000 + ₹1,000 = <strong>₹11,000</strong></p>
+            </div>
+
+            <h4>📐 ചക്രവൃദ്ധി പലിശ (Compound Interest - CI)</h4>
+            <div class="highlight-box">
+                <p><strong>A = P(1 + R/100)^T</strong></p>
+                <p>A = മൊത്തം തുക</p>
+                <p>P = പ്രധാന തുക</p>
+                <p>R = പലിശ നിരക്ക്</p>
+                <p>T = കാലാവധി</p>
+            </div>
+
+            <div class="card">
+                <p><strong>ഉദാഹരണം:</strong> ₹10,000, 5% നിരക്കിൽ 2 വർഷം</p>
+                <p>A = 10000(1 + 5/100)^2 = 10000 × 1.1025 = <strong>₹11,025</strong></p>
+                <p>പലിശ = ₹11,025 - ₹10,000 = <strong>₹1,025</strong></p>
+            </div>
+
+            <h4>ചക്രവൃദ്ധി പലിശയുടെ ശക്തി:</h4>
+            <div class="card">
+                <ul>
+                    <li>📈 പലിശയ്ക്ക് പലിശ ലഭിക്കും</li>
+                    <li>🔄 വർഷം തോറും, അർധവാർഷികമായി, പാദപലിശ എന്നിങ്ങനെ</li>
+                    <li>💰 ദീർഘകാലത്തിൽ വലിയ വ്യത്യാസം</li>
+                </ul>
+            </div>
+
+            <h3>3. CIBIL സ്കോർ - പ്രാധാന്യം</h3>
+            <p>CIBIL (Credit Information Bureau India Limited) എന്നത് നിങ്ങളുടെ ക്രെഡിറ്റ് ചരിത്രം രേഖപ്പെടുത്തുന്ന സംഘടനയാണ്.</p>
+
+            <h4>CIBIL സ്കോർ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>സ്കോർ</th><th>സ്ഥിതി</th></tr>
+                    <tr><td>⭐ 750+</td><td>അത്യുത്തമം (എളുപ്പത്തിൽ ലോൺ ലഭിക്കും)</td></tr>
+                    <tr><td>✅ 650-749</td><td>നല്ലത്</td></tr>
+                    <tr><td>⚠️ 550-649</td><td>ശരാശരി</td></tr>
+                    <tr><td>❌ 300-549</td><td>മോശം (ലോൺ കിട്ടാൻ ബുദ്ധിമുട്ട്)</td></tr>
+                </table>
+            </div>
+
+            <h4>സ്കോർ ഉയർത്താൻ:</h4>
+            <div class="card">
+                <ul>
+                    <li>🕐 ലോൺ/ക്രെഡിറ്റ് കാർഡ് ബില്ല് സമയത്ത് അടയ്ക്കുക</li>
+                    <li>💳 ക്രെഡിറ്റ് കാർഡ് ഉപയോഗം 30%-ൽ താഴെ വയ്ക്കുക</li>
+                    <li>🚫 ഒരേ സമയം പല ലോണുകൾ അപ്ലൈ ചെയ്യരുത്</li>
+                    <li>📋 ക്രെഡിറ്റ് റിപ്പോർട്ട് പരിശോധിക്കുക</li>
+                </ul>
+            </div>
+
+            <h3>4. ക്രെഡിറ്റ് കാർഡ് ഉപയോഗത്തിന്റെ നേട്ടങ്ങളും അപകടങ്ങളും</h3>
+
+            <h4>✅ നേട്ടങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>💳 "Buy Now, Pay Later" സൗകര്യം</li>
+                    <li>🎁 റിവാർഡ് പോയിന്റുകൾ, ക്യാഷ്ബാക്ക്</li>
+                    <li>🛡️ ഓൺലൈൻ ഷോപ്പിംഗിൽ സുരക്ഷ</li>
+                    <li>🏨 എയർപോർട്ട് ലൗഞ്ച് ആക്സസ്</li>
+                    <li>🆘 അടിയന്തര സാഹചര്യങ്ങളിൽ സഹായം</li>
+                </ul>
+            </div>
+
+            <h4>❌ അപകടങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>💸 സമയത്ത് അടച്ചില്ലെങ്കിൽ 36%-48% പലിശ</li>
+                    <li>🔄 Minimum Due അടച്ചാൽ ബാക്കി പലിശയ്ക്ക്</li>
+                    <li>💳 ഓവർസ്പെന്റിംഗ് - കടത്തിലേക്ക് നയിക്കും</li>
+                    <li>📉 CIBIL സ്കോർ കുറയാം</li>
+                    <li>🔒 ഫ്രോഡ് അപകടം</li>
+                </ul>
+            </div>
+
+            <h4>ക്രെഡിറ്റ് കാർഡ് ഉപയോഗിക്കേണ്ട രീതി:</h4>
+            <div class="card">
+                <ul>
+                    <li>📅 Full Amount Due സമയത്ത് അടയ്ക്കുക</li>
+                    <li>🎯 ആവശ്യത്തിന് മാത്രം ഉപയോഗിക്കുക</li>
+                    <li>🔐 PIN & OTP സുരക്ഷിതമായി സൂക്ഷിക്കുക</li>
+                    <li>📱 ട്രാൻസാക്ഷൻ അലേർട്ടുകൾ ഓൺ ചെയ്യുക</li>
+                </ul>
+            </div>
+
+            <h3>5. EMI കണക്കാക്കൽ</h3>
+            <p>EMI (Equated Monthly Installment) എന്നത് ഓരോ മാസവും അടയ്ക്കേണ്ട തവണ.</p>
+
+            <div class="highlight-box">
+                <p><strong>EMI = [P × R × (1+R)^N] / [(1+R)^N - 1]</strong></p>
+                <p>P = ലോൺ തുക</p>
+                <p>R = മാസപലിശ നിരക്ക് (വർഷ നിരക്ക് ÷ 12 ÷ 100)</p>
+                <p>N = മാസങ്ങളുടെ എണ്ണം</p>
+            </div>
+
+            <div class="card">
+                <p><strong>ഉദാഹരണം:</strong> ₹5 ലക്ഷം Home Loan, 8% വാർഷിക പലിശ, 20 വർഷം</p>
+                <p>P = 5,00,000</p>
+                <p>R = 8/12/100 = 0.00667</p>
+                <p>N = 20 × 12 = 240</p>
+                <p>EMI ≈ <strong>₹4,182/മാസം</strong></p>
+            </div>
+
+            <h4>EMI കുറയ്ക്കാൻ:</h4>
+            <div class="card">
+                <ul>
+                    <li>💰 കൂടുതൽ ഡൗൺ പേയ്മെന്റ് നൽകുക</li>
+                    <li>📉 കുറഞ്ഞ പലിശ നിരക്കുള്ള ബാങ്ക് തിരഞ്ഞെടുക്കുക</li>
+                    <li>📅 കൂടുതൽ കാലാവധി എടുക്കുക (പക്ഷേ പലിശ കൂടും)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MODULE V: TAXATION BASICS -->
+        <section class="section" id="module5">
+            <div class="section-header">
+                <span class="section-number">Module V</span>
+                <h2>TAXATION BASICS (നികുതി അടിസ്ഥാനങ്ങൾ)</h2>
+            </div>
+
+            <h3>1. വരുമാന നികുതിയുടെ അടിസ്ഥാന അറിവ്</h3>
+            <p>വരുമാന നികുതി (Income Tax) എന്നത് കേന്ദ്ര സർക്കാർ വ്യക്തികളുടെയും കമ്പനികളുടെയും വരുമാനത്തിൽ നിന്ന് ഈടാക്കുന്ന നികുതിയാണ്.</p>
+
+            <h4>വരുമാനത്തിന്റെ തരങ്ങൾ:</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>സാലറി ഇൻകം</strong> - ശമ്പളം</li>
+                    <li><strong>ഹൗസ് പ്രോപ്പർട്ടി</strong> - വാടക വരുമാനം</li>
+                    <li><strong>ബിസിനസ്/പ്രൊഫഷൻ</strong> - ബിസിനസ് ലാഭം</li>
+                    <li><strong>കാപിറ്റൽ ഗെയിൻ</strong> - ഓഹരി, പ്രോപ്പർട്ടി വിൽപ്പന ലാഭം</li>
+                    <li><strong>അദർ സോഴ്സസ്</strong> - പലിശ, ലോട്ടറി, ഡിവിഡന്റ്</li>
+                </ol>
+            </div>
+
+            <h4>ഇന്ത്യയിലെ വരുമാന നികുതി സ്ലാബ് (2024-25 - Old Regime):</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>വരുമാനം</th><th>നികുതി നിരക്ക്</th></tr>
+                    <tr><td>₹0 - ₹2.5 ലക്ഷം</td><td>0%</td></tr>
+                    <tr><td>₹2.5 ലക്ഷം - ₹5 ലക്ഷം</td><td>5%</td></tr>
+                    <tr><td>₹5 ലക്ഷം - ₹10 ലക്ഷം</td><td>20%</td></tr>
+                    <tr><td>₹10 ലക്ഷത്തിന് മുകളിൽ</td><td>30%</td></tr>
+                </table>
+            </div>
+
+            <h4>New Tax Regime (2024-25):</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>വരുമാനം</th><th>നികുതി നിരക്ക്</th></tr>
+                    <tr><td>₹0 - ₹3 ലക്ഷം</td><td>0%</td></tr>
+                    <tr><td>₹3 ലക്ഷം - ₹7 ലക്ഷം</td><td>5%</td></tr>
+                    <tr><td>₹7 ലക്ഷം - ₹10 ലക്ഷം</td><td>10%</td></tr>
+                    <tr><td>₹10 ലക്ഷം - ₹12 ലക്ഷം</td><td>15%</td></tr>
+                    <tr><td>₹12 ലക്ഷം - ₹15 ലക്ഷം</td><td>20%</td></tr>
+                    <tr><td>₹15 ലക്ഷത്തിന് മുകളിൽ</td><td>30%</td></tr>
+                </table>
+            </div>
+
+            <h3>2. PAN കാർഡ്, Aadhaar ലിങ്കിംഗ്</h3>
+
+            <h4>🆔 PAN (Permanent Account Number)</h4>
+            <div class="card">
+                <ul>
+                    <li>10 അക്ഷര-സംഖ്യാ കോഡ് (ഉദാ: ABCDE1234F)</li>
+                    <li><strong>എന്തിന് വേണം:</strong></li>
+                    <li>🏦 ബാങ്ക് അക്കൗണ്ട് തുറക്കാൻ</li>
+                    <li>💰 ₹50,000-ൽ കൂടുതൽ ക്യാഷ് ട്രാൻസാക്ഷൻ</li>
+                    <li>🏠 പ്രോപ്പർട്ടി വാങ്ങൽ/വിൽപ്പന</li>
+                    <li>📋 ITR ഫയൽ ചെയ്യാൻ</li>
+                    <li>💳 ക്രെഡിറ്റ്/ഡെബിറ്റ് കാർഡ്</li>
+                    <li>🚗 വാഹനം വാങ്ങൽ</li>
+                </ul>
+            </div>
+
+            <h4>🆔 Aadhaar</h4>
+            <div class="card">
+                <ul>
+                    <li>12 അക്ക സംഖ്യ</li>
+                    <li>യൂണിക് ഐഡന്റിഫിക്കേഷൻ അതോറിറ്റി ഓഫ് ഇന്ത്യ (UIDAI) നൽകുന്നു</li>
+                    <li>വിലാസം, വയസ്സ്, ബയോമെട്രിക് തുടങ്ങിയവ</li>
+                </ul>
+            </div>
+
+            <h4>🔗 PAN-Aadhaar ലിങ്കിംഗ്</h4>
+            <div class="card">
+                <ul>
+                    <li>⚠️ നിർബന്ധം: PAN-Aadhaar ലിങ്ക് ചെയ്യണം</li>
+                    <li>❌ ലിങ്ക് ചെയ്തില്ലെങ്കിൽ PAN നിർജ്ജീവമാകും</li>
+                    <li>🌐 https://www.incometax.gov.in വഴി ലിങ്ക് ചെയ്യാം</li>
+                    <li>📱 SMS വഴിയും ലിങ്ക് ചെയ്യാം</li>
+                </ul>
+            </div>
+
+            <h3>3. TDS (Tax Deducted at Source)</h3>
+            <p>TDS എന്നത് വരുമാനം ലഭിക്കുമ്പോൾ തന്നെ നികുതി കുറയ്ക്കുന്ന രീതിയാണ്.</p>
+
+            <h4>പ്രധാന TDS നിരക്കുകൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>വരുമാനം</th><th>TDS നിരക്ക്</th></tr>
+                    <tr><td>ശമ്പളം</td><td>സ്ലാബ് അനുസരിച്ച്</td></tr>
+                    <tr><td>ബാങ്ക് പലിശ (&gt;₹40,000)</td><td>10%</td></tr>
+                    <tr><td>പ്രോഫഷണൽ ഫീസ്</td><td>10%</td></tr>
+                    <tr><td>വാടക (&gt;₹50,000/മാസം)</td><td>5%</td></tr>
+                    <tr><td>കോൺട്രാക്ട് പേയ്മെന്റ്</td><td>1% - 2%</td></tr>
+                </table>
+            </div>
+
+            <h4>TDS-ന്റെ പ്രയോജനങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>✅ നികുതി ചോർച്ച തടയുന്നു</li>
+                    <li>✅ സർക്കാരിന് സമയബന്ധിതമായി നികുതി ലഭിക്കുന്നു</li>
+                    <li>✅ വരുമാനക്കാരന് ബാധ്യത കുറയുന്നു</li>
+                </ul>
+            </div>
+
+            <h4>TDS റിഫണ്ട്:</h4>
+            <div class="card">
+                <ul>
+                    <li>💰 TDS കൂടുതൽ കുറഞ്ഞാൽ ITR ഫയൽ ചെയ്ത് റിഫണ്ട് കൈപ്പറ്റാം</li>
+                    <li>📋 Form 26AS-ൽ TDS വിശദാംശങ്ങൾ കാണാം</li>
+                </ul>
+            </div>
+
+            <h3>4. വരുമാന നികുതി രേഖീകരണം (ITR)</h3>
+            <p>ITR (Income Tax Return) എന്നത് വരുമാനവും നികുതിയും പ്രഖ്യാപിക്കുന്ന ഫോം.</p>
+
+            <h4>ITR ഫയൽ ചെയ്യേണ്ടവർ:</h4>
+            <div class="card">
+                <ul>
+                    <li>💼 ₹2.5 ലക്ഷത്തിന് മുകളിൽ വരുമാനമുള്ളവർ</li>
+                    <li>🏢 കമ്പനികൾ, ഫോർമുകൾ</li>
+                    <li>🏦 ₹1 കോടിയിൽ കൂടുതൽ ബാങ്ക് ഡിപ്പോസിറ്റ്</li>
+                    <li>✈️ വിദേശയാത്ര ചെയ്തവർ (₹2 ലക്ഷത്തിന് മുകളിൽ ചെലവ്)</li>
+                    <li>💳 ₹1 ലക്ഷത്തിന് മുകളിൽ ക്രെഡിറ്റ് കാർഡ് ബിൽ</li>
+                </ul>
+            </div>
+
+            <h4>ITR തരങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>ഫോം</th><th>ആർക്ക്</th></tr>
+                    <tr><td>ITR-1 (Sahaj)</td><td>സാലറി, ഹൗസ് പ്രോപ്പർട്ടി, അദർ സോഴ്സസ്</td></tr>
+                    <tr><td>ITR-2</td><td>ITR-1 + കാപിറ്റൽ ഗെയിൻ</td></tr>
+                    <tr><td>ITR-3</td><td>ബിസിനസ്/പ്രൊഫഷൻ</td></tr>
+                    <tr><td>ITR-4 (Sugam)</td><td>പ്രെസംപ്റ്റീവ് ടാക്സ് സ്കീം</td></tr>
+                </table>
+            </div>
+
+            <h4>ITR ഫയൽ ചെയ്യേണ്ട സമയം:</h4>
+            <div class="card">
+                <ul>
+                    <li>📅 സാധാരണയായി ജൂലൈ 31 (അസസ്മെന്റ് വർഷം)</li>
+                    <li>🌐 www.incometax.gov.in വഴി ഓൺലൈനായി</li>
+                </ul>
+            </div>
+
+            <h3>5. 80C വിഭാഗത്തിൽ സേവിംഗ്സ്</h3>
+            <p>80C എന്നത് വരുമാന നികുതിയിൽ കുറവ് ലഭിക്കുന്ന പ്രധാന വിഭാഗമാണ്.</p>
+
+            <div class="highlight-box">
+                <p><strong>പരമാവധി കിഴിവ്: ₹1.5 ലക്ഷം/വർഷം</strong></p>
+            </div>
+
+            <h4>80C-ൽ ഉൾപ്പെടുന്ന നിക്ഷേപങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>നിക്ഷേപം</th><th>പരമാവധി</th><th>കാലാവധി</th></tr>
+                    <tr><td>PPF</td><td>₹1.5 ലക്ഷം/വർഷം</td><td>15 വർഷം</td></tr>
+                    <tr><td>ELSS</td><td>₹1.5 ലക്ഷം/വർഷം</td><td>3 വർഷം ലോക്ക്-ഇൻ</td></tr>
+                    <tr><td>NSC</td><td>₹1.5 ലക്ഷം/വർഷം</td><td>5 വർഷം</td></tr>
+                    <tr><td>Tax Saver FD</td><td>₹1.5 ലക്ഷം/വർഷം</td><td>5 വർഷം</td></tr>
+                    <tr><td>LIC Premium</td><td>-</td><td>-</td></tr>
+                    <tr><td>Sukanya Samriddhi</td><td>₹1.5 ലക്ഷം/വർഷം</td><td>21 വർഷം</td></tr>
+                    <tr><td>EPF (Employee PF)</td><td>-</td><td>വിരമിക്കൽ വരെ</td></tr>
+                    <tr><td>Tuition Fees</td><td>2 കുട്ടികൾക്ക്</td><td>-</td></tr>
+                    <tr><td>Home Loan Principal</td><td>-</td><td>-</td></tr>
+                    <tr><td>NPS (80CCD)</td><td>₹50,000 അധികം</td><td>വിരമിക്കൽ വരെ</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- MODULE VI: INSURANCE -->
+        <section class="section" id="module6">
+            <div class="section-header">
+                <span class="section-number">Module VI</span>
+                <h2>INSURANCE (ഇൻഷുറൻസ്)</h2>
+            </div>
+
+            <h3>1. ഇൻഷുറൻസിന്റെ അടിസ്ഥാന തത്വങ്ങൾ</h3>
+            <p>ഇൻഷുറൻസ് എന്നത് അപകട സാധ്യതകൾ നേരിടാൻ പണം നൽകുന്ന സുരക്ഷാ കരാർ.</p>
+
+            <h4>അടിസ്ഥാന തത്വങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>🤝 <strong>ഉത്തരവാദിത്തം (Utmost Good Faith):</strong> സത്യമായി വിവരങ്ങൾ നൽകണം</li>
+                    <li>💰 <strong>പരിഹാരം (Indemnity):</strong> നഷ്ടത്തിന് തുല്യമായ പരിഹാരം</li>
+                    <li>🤲 <strong>ഇൻഷുറബൾ ഇന്ററസ്റ്റ്:</strong> നഷ്ടപ്പെടാൻ കഴിയുന്ന വസ്തുവിന് മാത്രം</li>
+                    <li>⚖️ <strong>കോണ്ട്രിബ്യൂഷൻ:</strong> ഒന്നിലധികം ഇൻഷുറൻസ് ഉണ്ടെങ്കിൽ പങ്കിട്ട് നൽകും</li>
+                    <li>🎯 <strong>പ്രോക്സിമേറ്റ് കോസ്:</strong> നേരിട്ടുള്ള കാരണം മാത്രം പരിഗണിക്കും</li>
+                </ul>
+            </div>
+
+            <h4>പ്രധാന പദങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>പദം</th><th>അർത്ഥം</th></tr>
+                    <tr><td><strong>Premium</strong></td><td>ഇൻഷുറൻസ് പണം (മാസം/വർഷം)</td></tr>
+                    <tr><td><strong>Sum Assured</strong></td><td>പരമാവധി പരിഹാര തുക</td></tr>
+                    <tr><td><strong>Policy Term</strong></td><td>കാലാവധി</td></tr>
+                    <tr><td><strong>Maturity</strong></td><td>കാലാവധി പൂർത്തിയാകൽ</td></tr>
+                    <tr><td><strong>Nominee</strong></td><td>മരണത്തിൽ പരിഹാരം ലഭിക്കുന്നവർ</td></tr>
+                    <tr><td><strong>Rider</strong></td><td>അധിക സുരക്ഷാ ആനുകൂല്യം</td></tr>
+                    <tr><td><strong>Grace Period</strong></td><td>പ്രീമിയം അടയ്ക്കാൻ അധിക സമയം</td></tr>
+                    <tr><td><strong>Surrender Value</strong></td><td>കാലാവധിക്ക് മുമ്പ് പോളിസി ക്യാൻസൽ ചെയ്താൽ ലഭിക്കുന്ന തുക</td></tr>
+                </table>
+            </div>
+
+            <h3>2. ലൈഫ് ഇൻഷുറൻസ്</h3>
+            <p>ലൈഫ് ഇൻഷുറൻസ് എന്നത് പോളിസി ഉടമയുടെ മരണത്തിൽ കുടുംബത്തിന് പണം നൽകുന്ന പദ്ധതി.</p>
+
+            <h4>പ്രധാന തരങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>തരം</th><th>വിശദീകരണം</th><th>ആർക്ക്</th></tr>
+                    <tr><td><strong>Term Insurance</strong></td><td>കുറഞ്ഞ പ്രീമിയത്തിൽ കൂടുതൽ സംരക്ഷണം</td><td>കുടുംബത്തിന്റെ സുരക്ഷയ്ക്ക്</td></tr>
+                    <tr><td><strong>Endowment Plan</strong></td><td>സംരക്ഷണം + സേവിംഗ്സ്</td><td>ദീർഘകാല ലക്ഷ്യങ്ങൾക്ക്</td></tr>
+                    <tr><td><strong>ULIP</strong></td><td>സംരക്ഷണം + നിക്ഷേപം (ഓഹരി)</td><td>നിക്ഷേപം + സുരക്ഷ</td></tr>
+                    <tr><td><strong>Whole Life</strong></td><td>ജീവിതകാലം മുഴുവൻ സംരക്ഷണം</td><td>ആജീവനാന്ത സുരക്ഷ</td></tr>
+                    <tr><td><strong>Money Back</strong></td><td>കാലയളവിൽ തുക തിരികെ ലഭിക്കും</td><td>ആവശ്യകതയ്ക്ക്</td></tr>
+                </table>
+            </div>
+
+            <h4>Term Insurance-ന്റെ പ്രധാന പ്രയോജനങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>💰 കുറഞ്ഞ പ്രീമിയത്തിൽ കൂടുതൽ Sum Assured</li>
+                    <li>🏠 കുടുംബത്തിന്റെ ഭാവി സുരക്ഷിതം</li>
+                    <li>💸 മരണത്തിൽ lumpsum അല്ലെങ്കിൽ monthly income</li>
+                    <li>📝 80C + 10(10D) നികുതി പ്രയോജനം</li>
+                </ul>
+            </div>
+
+            <h4>എത്ര Sum Assured വേണം?</h4>
+            <div class="card">
+                <ul>
+                    <li>📊 കുറഞ്ഞത് വാർഷിക വരുമാനത്തിന്റെ 10-15 ഇരട്ടി</li>
+                    <li>🏠 കടബാധ്യതകൾ കൂടി കണക്കിലെടുക്കുക</li>
+                    <li>👶 കുട്ടികളുടെ വിദ്യാഭ്യാസം, വിവാഹം</li>
+                </ul>
+            </div>
+
+            <h3>3. ഹെൽത്ത് ഇൻഷുറൻസ്</h3>
+            <p>ഹെൽത്ത് ഇൻഷുറൻസ് എന്നത് ആരോഗ്യപ്രശ്നങ്ങളിൽ ചികിത്സാ ചെലവുകൾ പരിഹരിക്കുന്ന പദ്ധതി.</p>
+
+            <h4>പ്രധാന തരങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>തരം</th><th>വിശദീകരണം</th></tr>
+                    <tr><td><strong>Individual Health</strong></td><td>ഒരു വ്യക്തിക്ക്</td></tr>
+                    <tr><td><strong>Family Floater</strong></td><td>കുടുംബത്തിലെ എല്ലാവർക്കും (Sum Assured പങ്കിടും)</td></tr>
+                    <tr><td><strong>സീനിയർ സിറ്റിസൺ</strong></td><td>60 വയസ്സിന് മുകളിലുള്ളവർക്ക്</td></tr>
+                    <tr><td><strong>Critical Illness</strong></td><td>കാൻസർ, ഹൃദ്രോഗം തുടങ്ങിയവയ്ക്ക്</td></tr>
+                    <tr><td><strong>Top-up</strong></td><td>അടിസ്ഥാന പോളിസിക്ക് മുകളിൽ അധിക സംരക്ഷണം</td></tr>
+                </table>
+            </div>
+
+            <h4>ഹെൽത്ത് ഇൻഷുറൻസിൽ ശ്രദ്ധിക്കേണ്ടത്:</h4>
+            <div class="card">
+                <ul>
+                    <li>🏥 <strong>Cashless Hospital:</strong> നെറ്റ്വർക്ക് ആശുപത്രികൾ</li>
+                    <li>⏳ <strong>Waiting Period:</strong> പ്രീ-എക്‌സിസ്റ്റിംഗ് രോഗങ്ങൾക്ക്</li>
+                    <li>🚫 <strong>Exclusions:</strong> പരിഹരിക്കാത്ത രോഗങ്ങൾ/ചെലവുകൾ</li>
+                    <li>📋 <strong>Co-payment:</strong> നിങ്ങൾ തന്നെ കൊടുക്കേണ്ട ശതമാനം</li>
+                    <li>💊 <strong>Room Rent Cap:</strong> മുറി വാടകയ്ക്ക് പരിധി</li>
+                    <li>🔄 <strong>No Claim Bonus:</strong> ക്ലെയിം ഇല്ലെങ്കിൽ Sum Assured വർദ്ധന</li>
+                </ul>
+            </div>
+
+            <h3>4. മോട്ടോർ ഇൻഷുറൻസ്</h3>
+            <p>മോട്ടോർ ഇൻഷുറൻസ് എന്നത് വാഹനങ്ങൾക്ക് നിർബന്ധിത ഇൻഷുറൻസ്.</p>
+
+            <h4>രണ്ട് തരം:</h4>
+
+            <h4>🛡️ Third Party (TP)</h4>
+            <div class="card">
+                <ul>
+                    <li>⚖️ നിയമപരമായി നിർബന്ധം</li>
+                    <li>🚗 മറ്റുള്ളവരുടെ വാഹനം/പ്രോപ്പർട്ടി നശിപ്പിച്ചാൽ</li>
+                    <li>👤 മറ്റുള്ളവരുടെ ആരോഗ്യ നഷ്ടം/മരണം</li>
+                    <li>💰 Own Damage കവറേജ് ഇല്ല</li>
+                </ul>
+            </div>
+
+            <h4>🛡️ Comprehensive</h4>
+            <div class="card">
+                <ul>
+                    <li>✅ Third Party + Own Damage</li>
+                    <li>🚗 സ്വന്തം വാഹനത്തിന്റെ നഷ്ടം/ദോഷം</li>
+                    <li>🔥 തീ, മോഷണം, പ്രകൃതി ദുരന്തം</li>
+                    <li>💸 Add-ons: Zero Dep, Engine Protection, Roadside Assistance</li>
+                </ul>
+            </div>
+
+            <h4>നോ-ക്ലെയിം ബോണസ് (NCB):</h4>
+            <div class="card">
+                <ul>
+                    <li>📈 ക്ലെയിം ഇല്ലെങ്കിൽ അടുത്ത വർഷം പ്രീമിയം കുറയും</li>
+                    <li>📊 20% (1st year) → 50% (5th year)</li>
+                </ul>
+            </div>
+
+            <h3>5. IRDAI - ഇൻഷുറൻസ് റെഗുലേറ്ററി അതോറിറ്റി</h3>
+            <p>IRDAI (Insurance Regulatory and Development Authority of India) എന്നത് ഇന്ത്യയിലെ ഇൻഷുറൻസ് മേഖല നിയന്ത്രിക്കുന്ന സ്വതന്ത്ര സംഘടന.</p>
+
+            <h4>പ്രധാന കർത്തവ്യങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>📋 ഇൻഷുറൻസ് കമ്പനികൾക്ക് ലൈസൻസ് നൽകൽ</li>
+                    <li>💰 പ്രീമിയം നിരക്കുകൾ നിയന്ത്രിക്കൽ</li>
+                    <li>⚖️ ഉപഭോക്തൃ പരാതികൾ പരിഹരിക്കൽ</li>
+                    <li>📊 ഇൻഷുറൻസ് കമ്പനികളുടെ പ്രവർത്തനം നിരീക്ഷിക്കൽ</li>
+                    <li>🏛️ ഇൻഷുറൻസ് നിയമങ്ങൾ രൂപപ്പെടുത്തൽ</li>
+                </ul>
+            </div>
+
+            <h4>പരാതി നൽകാൻ:</h4>
+            <div class="card">
+                <ul>
+                    <li>🌐 www.irdai.gov.in</li>
+                    <li>📞 155255 (ടോൾ ഫ്രീ)</li>
+                    <li>📧 complaints@irdai.gov.in</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MODULE VII: DIGITAL FINANCE -->
+        <section class="section" id="module7">
+            <div class="section-header">
+                <span class="section-number">Module VII</span>
+                <h2>DIGITAL FINANCE (ഡിജിറ്റൽ ധനകാര്യം)</h2>
+            </div>
+
+            <h3>1. യു.പി.ഐ (UPI) പേയ്മെന്റുകൾ</h3>
+            <p>UPI (Unified Payments Interface) എന്നത് ഇന്ത്യയുടെ ഡിജിറ്റൽ പേയ്മെന്റ് വിപ്ലവം.</p>
+
+            <h4>പ്രധാന വിശേഷതകൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>📱 മൊബൈൽ നമ്പർ അല്ലെങ്കിൽ UPI ID വഴി പണം അയയ്ക്കാം</li>
+                    <li>⚡ 24x7, തത്സമയം</li>
+                    <li>💰 ₹1 മുതൽ ₹1 ലക്ഷം വരെ (പല ആപ്പുകളിലും ₹2 ലക്ഷം)</li>
+                    <li>🔒 MPIN ഉപയോഗിച്ച് സുരക്ഷ</li>
+                    <li>🆓 സൗജന്യം (ചില ബാങ്കുകളിൽ ചാർജ് ഉണ്ടാകാം)</li>
+                </ul>
+            </div>
+
+            <h4>പ്രധാന UPI ആപ്പുകൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>📲 <strong>PhonePe</strong> - വൈഡ് ആക്സപ്റ്റൻസ്</li>
+                    <li>📲 <strong>Google Pay</strong> - റിവാർഡുകൾ</li>
+                    <li>📲 <strong>Paytm</strong> - വാലറ്റ് + UPI</li>
+                    <li>📲 <strong>BHIM</strong> - സർക്കാർ ആപ്പ്</li>
+                    <li>📲 <strong>Amazon Pay</strong> - ഷോപ്പിംഗ് + പേയ്മെന്റ്</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>UPI ID:</strong> name@upi, name@oksbi, name@ybl തുടങ്ങിയവ</p>
+            </div>
+
+            <h3>2. ഡിജിറ്റൽ വാലറ്റുകൾ</h3>
+            <p>ഡിജിറ്റൽ വാലറ്റ് എന്നത് മൊബൈലിൽ പണം സൂക്ഷിക്കാനുള്ള ആപ്പ്.</p>
+
+            <h4>പ്രധാന ഡിജിറ്റൽ വാലറ്റുകൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>💳 <strong>Paytm</strong> - ഏറ്റവും വലുത്</li>
+                    <li>💳 <strong>PhonePe</strong> - UPI + വാലറ്റ്</li>
+                    <li>💳 <strong>Amazon Pay</strong> - ഷോപ്പിംഗ്</li>
+                    <li>💳 <strong>Mobikwik</strong> - ബില്ലുകൾ</li>
+                    <li>💳 <strong>FreeCharge</strong> - റീചാർജുകൾ</li>
+                </ul>
+            </div>
+
+            <h4>ഉപയോഗങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>🛒 ഓൺലൈൻ ഷോപ്പിംഗ്</li>
+                    <li>📱 മൊബൈൽ/ഡിഷ് റീചാർജ്</li>
+                    <li>💡 വൈദ്യുതി/വെള്ളം ബിൽ</li>
+                    <li>🚇 മെട്രോ/ബസ് ടിക്കറ്റ്</li>
+                    <li>🍕 ഫുഡ് ഡെലിവറി</li>
+                </ul>
+            </div>
+
+            <h4>പ്രീപെയ്ഡ് വാലറ്റ് (PPI) നിയമങ്ങൾ:</h4>
+            <div class="card">
+                <ul>
+                    <li>🔒 KYC പൂർത്തിയാക്കണം</li>
+                    <li>💰 Non-KYC: ₹10,000 വരെ</li>
+                    <li>💰 Full KYC: ₹2 ലക്ഷം വരെ</li>
+                </ul>
+            </div>
+
+            <h3>3. ഓൺലൈൻ ബാങ്കിംഗ് സുരക്ഷ</h3>
+
+            <h4>സുരക്ഷാ നുറുങ്ങുകൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>🛡️</th><th>നുറുങ്ങ്</th></tr>
+                    <tr><td>🔐</td><td>ശക്തമായ പാസ്‌വേഡ് ഉപയോഗിക്കുക (8+ അക്ഷരം, സംഖ്യ, ചിഹ്നം)</td></tr>
+                    <tr><td>🔄</td><td>പാസ്‌വേഡ് കാലാകാലം മാറ്റുക</td></tr>
+                    <tr><td>📱</td><td>OTP ആർക്കും പങ്കുവയ്ക്കരുത്</td></tr>
+                    <tr><td>🔗</td><td>ബാങ്കിന്റെ ഔദ്യോഗിക വെബ്സൈറ്റ്/ആപ്പ് മാത്രം ഉപയോഗിക്കുക</td></tr>
+                    <tr><td>🚫</td><td>പബ്ലിക് WiFi-യിൽ ബാങ്കിംഗ് ചെയ്യരുത്</td></tr>
+                    <tr><td>📧</td><td>സംശയാസ്പദമായ ഇമെയിൽ ലിങ്കുകൾ ക്ലിക്ക് ചെയ്യരുത്</td></tr>
+                    <tr><td>📲</td><td>അൺനോൺ നമ്പറിൽ നിന്ന് ലിങ്കുകൾ ഓപ്പൺ ചെയ്യരുത്</td></tr>
+                    <tr><td>🔔</td><td>ട്രാൻസാക്ഷൻ അലേർട്ടുകൾ ഓൺ ചെയ്യുക</td></tr>
+                    <tr><td>📋</td><td>സ്റ്റേറ്റ്മെന്റ് പരിശോധിക്കുക</td></tr>
+                </table>
+            </div>
+
+            <h3>4. സൈബർ ഫ്രോഡ് - പ്രതിരോധ മാർഗ്ഗങ്ങൾ</h3>
+
+            <h4>പ്രധാന സൈബർ ഫ്രോഡ് തരങ്ങൾ:</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr><th>ഫ്രോഡ്</th><th>എങ്ങനെ?</th><th>പ്രതിരോധം</th></tr>
+                    <tr><td><strong>Phishing</strong></td><td>ബാങ്ക് പോലുള്ള വ്യാജ ഇമെയിൽ/വെബ്സൈറ്റ്</td><td>URL പരിശോധിക്കുക</td></tr>
+                    <tr><td><strong>Vishing</strong></td><td>ഫോണിൽ ബാങ്ക് അധികാരിയായി വിളിക്കൽ</td><td>OTP/പിൻ പങ്കുവയ്ക്കരുത്</td></tr>
+                    <tr><td><strong>Smishing</strong></td><td>SMS-ൽ ലിങ്കുകൾ</td><td>ലിങ്കുകൾ ക്ലിക്ക് ചെയ്യരുത്</td></tr>
+                    <tr><td><strong>SIM Swap</strong></td><td>നിങ്ങളുടെ SIM ക്ലോൺ ചെയ്യൽ</td><td>SIM മാറ്റം അലേർട്ട് ഓൺ ചെയ്യുക</td></tr>
+                    <tr><td><strong>QR Code Fraud</strong></td><td>പണം അയയ്ക്കാൻ പകരം വാങ്ങാൻ</td><td>QR സ്കാൻ ചെയ്യുമ്പോൾ ശ്രദ്ധിക്കുക</td></tr>
+                    <tr><td><strong>UPI Fraud</strong></td><td>"പണം അയച്ചു" എന്ന് പറഞ്ഞ് വാങ്ങൽ</td><td>UPI PIN OTP ആർക്കും നൽകരുത്</td></tr>
+                    <tr><td><strong>Job Fraud</strong></td><td>ജോലി വാഗ്ദാനം ചെയ്ത് പണം വാങ്ങൽ</td><td>ജോലിക്ക് പണം നൽകരുത്</td></tr>
+                    <tr><td><strong>Lottery Fraud</strong></td><td>"നിങ്ങൾ ജയിച്ചു" എന്ന് പറഞ്ഞ്</td><td>ലോട്ടറി ജയിച്ചാൽ പണം നൽകരുത്</td></tr>
+                </table>
+            </div>
+
+            <h4>ഫ്രോഡ് സംഭവിച്ചാൽ:</h4>
+            <div class="timeline">
+                <div class="timeline-item"><div class="timeline-year">1</div><p>🚨 ഉടനടി ബാങ്കിനെ അറിയിക്കുക</p></div>
+                <div class="timeline-item"><div class="timeline-year">2</div><p>📞 1930 (സൈബർ ക്രൈം ഹെൽപ്പ്ലൈൻ)</p></div>
+                <div class="timeline-item"><div class="timeline-year">3</div><p>🌐 www.cybercrime.gov.in-ൽ പരാതി നൽകുക</p></div>
+                <div class="timeline-item"><div class="timeline-year">4</div><p>📝 പോലീസ് സ്റ്റേഷനിൽ FIR നൽകുക</p></div>
+                <div class="timeline-item"><div class="timeline-year">5</div><p>📋 എല്ലാ രേഖകളും സൂക്ഷിക്കുക</p></div>
+            </div>
+        </section>
+
+        <!-- SUMMARY SECTION -->
+        <section class="section" id="summary">
+            <div class="section-header">
+                <span class="section-number">📋</span>
+                <h2>സംഗ്രഹം (Summary)</h2>
+            </div>
+
+            <div class="card">
+                <h4>Module I - ബജറ്റിംഗ്, സേവിംഗ്സ്, എമർജൻസി ഫണ്ട്</h4>
+                <ul>
+                    <li>ധനകാര്യ പ്ലാനിംഗിന്റെ പ്രാധാന്യം</li>
+                    <li>50-30-20 ബജറ്റിംഗ് നിയം</li>
+                    <li>സേവിംഗ്സിന്റെ രീതികൾ</li>
+                    <li>എമർജൻസി ഫണ്ട് - 3-6 മാസത്തെ ചെലവുകൾ</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Module II - ബാങ്ക് അക്കൗണ്ടുകൾ, കാർഡുകൾ, ഇ-ബാങ്കിംഗ്</h4>
+                <ul>
+                    <li>സേവിംഗ്സ്, കറന്റ്, FD, RD അക്കൗണ്ടുകൾ</li>
+                    <li>ATM, ഡെബിറ്റ്, ക്രെഡിറ്റ് കാർഡുകൾ</li>
+                    <li>ഇ-ബാങ്കിംഗ്, മൊബൈൽ ബാങ്കിംഗ്</li>
+                    <li>ചെക്ക്, DD, ബാങ്കിംഗ് ഓംബഡ്സ്മാൻ</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Module III - PPF, NSC, മ്യൂച്വൽ ഫണ്ട്, ഓഹരികൾ</h4>
+                <ul>
+                    <li>പോസ്റ്റ് ഓഫീസ് സ്കീമുകൾ</li>
+                    <li>PPF - 15 വർഷം, EEE സ്റ്റാറ്റസ്</li>
+                    <li>NSC - 5 വർഷം, 6.8%</li>
+                    <li>മ്യൂച്വൽ ഫണ്ടുകൾ - SIP, ELSS</li>
+                    <li>ഓഹരികൾ - BSE/NSE, IPO</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Module IV - ലോണുകൾ, CIBIL, EMI, പലിശ</h4>
+                <ul>
+                    <li>വിവിധ തരം ലോണുകൾ</li>
+                    <li>ലഘു പലിശ, ചക്രവൃദ്ധി പലിശ</li>
+                    <li>CIBIL സ്കോർ - 750+ അത്യുത്തമം</li>
+                    <li>ക്രെഡിറ്റ് കാർഡ് നേട്ടങ്ങളും അപകടങ്ങളും</li>
+                    <li>EMI കണക്കാക്കൽ</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Module V - വരുമാന നികുതി, PAN, TDS, 80C</h4>
+                <ul>
+                    <li>വരുമാന നികുതി സ്ലാബ് - Old & New Regime</li>
+                    <li>PAN-Aadhaar ലിങ്കിംഗ്</li>
+                    <li>TDS - Tax Deducted at Source</li>
+                    <li>ITR ഫയലിംഗ്</li>
+                    <li>80C - ₹1.5 ലക്ഷം വരെ കിഴിവ്</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Module VI - ലൈഫ്, ഹെൽത്ത്, മോട്ടോർ ഇൻഷുറൻസ്</h4>
+                <ul>
+                    <li>ഇൻഷുറൻസ് അടിസ്ഥാന തത്വങ്ങൾ</li>
+                    <li>Term Insurance, ULIP, Endowment</li>
+                    <li>ഹെൽത്ത് ഇൻഷുറൻസ് - Family Floater</li>
+                    <li>മോട്ടോർ ഇൻഷുറൻസ് - TP & Comprehensive</li>
+                    <li>IRDAI - റെഗുലേറ്ററി അതോറിറ്റി</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Module VII - UPI, ഡിജിറ്റൽ വാലറ്റ്, സൈബർ സുരക്ഷ</h4>
+                <ul>
+                    <li>UPI പേയ്മെന്റുകൾ - PhonePe, GPay, Paytm</li>
+                    <li>ഡിജിറ്റൽ വാലറ്റുകൾ</li>
+                    <li>ഓൺലൈൻ ബാങ്കിംഗ് സുരക്ഷ</li>
+                    <li>സൈബർ ഫ്രോഡ് തരങ്ങളും പ്രതിരോധവും</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>💰📚 ഈ വിഷയങ്ങൾ പഠിച്ചാൽ ദൈനംദിന ജീവിതത്തിൽ ധനകാര്യ കാര്യങ്ങൾ കൃത്യമായി കൈകാര്യം ചെയ്യാൻ കഴിയും!</strong></p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>💰 Basic Finance for Daily Life - MG University B.Com</p>
+        <p>നോട്ടുകൾ പരീക്ഷാ പഠനത്തിനുള്ള ഒരു സഹായിക ഗ്രന്ഥം മാത്രമാണ്</p>
+        <p style="margin-top: 1rem;">Made with ❤️ for MG University Students</p>
+    </footer>
+
+    <!-- Instagram Feedback Button -->
+    <div class="feedback-float">
+        <a href="https://www.instagram.com/albin___baby___/" target="_blank" class="feedback-btn" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+            <span>📩 ഫീഡ്ബാക്ക് നൽകുക</span>
+        </a>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 500);
+        });
+
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        });
+
+        // Back to Top Button
+        window.addEventListener('scroll', () => {
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Scroll Animations using Intersection Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Navigation Dots
+        const sections = document.querySelectorAll('.section');
+        const navContainer = document.getElementById('navContainer');
+        const sectionTitles = [
+            'Module I: Personal Finance',
+            'Module II: Banking',
+            'Module III: Investment',
+            'Module IV: Loans',
+            'Module V: Taxation',
+            'Module VI: Insurance',
+            'Module VII: Digital Finance',
+            'Summary'
+        ];
+
+        sections.forEach((section, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'nav-dot';
+            dot.setAttribute('data-title', sectionTitles[index] || 'Section');
+            dot.addEventListener('click', () => {
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+            navContainer.appendChild(dot);
+        });
+
+        // Active Navigation Dot
+        const navDots = document.querySelectorAll('.nav-dot');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = index;
+                }
+            });
+            navDots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+
+        // Search Functionality
+        const searchData = [];
+
+        // Build search index from content
+        document.querySelectorAll('.section').forEach((section, secIndex) => {
+            const sectionId = section.id;
+            const sectionTitle = section.querySelector('h2')?.textContent || '';
+
+            // Add section title to search
+            searchData.push({
+                id: sectionId,
+                title: sectionTitle,
+                text: sectionTitle,
+                type: 'section'
+            });
+
+            // Add subsections
+            section.querySelectorAll('h3, h4').forEach(heading => {
+                const headingText = heading.textContent;
+                let previewText = headingText;
+
+                // Get next sibling text for preview
+                let nextEl = heading.nextElementSibling;
+                if (nextEl && (nextEl.tagName === 'P' || nextEl.classList.contains('card'))) {
+                    previewText = nextEl.textContent.substring(0, 150) + '...';
+                }
+
+                searchData.push({
+                    id: sectionId,
+                    title: headingText,
+                    text: previewText,
+                    type: 'topic'
+                });
+            });
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            if (query.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            const filtered = searchData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.text.toLowerCase().includes(query)
+            ).slice(0, 8);
+
+            if (filtered.length === 0) {
+                searchResults.innerHTML = '<div class="search-result-item" style="text-align:center;padding:2rem;"><div class="search-result-text" style="font-size:1.3rem;font-weight:600;">🔍 ഫലങ്ങൾ കണ്ടെത്തിയില്ല</div></div>';
+            } else {
+                searchResults.innerHTML = filtered.map(item => `
+                    <div class="search-result-item" onclick="scrollToSection('${item.id}')">
+                        <div class="search-result-title">${item.title}</div>
+                        <div class="search-result-text">${item.text}</div>
+                    </div>
+                `).join('');
+            }
+
+            searchResults.classList.add('active');
+        });
+
+        // Close search when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.classList.remove('active');
+            }
+        });
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                searchResults.classList.remove('active');
+                searchInput.value = '';
+            }
+        }
+
+        // Keyboard shortcut for search
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            if (e.key === 'Escape') {
+                searchResults.classList.remove('active');
+                searchInput.blur();
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add Malayalam font support check
+        document.fonts.ready.then(() => {
+            console.log('Fonts loaded successfully');
+        });
+    </script>
+</body>
+</html>

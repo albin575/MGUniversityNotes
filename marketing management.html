@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>മാർക്കറ്റിംഗ് മാനേജ്മെന്റ് - MG University B.Com Honours</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #ffffff;
+            --text-muted: #ffffff;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans Malayalam', 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: #ffffff;
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 26, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 3px solid rgba(59, 130, 246, 0.4);
+            padding: 1.5rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            min-height: 90px;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.7));
+            letter-spacing: 1px;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 800px;
+            min-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.6), 0 0 80px rgba(139, 92, 246, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.03);
+        }
+
+        .search-input::placeholder {
+            color: #ffffff;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffffff;
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 1));
+        }
+
+        .search-results {
+            position: absolute;
+            top: calc(100% + 20px);
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 3px solid rgba(59, 130, 246, 0.5);
+            border-radius: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.4), 0 0 100px rgba(139, 92, 246, 0.3);
+            z-index: 1001;
+            padding: 1rem;
+        }
+
+        .search-results.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-result-item {
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            margin-bottom: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .search-result-item:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+            transform: translateX(12px) scale(1.02);
+            border-left: 5px solid #60a5fa;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-title {
+            font-weight: 800;
+            color: #60a5fa;
+            margin-bottom: 0.75rem;
+            font-size: 1.4rem;
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+            letter-spacing: 0.5px;
+        }
+
+        .search-result-text {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: #ffffff;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffffff;
+            font-size: 0.85rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: none;
+        }
+
+        @media (min-width: 1200px) {
+            .nav-container {
+                display: block;
+            }
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+            margin: 0.75rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-dot.active {
+            background: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .nav-dot:hover::after {
+            content: attr(data-title);
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+        }
+
+        /* Content Sections */
+        .content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid;
+            border-image: var(--accent-gradient) 1;
+        }
+
+        .section-number {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--accent-gradient);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .section h3 {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin: 2rem 0 1rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .section p {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .section ul, .section ol {
+            margin: 1rem 0 1rem 1.5rem;
+            color: #ffffff;
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            color: #ffffff;
+        }
+
+        .card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-primary);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: #ffffff;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.25rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: #ffffff;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-gradient);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            border: 3px solid var(--bg-primary);
+            transform: translateX(-5px);
+        }
+
+        .timeline-year {
+            font-weight: 700;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+        }
+
+        /* Instagram Feedback Button */
+        .feedback-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .feedback-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 20px rgba(220, 39, 67, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .feedback-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(220, 39, 67, 0.5);
+        }
+
+        .feedback-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border-color);
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.75rem 1rem;
+            }
+
+            .search-container {
+                order: 3;
+                width: 100%;
+                max-width: none;
+            }
+
+            .hero {
+                padding: 7rem 1rem 3rem;
+            }
+
+            .content-wrapper {
+                padding: 1rem;
+            }
+
+            .feedback-float {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .feedback-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .feedback-btn span {
+                display: none;
+            }
+
+            .back-to-top {
+                bottom: 1rem;
+                left: 1rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Selection */
+        ::selection {
+            background: rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
+
+        /* Loading Animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Ensure all text is white */
+        .section, .section *, .card, .card *, .timeline, .timeline *, 
+        table, table *, .highlight-box, .highlight-box *,
+        .hero, .hero *, .footer, .footer * {
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Background -->
+    <div class="bg-animation"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">📘 മാർക്കറ്റിംഗ് മാനേജ്മെന്റ്</div>
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="തിരയുക... (Search notes)">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </header>
+
+    <!-- Navigation Dots -->
+    <nav class="nav-container" id="navContainer"></nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span>✨</span> AI-Powered Study Notes
+        </div>
+        <h1>മാർക്കറ്റിംഗ് മാനേജ്മെന്റ്</h1>
+        <p>MG University - B.Com Honours (DSC B)<br>MG1DSC BST100 | സെമസ്റ്റർ 1<br>വിശദമായ നോട്ടുകൾ - സമ്പൂർണ്ണ പാഠ്യപദ്ധതി</p>
+        <div class="scroll-indicator">
+            <span>സ്ക്രോൾ ചെയ്യുക</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="content-wrapper" id="content">
+
+        <!-- MODULE 1 -->
+        <section class="section" id="mod1">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 1</span>
+                <h2>മാർക്കറ്റിംഗ് മാനേജ്മെന്റ് - പരിചയവും വികസനവും</h2>
+            </div>
+
+            <!-- Unit 1.1 -->
+            <h3 id="u1-1">യൂണിറ്റ് 1.1: മാർക്കറ്റിംഗിന്റെ ആശയം, പ്രാധാന്യം, പ്രവർത്തനങ്ങൾ</h3>
+
+            <h4>മാർക്കറ്റിംഗ് (Marketing) എന്നാൽ എന്ത്?</h4>
+            <div class="card">
+                <p>മാർക്കറ്റിംഗ് എന്നാൽ വ്യക്തികളുടെയും സംഘടനകളുടെയും ആവശ്യങ്ങൾ സംതൃപ്തിപ്പെടുത്തുന്നതിനായി ഉൽപ്പന്നങ്ങളും സേവനങ്ങളും സൃഷ്ടിക്കുക, ആശയവിനിമയം നടത്തുക, വിതരണം ചെയ്യുക, മൂല്യം കൈമാറുക എന്നിവയുടെ പ്രക്രിയയാണ്.</p>
+            </div>
+
+            <h4>മാർക്കറ്റിംഗും വിൽപനയും (Marketing vs Selling)</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>വിൽപന (Selling)</th>
+                        <th>മാർക്കറ്റിംഗ് (Marketing)</th>
+                    </tr>
+                    <tr>
+                        <td>ഉൽപ്പന്നം നിർമ്മിച്ചതിന് ശേഷം അത് വിൽക്കുക</td>
+                        <td>ഉപഭോക്താവിന്റെ ആവശ്യം കണ്ടെത്തി, അതിനനുസരിച്ച് ഉൽപ്പന്നം നിർമ്മിക്കുക</td>
+                    </tr>
+                    <tr>
+                        <td>"ഉൽപ്പന്നം നിർമ്മിക്കുക, അത് വിൽക്കുക"</td>
+                        <td>"ആദ്യം ആവശ്യം കണ്ടെത്തുക, പിന്നീട് ഉൽപ്പന്നം നൽകുക"</td>
+                    </tr>
+                    <tr>
+                        <td>ഉൽപ്പന്നകേന്ദ്രീകൃതം</td>
+                        <td>ഉപഭോക്തൃകേന്ദ്രീകൃതം</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h4>മാർക്കറ്റിംഗ് മാനേജ്മെന്റ്</h4>
+            <div class="card">
+                <p>മാർക്കറ്റിംഗ് പ്രവർത്തനങ്ങൾ ആസൂത്രണം ചെയ്യുക, ഏകോപിപ്പിക്കുക, നിയന്ത്രിക്കുക എന്നിവയാണ്.</p>
+            </div>
+
+            <h4>മാർക്കറ്റിംഗിന്റെ പ്രാധാന്യം</h4>
+            <div class="card">
+                <ol>
+                    <li>ഉപഭോക്തൃസംതൃപ്തി നേടുക</li>
+                    <li>വിൽപന വർദ്ധിപ്പിക്കുക</li>
+                    <li>ലാഭം നേടുക</li>
+                    <li>വിപണി വിഹിതം വർദ്ധിപ്പിക്കുക</li>
+                    <li>മത്സരത്തിൽ മുന്നേറുക</li>
+                    <li>സാമ്പത്തിക വളർച്ച സാധ്യമാക്കുക</li>
+                </ol>
+            </div>
+
+            <h4>മാർക്കറ്റിംഗിന്റെ പ്രവർത്തനങ്ങൾ (Functions)</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>വിശകലനം (Analysis)</strong> - വിപണി, ഉപഭോക്താവ്, മത്സരം</li>
+                    <li><strong>ആസൂത്രണം (Planning)</strong> - മാർക്കറ്റിംഗ് പദ്ധതികൾ</li>
+                    <li><strong>നടത്തിപ്പ് (Implementation)</strong> - തന്ത്രങ്ങൾ പ്രയോഗത്തിൽ വരുത്തൽ</li>
+                    <li><strong>നിയന്ത്രണം (Control)</strong> - ഫലങ്ങൾ വിലയിരുത്തൽ</li>
+                </ol>
+            </div>
+
+            <!-- Unit 1.2 -->
+            <h3 id="u1-2">യൂണിറ്റ് 1.2: മാർക്കറ്റിംഗിന്റെ മൈക്രോ, മാക്രോ പരിസ്ഥിതി</h3>
+
+            <h4>മാക്രോ പരിസ്ഥിതി (Macro Environment)</h4>
+            <div class="card">
+                <p>സംഘടനയെ പരോക്ഷമായി സ്വാധീനിക്കുന്ന ഘടകങ്ങൾ:</p>
+                <ul>
+                    <li><strong>ഡെമോഗ്രാഫിക് (Demographic):</strong> ജനസംഖ്യ, പ്രായം, ലിംഗഭേദം, വിദ്യാഭ്യാസം</li>
+                    <li><strong>എക്കണോമിക് (Economic):</strong> വരുമാനം, വിലനിലവാരം, തൊഴിലില്ലായ്മ, പണനയം</li>
+                    <li><strong>സോഷ്യൽ-കൾച്ചറൽ (Socio-cultural):</strong> സാംസ്കാരിക മൂല്യങ്ങൾ, ജീവിതശൈലി, ആചാരങ്ങൾ</li>
+                    <li><strong>ടെക്നോളജിക്കൽ (Technological):</strong> സാങ്കേതികവിദ്യയുടെ വളർച്ച, ഡിജിറ്റലൈസേഷൻ</li>
+                    <li><strong>പൊളിറ്റിക്കൽ-ലീഗൽ (Political-Legal):</strong> നിയമങ്ങൾ, നയങ്ങൾ, ചട്ടങ്ങൾ</li>
+                    <li><strong>എക്കോളജിക്കൽ (Ecological):</strong> പരിസ്ഥിതി, സ്ഥിരത, പരിസ്ഥിതി നിയമങ്ങൾ</li>
+                </ul>
+            </div>
+
+            <h4>മൈക്രോ പരിസ്ഥിതി (Micro Environment)</h4>
+            <div class="card">
+                <p>സംഘടനയെ നേരിട്ട് സ്വാധീനിക്കുന്ന ഘടകങ്ങൾ:</p>
+                <ul>
+                    <li><strong>കമ്പനി (Company)</strong> - ആഭ്യന്തര ഘടന</li>
+                    <li><strong>സപ്ലയർമാർ (Suppliers)</strong> - അസംസ്കൃത വസ്തുക്കൾ നൽകുന്നവർ</li>
+                    <li><strong>മാർക്കറ്റിംഗ് ഇന്റർമീഡിയറീസ് (Intermediaries)</strong> - വിതരണക്കാർ, ഏജന്റുമാർ</li>
+                    <li><strong>കസ്റ്റമർമാർ (Customers)</strong> - ഉപഭോക്താക്കൾ</li>
+                    <li><strong>കോംപറ്റിറ്റേഴ്സ് (Competitors)</strong> - മത്സരികൾ</li>
+                    <li><strong>പബ്ലിക് (Public)</strong> - മാധ്യമങ്ങൾ, സർക്കാർ, സാമൂഹിക സംഘടനകൾ</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>സ്വാധീനം:</strong> ബിസിനസ് തീരുമാനങ്ങളിൽ ഈ ഘടകങ്ങൾ നിർണായക പങ്ക് വഹിക്കുന്നു. ഉദാഹരണത്തിന്, സാമ്പത്തിക മാന്ദ്യത്തിൽ വിലകുറച്ച് വിൽക്കേണ്ടി വരും; സാമൂഹിക മാറ്റങ്ങൾ പുതിയ ഉൽപ്പന്നങ്ങൾക്ക് അവസരം നൽകുന്നു.</p>
+            </div>
+
+            <!-- Unit 1.3 -->
+            <h3 id="u1-3">യൂണിറ്റ് 1.3: മാർക്കറ്റിംഗ് 1.0 മുതൽ 5.0 വരെ</h3>
+
+            <h4>മാർക്കറ്റിംഗ് 1.0 (Product-centric)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഉൽപ്പന്നകേന്ദ്രീകൃതം</li>
+                    <li>"നല്ല ഉൽപ്പന്നം നിർമ്മിക്കുക, അത് വിൽക്കുക"</li>
+                    <li>വ്യാവസായിക യുഗത്തിൽ പ്രചാരത്തിലായത്</li>
+                </ul>
+            </div>
+
+            <h4>മാർക്കറ്റിംഗ് 2.0 (Consumer-centric)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഉപഭോക്തൃകേന്ദ്രീകൃതം</li>
+                    <li>ഉപഭോക്താവിന്റെ ആവശ്യം മനസ്സിലാക്കി ഉൽപ്പന്നം നിർമ്മിക്കൽ</li>
+                    <li>STP തന്ത്രങ്ങൾ (Segmentation, Targeting, Positioning)</li>
+                    <li>കോട്ട്ലറുടെ പരിഷ്കരിച്ച സിദ്ധാന്തം</li>
+                </ul>
+            </div>
+
+            <h4>മാർക്കറ്റിംഗ് 3.0 (Values-driven)</h4>
+            <div class="card">
+                <ul>
+                    <li>മൂല്യകേന്ദ്രീകൃതം</li>
+                    <li>ഉപഭോക്താവിന്റെ മനസ്സും ആത്മാവും ലക്ഷ്യമിടുന്നു</li>
+                    <li>സാമൂഹിക, പരിസ്ഥിതി, മാനുഷിക മൂല്യങ്ങൾ</li>
+                    <li>"ഉൽപ്പന്നം + മൂല്യം" എന്ന സമീപനം</li>
+                </ul>
+            </div>
+
+            <h4>മാർക്കറ്റിംഗ് 4.0 (Digital-centric)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഡിജിറ്റൽ യുഗത്തിന്റെ മാർക്കറ്റിംഗ്</li>
+                    <li>സോഷ്യൽ മീഡിയ, മൊബൈൽ, ബിഗ് ഡാറ്റ, AI</li>
+                    <li>ഉപഭോക്തൃ അനുഭവം (Customer Experience) പ്രധാനം</li>
+                    <li>വേഗത്തിലുള്ള ആശയവിനിമയം, വ്യക്തിഗതീകരണം</li>
+                </ul>
+            </div>
+
+            <h4>മാർക്കറ്റിംഗ് 5.0 (Technology for Humanity)</h4>
+            <div class="card">
+                <ul>
+                    <li>സാങ്കേതികവിദ്യ മനുഷ്യന്റെ നന്മയ്ക്ക്</li>
+                    <li>AI, IoT, ബ്ലോക്ക്ചെയിൻ എന്നിവ ഉപയോഗിച്ച് മനുഷ്യന്റെ ആവശ്യങ്ങൾ നിറവേറ്റൽ</li>
+                    <li>ഡാറ്റ-ആധാരിത തീരുമാനങ്ങൾ</li>
+                    <li>സ്ഥിരതയും സാമൂഹിക ഉത്തരവാദിത്തവും</li>
+                </ul>
+            </div>
+
+            <h4>സാങ്കേതികവിദ്യയുടെ സ്വാധീനം</h4>
+            <div class="card">
+                <ul>
+                    <li>ഡിജിറ്റൽ മാർക്കറ്റിംഗിന്റെ വളർച്ച</li>
+                    <li>വ്യക്തിഗതീകരിച്ച മാർക്കറ്റിംഗ്</li>
+                    <li>റിയൽ-ടൈം വിപണി വിശകലനം</li>
+                    <li>E-commerce, M-commerce എന്നിവയുടെ വ്യാപനം</li>
+                </ul>
+            </div>
+
+            <!-- Unit 1.4 -->
+            <h3 id="u1-4">യൂണിറ്റ് 1.4: പ്രത്യേക മാർക്കറ്റിംഗ് ആശയങ്ങൾ</h3>
+
+            <h4>ഡി-മാർക്കറ്റിംഗ് (De-marketing)</h4>
+            <div class="card">
+                <ul>
+                    <li>അമിത ആവശ്യം കുറയ്ക്കുക</li>
+                    <li>വൈദ്യുതി, വെള്ളം എന്നിവയുടെ അമിത ഉപയോഗം തടയാൻ</li>
+                    <li>"കുറച്ച് ഉപയോഗിക്കുക" എന്ന സന്ദേശം</li>
+                    <li>സർക്കാർ, പൊതുമേഖല സംഘടനകൾ ഉപയോഗിക്കുന്നു</li>
+                </ul>
+            </div>
+
+            <h4>റീ-മാർക്കറ്റിംഗ് (Re-marketing)</h4>
+            <div class="card">
+                <ul>
+                    <li>പഴയ ഉപഭോക്താക്കളെ തിരികെ കൊണ്ടുവരിക</li>
+                    <li>ഉൽപ്പന്നം ഉപയോഗിച്ച് നിർത്തിയവർക്ക് വീണ്ടും ആകർഷകമാക്കുക</li>
+                    <li>ഡിജിറ്റൽ പരസ്യങ്ങളിലൂടെ വെബ്സൈറ്റ് സന്ദർശിച്ചവർക്ക് പിന്നീട് പരസ്യം കാണിക്കൽ</li>
+                </ul>
+            </div>
+
+            <h4>ഗറില്ല മാർക്കറ്റിംഗ് (Guerrilla Marketing)</h4>
+            <div class="card">
+                <ul>
+                    <li>കുറഞ്ഞ ബജറ്റിൽ വലിയ പ്രഭാവം സൃഷ്ടിക്കൽ</li>
+                    <li>അപ്രതീക്ഷിത, സൃഷ്ടിപരമായ തന്ത്രങ്ങൾ</li>
+                    <li>പൊതുസ്ഥലങ്ങളിൽ ആകർഷകമായ പ്രവർത്തനങ്ങൾ</li>
+                    <li>ഉദാഹരണം: ഫ്ലാഷ് മോബ്, വൈറൽ വീഡിയോകൾ</li>
+                </ul>
+            </div>
+
+            <h4>ആംബഷ് മാർക്കറ്റിംഗ് (Ambush Marketing)</h4>
+            <div class="card">
+                <ul>
+                    <li>മത്സരിയുടെ സ്പോൺസർഷിപ്പിനെ ചോർത്തുക</li>
+                    <li>ഔദ്യോഗിക സ്പോൺസറല്ലാത്ത കമ്പനി ഈവന്റുമായി ബന്ധപ്പെടുത്തി പരസ്യം ചെയ്യൽ</li>
+                    <li>ഉദാഹരണം: ലോകകപ്പ് സ്പോൺസർ അല്ലാത്ത കമ്പനി ഫുട്ബോൾ തീം ഉപയോഗിച്ച് പരസ്യം</li>
+                </ul>
+            </div>
+
+            <h4>കോസ്-റിലേറ്റഡ് മാർക്കറ്റിംഗ് (Cause-related Marketing)</h4>
+            <div class="card">
+                <ul>
+                    <li>സാമൂഹിക കാര്യവുമായി ബന്ധപ്പെട്ട് മാർക്കറ്റിംഗ്</li>
+                    <li>"നിങ്ങൾ വാങ്ങുമ്പോൾ ഞങ്ങൾ ദാനം ചെയ്യും"</li>
+                    <li>ബ്രാൻഡ് ഇമേജ് മെച്ചപ്പെടുത്താൻ</li>
+                    <li>ഉദാഹരണം: "ഓരോ വാങ്ങലിനും ഒരു മരം നടുക"</li>
+                </ul>
+            </div>
+
+            <!-- Unit 1.5 -->
+            <h3 id="u1-5">യൂണിറ്റ് 1.5: വാല്യൂ ചെയിൻ</h3>
+
+            <h4>വാല്യൂ ചെയിൻ (Value Chain)</h4>
+            <div class="highlight-box">
+                <p>മൈക്കേൽ പോർട്ടർ അവതരിപ്പിച്ച ആശയം. ഒരു സംഘടനയിലെ പ്രവർത്തനങ്ങൾ മൂല്യം സൃഷ്ടിക്കുന്ന രീതിയിൽ വിശകലനം ചെയ്യുന്നു.</p>
+            </div>
+
+            <h4>പ്രാഥമിക ഘടകങ്ങൾ (Primary Activities)</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>ഇൻബൗണ്ട് ലോജിസ്റ്റിക് (Inbound Logistics):</strong> അസംസ്കൃത വസ്തുക്കൾ സ്വീകരിക്കൽ, സംഭരണം</li>
+                    <li><strong>ഓപ്പറേഷൻസ് (Operations):</strong> ഉൽപ്പന്ന നിർമ്മാണം, പ്രോസസ്സിംഗ്</li>
+                    <li><strong>ഔട്ട്ബൗണ്ട് ലോജിസ്റ്റിക് (Outbound Logistics):</strong> തയ്യാറാക്കിയ ഉൽപ്പന്നങ്ങൾ വിതരണം ചെയ്യൽ</li>
+                    <li><strong>മാർക്കറ്റിംഗ് & സെയിൽസ് (Marketing & Sales):</strong> പരസ്യം, വിൽപന പ്രോത്സാഹനം</li>
+                    <li><strong>സർവീസ് (Service):</strong> ഉപഭോക്തൃ സേവനം, അറ്റകുറ്റപ്പണി</li>
+                </ol>
+            </div>
+
+            <h4>പിന്തുണയ്ക്കുന്ന പ്രവർത്തനങ്ങൾ (Support Activities)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഫirmിന്റെ അടിസ്ഥാന സൗകര്യങ്ങൾ</li>
+                    <li>മനുഷ്യവിഭവ നിയന്ത്രണം</li>
+                    <li>സാങ്കേതിക വികസനം</li>
+                    <li>പ്രോക്യൂർമെന്റ് (വസ്തുക്കൾ വാങ്ങൽ)</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>പ്രാധാന്യം:</strong> ഓരോ ഘടകവും മൂല്യം കൂട്ടുന്നു. മൂല്യനിർമ്മാണത്തിൽ ദുർബലമായ ഘടകങ്ങൾ കണ്ടെത്തി മെച്ചപ്പെടുത്താൻ സഹായിക്കുന്നു.</p>
+            </div>
+
+            <!-- Unit 1.6 -->
+            <h3 id="u1-6">യൂണിറ്റ് 1.6: മാർക്കറ്റിംഗ് മിക്സ്</h3>
+
+            <h4>മാർക്കറ്റിംഗ് മിക്സ് (Marketing Mix) - 4P-കൾ</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>പ്രൊഡക്റ്റ് (Product)</strong> - വിൽക്കുന്നത്</li>
+                    <li><strong>പ്രൈസ് (Price)</strong> - വില</li>
+                    <li><strong>പ്ലേസ് (Place)</strong> - വിതരണം</li>
+                    <li><strong>പ്രൊമോഷൻ (Promotion)</strong> - പ്രോത്സാഹനം</li>
+                </ol>
+            </div>
+
+            <h4>മിക്സിനെ സ്വാധീനിക്കുന്ന ഘടകങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>ഉപഭോക്തൃ ആവശ്യങ്ങൾ</li>
+                    <li>മത്സരികളുടെ തന്ത്രങ്ങൾ</li>
+                    <li>കമ്പനിയുടെ ലക്ഷ്യങ്ങൾ</li>
+                    <li>വിപണി സാഹചര്യങ്ങൾ</li>
+                    <li>നിയമപരമായ ചട്ടക്കൂട്</li>
+                    <li>സാമ്പത്തിക സാഹചര്യങ്ങൾ</li>
+                    <li>സാങ്കേതിക സാധ്യതകൾ</li>
+                </ul>
+            </div>
+
+            <!-- Unit 1.7 -->
+            <h3 id="u1-7">യൂണിറ്റ് 1.7: ഫീൽഡ് സ്റ്റഡി, കേസ് സ്റ്റഡി</h3>
+
+            <h4>പ്രാധാന്യം</h4>
+            <div class="card">
+                <ul>
+                    <li>സിദ്ധാന്തവും പ്രയോഗവും ബന്ധിപ്പിക്കൽ</li>
+                    <li>യഥാർത്ഥ കമ്പനികളുടെ മാർക്കറ്റിംഗ് തന്ത്രങ്ങൾ പഠിക്കൽ</li>
+                    <li>വിശകലന കഴിവ് വർദ്ധിപ്പിക്കൽ</li>
+                    <li>ടീം വർക്ക്, പ്രസന്റേഷൻ കഴിവുകൾ</li>
+                </ul>
+            </div>
+
+            <h4>പഠിക്കേണ്ട കമ്പനികൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>ഹിന്ദുസ്ഥാൻ യൂണിലീവർ (HUL)</li>
+                    <li>പ്രോക്ടർ & ഗാമ്പിൾ (P&G)</li>
+                    <li>അമൂൽ</li>
+                    <li>ടാറ്റാ</li>
+                    <li>റിലയൻസ്</li>
+                    <li>ആമസോൺ, ഫ്ലിപ്കാർട്ട്</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MODULE 2 -->
+        <section class="section" id="mod2">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 2</span>
+                <h2>STP മാർക്കറ്റിംഗും പ്രൊഡക്റ്റ് മിക്സും</h2>
+            </div>
+
+            <!-- Unit 2.1 -->
+            <h3 id="u2-1">യൂണിറ്റ് 2.1: സെഗ്മെന്റേഷൻ (Segmentation)</h3>
+
+            <h4>മാർക്കറ്റ് സെഗ്മെന്റേഷൻ</h4>
+            <div class="highlight-box">
+                <p>വലിയ, ഏകീകൃതമല്ലാത്ത വിപണിയെ ചെറിയ, ഏകീകൃതമായ ഗ്രൂപ്പുകളാക്കി വിഭജിക്കൽ.</p>
+            </div>
+
+            <h4>ആവശ്യങ്ങൾ അടിസ്ഥാനമാക്കിയുള്ള സെഗ്മെന്റേഷൻ (Needs-based)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഉപഭോക്താക്കളുടെ ആവശ്യങ്ങൾ, ആഗ്രഹങ്ങൾ അടിസ്ഥാനമാക്കി</li>
+                    <li>"എന്താണ് അവർക്ക് വേണ്ടത്?" എന്ന ചോദ്യം</li>
+                    <li>ഉദാഹരണം: ആരോഗ്യ ബോധമുള്ളവർക്ക് ഓർഗാനിക് ഭക്ഷണം, ഫാസ്റ്റ് ഫുഡ് ഇഷ്ടപ്പെടുന്നവർക്ക് ബർഗർ</li>
+                </ul>
+            </div>
+
+            <h4>സെഗ്മെന്റേഷന്റെ അടിസ്ഥാനങ്ങൾ</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>ജ്യോഗ്രാഫിക്:</strong> രാജ്യം, സംസ്ഥാനം, നഗരം, കാലാവസ്ഥ</li>
+                    <li><strong>ഡെമോഗ്രാഫിക്:</strong> പ്രായം, ലിംഗം, വരുമാനം, വിദ്യാഭ്യാസം, തൊഴിൽ</li>
+                    <li><strong>സൈക്കോഗ്രാഫിക്:</strong> ജീവിതശൈലി, വ്യക്തിത്വം, മൂല്യങ്ങൾ</li>
+                    <li><strong>ബിഹേവിയറൽ:</strong> ഉപയോഗം, ആനുകൂല്യം, ബ്രാൻഡ് ലോയൽറ്റി</li>
+                </ol>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>അവസരം:</strong> ഓരോ സെഗ്മെന്റിനും അനുയോജ്യമായ ഉൽപ്പന്നം, വില, വിതരണം, പ്രോത്സാഹനം നൽകാം.</p>
+            </div>
+
+            <!-- Unit 2.2 -->
+            <h3 id="u2-2">യൂണിറ്റ് 2.2: ടാർഗെറ്റിംഗ് (Targeting)</h3>
+
+            <h4>ടാർഗെറ്റിംഗ്</h4>
+            <div class="card">
+                <p>ഏറ്റവും ലാഭകരമായ സെഗ്മെന്റുകൾ തിരഞ്ഞെടുക്കൽ.</p>
+            </div>
+
+            <h4>ടാർഗെറ്റിംഗ് തന്ത്രങ്ങൾ</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>അൻഡിഫറൻഷിയേറ്റഡ് (Undifferentiated):</strong> എല്ലാവർക്കും ഒരേ ഉൽപ്പന്നം (മാസ് മാർക്കറ്റിംഗ്)</li>
+                    <li><strong>ഡിഫറൻഷിയേറ്റഡ് (Differentiated):</strong> ഓരോ സെഗ്മെന്റിനും വ്യത്യസ്ത ഉൽപ്പന്നം (മൾട്ടി-സെഗ്മെന്റ്)</li>
+                    <li><strong>കൺസെൻട്രേറ്റഡ് (Concentrated):</strong> ഒരു സെഗ്മെന്റിൽ ശ്രദ്ധ കേന്ദ്രീകരിക്കൽ (നിഷ് മാർക്കറ്റിംഗ്)</li>
+                    <li><strong>മൈക്രോമാർക്കറ്റിംഗ് (Micromarketing):</strong> വ്യക്തിഗത, പ്രാദേശിക തലത്തിൽ (ലോക്കൽ, ഇൻഡിവിഡ്യുവൽ)</li>
+                </ol>
+            </div>
+
+            <h4>തിരഞ്ഞെടുപ്പ് മാനദണ്ഡങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>വലിപ്പം, വളർച്ചാ സാധ്യത</li>
+                    <li>ലാഭക്ഷമത</li>
+                    <li>മത്സര തീവ്രത</li>
+                    <li>കമ്പനിയുടെ ശേഷി</li>
+                </ul>
+            </div>
+
+            <!-- Unit 2.3 -->
+            <h3 id="u2-3">യൂണിറ്റ് 2.3: ഡിഫറൻഷിയേഷനും പൊസിഷനിംഗും</h3>
+
+            <h4>ഡിഫറൻഷിയേഷൻ (Differentiation)</h4>
+            <div class="card">
+                <p>മത്സരികളിൽ നിന്ന് വ്യത്യസ്തമായി തോന്നിപ്പിക്കൽ.</p>
+                <p><strong>വ്യത്യസ്തമാക്കാനുള്ള മാർഗങ്ങൾ:</strong></p>
+                <ul>
+                    <li>ഉൽപ്പന്ന വ്യത്യാസം (Product differentiation)</li>
+                    <li>സേവന വ്യത്യാസം (Service differentiation)</li>
+                    <li>ചാനൽ വ്യത്യാസം (Channel differentiation)</li>
+                    <li>ഇമേജ് വ്യത്യാസം (Image differentiation)</li>
+                </ul>
+            </div>
+
+            <h4>പൊസിഷനിംഗ് (Positioning)</h4>
+            <div class="card">
+                <p>ഉപഭോക്താവിന്റെ മനസ്സിൽ ഒരു പ്രത്യേക സ്ഥാനം നേടുക.</p>
+            </div>
+
+            <h4>പൊസിഷനിംഗ് തന്ത്രങ്ങൾ</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>തന്ത്രം</th>
+                        <th>വിശദീകരണം</th>
+                        <th>ഉദാഹരണം</th>
+                    </tr>
+                    <tr>
+                        <td>ആട്രിബ്യൂട്ട് പൊസിഷനിംഗ്</td>
+                        <td>ഒരു പ്രത്യേക ഗുണം</td>
+                        <td>ടൈറ്റൻ - കൃത്യത</td>
+                    </tr>
+                    <tr>
+                        <td>ബെനിഫിറ്റ് പൊസിഷനിംഗ്</td>
+                        <td>നേട്ടം</td>
+                        <td>കോൾഗേറ്റ് - പല്ലിന്റെ ആരോഗ്യം</td>
+                    </tr>
+                    <tr>
+                        <td>യൂസേജ് പൊസിഷനിംഗ്</td>
+                        <td>ഉപയോഗം</td>
+                        <td>ബോർോപ്ലസ് - മുഖക്കുരു</td>
+                    </tr>
+                    <tr>
+                        <td>യൂസർ പൊസിഷനിംഗ്</td>
+                        <td>ഉപയോക്താവ്</td>
+                        <td>ജോൺസൺ & ജോൺസൺ - കുഞ്ഞുങ്ങൾക്ക്</td>
+                    </tr>
+                    <tr>
+                        <td>കോംപറ്റിറ്റർ പൊസിഷനിംഗ്</td>
+                        <td>മത്സരിയെ അടിസ്ഥാനമാക്കി</td>
+                        <td>7UP - അൺകോള</td>
+                    </tr>
+                    <tr>
+                        <td>പ്രൈസ്-ക്വാളിറ്റി</td>
+                        <td>വില-നിലവാര ബന്ധം</td>
+                        <td>ടാറ്റാ നാനോ - ലക്ഷകണക്കിന് വാഹനം</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>പൊസിഷനിംഗ് മാപ്പ്:</strong> ഉപഭോക്താവിന്റെ മനസ്സിൽ ബ്രാൻഡുകളുടെ സ്ഥാനം കാണിക്കുന്ന ഗ്രാഫ്.</p>
+            </div>
+
+            <!-- Unit 2.4 -->
+            <h3 id="u2-4">യൂണിറ്റ് 2.4: വാങ്ങുന്ന പ്രേരണകളും ഉപഭോക്തൃ തീരുമാനങ്ങളും</h3>
+
+            <h4>വാങ്ങുന്ന പ്രേരണകൾ (Buying Motives)</h4>
+            <div class="card">
+                <p>ഉപഭോക്താവിനെ വാങ്ങാൻ പ്രേരിപ്പിക്കുന്ന ഘടകങ്ങൾ:</p>
+                <ol>
+                    <li><strong>ഉൽപ്പന്ന പ്രേരണകൾ:</strong> ഗുണനിലവാരം, രൂപകൽപ്പന, ബ്രാൻഡ്</li>
+                    <li><strong>പത്രോണാജിക പ്രേരണകൾ:</strong> വില, ഡിസ്കൗണ്ട്, ഓഫർ</li>
+                    <li><strong>സർവീസ് പ്രേരണകൾ:</strong> ഡെലിവറി, അറ്റകുറ്റപ്പണി, വാറന്റി</li>
+                    <li><strong>എമോഷണൽ പ്രേരണകൾ:</strong> സന്തോഷം, ആത്മവിശ്വാസം, സ്റ്റാറ്റസ്</li>
+                    <li><strong>റേഷണൽ പ്രേരണകൾ:</strong> പ്രയോജനം, ദീർഘകാല മൂല്യം</li>
+                </ol>
+            </div>
+
+            <h4>ഉപഭോക്തൃ വാങ്ങൽ തീരുമാന പ്രക്രിയ</h4>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1. പ്രോബ്ലം റെക്കഗ്നിഷൻ</div>
+                    <p>ആവശ്യം തിരിച്ചറിയൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2. ഇൻഫർമേഷൻ സർച്ച</div>
+                    <p>വിവരങ്ങൾ ശേഖരിക്കൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">3. ആൾട്ടർനേറ്റീവ് ഇവാലുവേഷൻ</div>
+                    <p>ഓപ്ഷനുകൾ വിലയിരുത്തൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">4. പർച്ചേസ് ഡിസിഷൻ</div>
+                    <p>വാങ്ങാൻ തീരുമാനിക്കൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">5. പോസ്റ്റ്-പർച്ചേസ് ബിഹേവിയർ</div>
+                    <p>വാങ്ങലിന് ശേഷം വിലയിരുത്തൽ</p>
+                </div>
+            </div>
+
+            <h4>തീരുമാന തരങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>റൂട്ടിൻ റിസ്പോൺസ്:</strong> പതിവ് വാങ്ങൽ (സോപ്പ്, പേസ്റ്റ്)</li>
+                    <li><strong>ലിമിറ്റഡ് ഡിസിഷൻ മേക്കിംഗ്:</strong> ചെറിയ തീരുമാനം (വസ്ത്രം, ഷൂസ്)</li>
+                    <li><strong>എക്സ്റ്റൻസീവ് ഡിസിഷൻ മേക്കിംഗ്:</strong> വലിയ തീരുമാനം (വാഹനം, വീട്)</li>
+                </ul>
+            </div>
+
+            <!-- Unit 2.5 -->
+            <h3 id="u2-5">യൂണിറ്റ് 2.5: പ്രൊഡക്റ്റ്, സർവീസ്, പ്രൊഡക്റ്റ് ലൈൻ, പ്രൊഡക്റ്റ് മിക്സ്</h3>
+
+            <h4>പ്രൊഡക്റ്റ് (Product) & സർവീസ് (Service)</h4>
+            <div class="card">
+                <p><strong>പ്രൊഡക്റ്റ്:</strong> ആവശ്യം സംതൃപ്തിപ്പെടുത്തുന്ന ഏതും - ഭൗതികമായതോ അല്ലാത്തതോ.</p>
+                <p><strong>സർവീസ്:</strong> അദൃശ്യമായ, സ്പർശിക്കാനാവാത്ത പ്രയോജനം (ബാങ്കിംഗ്, വിദ്യാഭ്യാസം, ആശുപത്രി).</p>
+            </div>
+
+            <h4>പ്രൊഡക്റ്റിന്റെ തലങ്ങൾ</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>കോർ പ്രൊഡക്റ്റ്:</strong> അടിസ്ഥാന ആവശ്യം (ട്രെയിനിൽ യാത്ര)</li>
+                    <li><strong>ആക്ച്വൽ പ്രൊഡക്റ്റ്:</strong> ഗുണങ്ങൾ, രൂപകൽപ്പന, ബ്രാൻഡ് (റാജ്ധാനി എക്സ്പ്രസ്സ്)</li>
+                    <li><strong>ഓഗ്മെന്റഡ് പ്രൊഡക്റ്റ്:</strong> അധിക സേവനങ്ങൾ (ആഹാരം, WiFi, വിനോദം)</li>
+                </ol>
+            </div>
+
+            <h4>പ്രൊഡക്റ്റ് ലൈൻ (Product Line)</h4>
+            <div class="card">
+                <p>ഒരേ ബ്രാൻഡിന് കീഴിലുള്ള സമാന ഉൽപ്പന്നങ്ങൾ.</p>
+                <p><strong>ഉദാഹരണം:</strong> കോൾഗേറ്റിന്റെ പല്ല് തേക്കൽ പേസ്റ്റുകൾ (കോൾഗേറ്റ് ടോട്ടൽ, കോൾഗേറ്റ് സെൻസിറ്റീവ്)</p>
+            </div>
+
+            <h4>പ്രൊഡക്റ്റ് മിക്സ് (Product Mix)</h4>
+            <div class="card">
+                <p>ഒരു കമ്പനിയുടെ എല്ലാ ഉൽപ്പന്നങ്ങളും.</p>
+                <ul>
+                    <li><strong>വിഡ്ത്:</strong> എത്ര പ്രൊഡക്റ്റ് ലൈനുകൾ?</li>
+                    <li><strong>ലെങ്ത്:</strong> മൊത്തം എത്ര ഉൽപ്പന്നങ്ങൾ?</li>
+                    <li><strong>ഡെപ്ത്:</strong> ഓരോ ലൈനിലും എത്ര വേരിയന്റുകൾ?</li>
+                    <li><strong>കൺസിസ്റ്റൻസി:</strong> എത്ര സമാനമാണ് ലൈനുകൾ?</li>
+                </ul>
+            </div>
+
+            <h4>പ്രൊഡക്റ്റ് മിക്സ് തീരുമാനങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>വിപുലീകരണം (Expansion):</strong> പുതിയ ഉൽപ്പന്നങ്ങൾ</li>
+                    <li><strong>സംയോജനം (Contraction):</strong> ലാഭകരമല്ലാത്തത് നിർത്തൽ</li>
+                    <li><strong>മാറ്റം (Modification):</strong> നിലവിലുള്ളത് മെച്ചപ്പെടുത്തൽ</li>
+                </ul>
+            </div>
+
+            <!-- Unit 2.6 -->
+            <h3 id="u2-6">യൂണിറ്റ് 2.6: പുതിയ പ്രൊഡക്റ്റ് വികസനവും പ്രൊഡക്റ്റ് ലൈഫ് സൈക്കിളും</h3>
+
+            <h4>പുതിയ പ്രൊഡക്റ്റ് വികസന പ്രക്രിയ (New Product Development - NPD)</h4>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1. ഐഡിയ ജനറേഷൻ</div>
+                    <p>ആശയങ്ങൾ സൃഷ്ടിക്കൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2. ഐഡിയ സ്ക്രീനിംഗ്</div>
+                    <p>ഏറ്റവും നല്ല ആശയം തിരഞ്ഞെടുക്കൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">3. കൺസെപ്റ്റ് ഡെവലപ്മെന്റ് & ടെസ്റ്റിംഗ്</div>
+                    <p>ആശയം വിശദമാക്കി പരിശോധിക്കൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">4. മാർക്കറ്റിംഗ് സ്ട്രാറ്റജി ഡെവലപ്മെന്റ്</div>
+                    <p>മാർക്കറ്റിംഗ് പദ്ധതി തയ്യാറാക്കൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">5. ബിസിനസ് അനാലിസിസ്</div>
+                    <p>ലാഭക്ഷമത പരിശോധിക്കൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">6. പ്രൊഡക്റ്റ് ഡെവലപ്മെന്റ്</div>
+                    <p>നിർമ്മാണം</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">7. ടെസ്റ്റ് മാർക്കറ്റിംഗ്</div>
+                    <p>ചെറിയ വിപണിയിൽ പരീക്ഷിക്കൽ</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">8. കമേഴ്ഷലൈസേഷൻ</div>
+                    <p>പൂർണ്ണ വിപണിയിൽ അവതരിപ്പിക്കൽ</p>
+                </div>
+            </div>
+
+            <h4>പ്രൊഡക്റ്റ് ലൈഫ് സൈക്കിൾ (PLC)</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>ഇൻട്രൊഡക്ഷൻ:</strong> പുതിയ ഉൽപ്പന്നം - കുറഞ്ഞ വിൽപന, കൂടിയ ചെലവ്</li>
+                    <li><strong>ഗ്രോത്ത്:</strong> വിൽപന വർദ്ധന - മത്സരികൾ പ്രവേശിക്കുന്നു</li>
+                    <li><strong>മാച്ചുറിറ്റി:</strong> ഉച്ചകോടി - വിൽപന ഉയർന്നത്, മത്സരം കൂടുന്നു</li>
+                    <li><strong>ഡിക്ലൈൻ:</strong> വിൽപന കുറയുന്നു - പുതിയ ഉൽപ്പന്നങ്ങൾ വരുന്നു</li>
+                </ol>
+            </div>
+
+            <h4>പ്രൊഡക്റ്റ് പരാജയത്തിന്റെ കാരണങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>മാർക്കറ്റ് പഠനത്തിന്റെ കുറവ്</li>
+                    <li>മോശം ടൈമിംഗ്</li>
+                    <li>മത്സരികളുടെ പ്രതികരണം</li>
+                    <li>വിതരണത്തിലെ പ്രശ്നങ്ങൾ</li>
+                    <li>മോശം നിലവാരം</li>
+                    <li>ഉയർന്ന വില</li>
+                </ul>
+            </div>
+
+            <!-- Unit 2.7 -->
+            <h3 id="u2-7">യൂണിറ്റ് 2.7: ഫീൽഡ് സ്റ്റഡി, കേസ് സ്റ്റഡി</h3>
+
+            <h4>പഠിക്കേണ്ട വിഷയങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>കമ്പനികളുടെ സെഗ്മെന്റേഷൻ തന്ത്രങ്ങൾ</li>
+                    <li>ടാർഗെറ്റിംഗ് തിരഞ്ഞെടുപ്പുകൾ</li>
+                    <li>ബ്രാൻഡ് പൊസിഷനിംഗ്</li>
+                    <li>ഉൽപ്പന്ന ലൈഫ് സൈക്കിൾ വിവിധ ഘട്ടങ്ങളിൽ</li>
+                    <li>പുതിയ ഉൽപ്പന്നങ്ങൾ അവതരിപ്പിക്കുന്ന രീതി</li>
+                    <li>റോൾ പ്ലേ: വിൽപനക്കാരനും ഉപഭോക്താവും തമ്മിലുള്ള സംഭാഷണം</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MODULE 3 -->
+        <section class="section" id="mod3">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 3</span>
+                <h2>പ്രൈസിംഗും ഡിസ്ട്രിബ്യൂഷനും</h2>
+            </div>
+
+            <!-- Unit 3.1 -->
+            <h3 id="u3-1">യൂണിറ്റ് 3.1: പ്രൈസിംഗ്</h3>
+
+            <h4>പ്രൈസ് (Price)</h4>
+            <div class="highlight-box">
+                <p>ഉൽപ്പന്നത്തിന് നൽകുന്ന പണം. മാർക്കറ്റിംഗ് മിക്സിലെ ഏക വരുമാന നൽകുന്ന ഘടകം.</p>
+            </div>
+
+            <h4>പ്രൈസിംഗിന്റെ പ്രാധാന്യം</h4>
+            <div class="card">
+                <ul>
+                    <li>വരുമാനം നിർണയിക്കുന്നു</li>
+                    <li>ഉപഭോക്തൃ പെരുമാറ്റത്തെ സ്വാധീനിക്കുന്നു</li>
+                    <li>ബ്രാൻഡ് ഇമേജ് നിർണയിക്കുന്നു</li>
+                    <li>മത്സരത്തിലെ സ്ഥാനം നിർണയിക്കുന്നു</li>
+                </ul>
+            </div>
+
+            <h4>പ്രൈസിംഗ് തന്ത്രങ്ങൾ</h4>
+
+            <h4>1. കോസ്റ്റ്-ബേസ്ഡ്</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>കോസ്റ്റ് പ്ലസ്:</strong> ചെലവ് + ലാഭ ശതമാനം</li>
+                    <li><strong>മാർക്ക്അപ്പ്:</strong> ചെലവിന് മുകളിൽ കൂട്ടിച്ചേർക്കൽ</li>
+                    <li><strong>ടാർഗെറ്റ് റിട്ടേൺ:</strong> നിശ്ചിത ലാഭം ലക്ഷ്യമിടുന്നു</li>
+                </ul>
+            </div>
+
+            <h4>2. വാല്യൂ-ബേസ്ഡ്</h4>
+            <div class="card">
+                <ul>
+                    <li>ഉപഭോക്താവിന് ലഭിക്കുന്ന മൂല്യം അടിസ്ഥാനമാക്കി</li>
+                    <li>ഉയർന്ന വില = ഉയർന്ന മൂല്യം എന്ന അവബോധം</li>
+                </ul>
+            </div>
+
+            <h4>3. കോംപറ്റിഷൻ-ബേസ്ഡ്</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>ഗോയിംഗ് റേറ്റ്:</strong> മത്സരികളുടെ വില അനുസരിക്കൽ</li>
+                    <li><strong>സീലഡ് ബിഡ്:</strong> ടെൻഡർ അടിസ്ഥാനത്തിൽ</li>
+                    <li><strong>പ്രീഡേറ്ററി:</strong> വില കുറച്ച് മത്സരികളെ പുറത്താക്കൽ</li>
+                </ul>
+            </div>
+
+            <h4>4. ന്യൂ പ്രൊഡക്റ്റ് പ്രൈസിംഗ്</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>സ്കിമ്മിംഗ്:</strong> ആദ്യം ഉയർന്ന വില, പിന്നീട് കുറയ്ക്കൽ (ഐഫോൺ)</li>
+                    <li><strong>പെനെട്രേഷൻ:</strong> ആദ്യം കുറഞ്ഞ വില, പിന്നീട് വർദ്ധിപ്പിക്കൽ (ജിയോ)</li>
+                </ul>
+            </div>
+
+            <!-- Unit 3.2 -->
+            <h3 id="u3-2">യൂണിറ്റ് 3.2: ഡിസ്കൗണ്ടുകളും അലവൻസുകളും ഓഫറുകളും</h3>
+
+            <h4>ഡിസ്കൗണ്ടുകൾ</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>ക്യാഷ് ഡിസ്കൗണ്ട്:</strong> പണം നൽകിയാൽ കുറയ്ക്കൽ</li>
+                    <li><strong>ക്വാണ്ടിറ്റി ഡിസ്കൗണ്ട്:</strong> കൂടുതൽ വാങ്ങിയാൽ കുറയ്ക്കൽ</li>
+                    <li><strong>ട്രേഡ് ഡിസ്കൗണ്ട്:</strong> വിതരണക്കാർക്ക്</li>
+                    <li><strong>സീസണൽ ഡിസ്കൗണ്ട്:</strong> സീസണിൽ കുറയ്ക്കൽ</li>
+                </ol>
+            </div>
+
+            <h4>അലവൻസുകൾ (Allowances)</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>ട്രേഡ്-ഇൻ:</strong> പഴയ ഉൽപ്പന്നം കൊടുത്ത് പുതിയത് വാങ്ങുമ്പോൾ കുറയ്ക്കൽ</li>
+                    <li><strong>പ്രൊമോഷണൽ:</strong> പരസ്യത്തിനുള്ള സഹായം</li>
+                </ul>
+            </div>
+
+            <h4>ഓഫറുകൾ</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>BOGO (Buy One Get One):</strong> ഒന്ന് വാങ്ങിയാൽ ഒന്ന് സൗജന്യം</li>
+                    <li><strong>കോംബോ ഓഫർ:</strong> രണ്ടും കൂടെ വാങ്ങിയാൽ കുറഞ്ഞ വില</li>
+                    <li><strong>കാഷ്ബാക്ക്:</strong> തിരികെ നൽകൽ</li>
+                    <li><strong>കൂപ്പൺ:</strong> വിലക്കുറവിനുള്ള കൂപ്പൺ</li>
+                </ul>
+            </div>
+
+            <!-- Unit 3.3 -->
+            <h3 id="u3-3">യൂണിറ്റ് 3.3: ഡിസ്ട്രിബ്യൂഷൻ ചാനലുകൾ</h3>
+
+            <h4>ഡിസ്ട്രിബ്യൂഷൻ ചാനൽ</h4>
+            <div class="highlight-box">
+                <p>ഉൽപ്പന്നം നിർമ്മാതാവിൽ നിന്ന് ഉപഭോക്താവിലേക്ക് എത്തുന്ന മാർഗം.</p>
+            </div>
+
+            <h4>ചാനലുകളുടെ തരങ്ങൾ</h4>
+
+            <h4>ഡയറക്റ്റ് ചാനൽ (Zero Level)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഉൽപ്പന്നനിർമ്മാതാവ് → ഉപഭോക്താവ്</li>
+                    <li>ഉദാഹരണം: ഓൺലൈൻ വിൽപന, ഡയറക്റ്റ് സെയിൽസ്</li>
+                </ul>
+            </div>
+
+            <h4>ഇൻഡയറക്റ്റ് ചാനലുകൾ</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>ഒന്നാം തലം:</strong> നിർമ്മാതാവ് → റീട്ടെയിലർ → ഉപഭോക്താവ്</li>
+                    <li><strong>രണ്ടാം തലം:</strong> നിർമ്മാതാവ് → ഹോൾസെയിലർ → റീട്ടെയിലർ → ഉപഭോക്താവ്</li>
+                    <li><strong>മൂന്നാം തലം:</strong> നിർമ്മാതാവ് → ഏജന്റ് → ഹോൾസെയിലർ → റീട്ടെയിലർ → ഉപഭോക്താവ്</li>
+                </ul>
+            </div>
+
+            <h4>ചാനൽ തിരഞ്ഞെടുപ്പ് ഘടകങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>ഉൽപ്പന്ന സ്വഭാവം (പെരിഷബിൾ, ക്രമീകരിക്കാവുന്നത്)</li>
+                    <li>വിപണി സ്വഭാവം (വലിപ്പം, ഭൂപ്രദേശം)</li>
+                    <li>കമ്പനിയുടെ ശേഷി</li>
+                    <li>മത്സരികളുടെ ചാനലുകൾ</li>
+                    <li>ചെലവ്</li>
+                </ul>
+            </div>
+
+            <!-- Unit 3.4 -->
+            <h3 id="u3-4">യൂണിറ്റ് 3.4: റീട്ടെയിൽ, ഹോൾസെയിൽ, ഇ-കൊമേഴ്സ്</h3>
+
+            <h4>റീട്ടെയിൽ (Retail)</h4>
+            <div class="card">
+                <p>ചെറിയ അളവിൽ ഉപഭോക്താവിന് നേരിട്ട് വിൽക്കൽ.</p>
+                <p><strong>തരങ്ങൾ:</strong></p>
+                <ul>
+                    <li>ഡിപ്പാർട്ട്മെന്റ് സ്റ്റോർ</li>
+                    <li>സൂപ്പർമാർക്കറ്റ്</li>
+                    <li>ഹൈപ്പർമാർക്കറ്റ്</li>
+                    <li>സ്പെഷ്യാലിറ്റി സ്റ്റോർ</li>
+                    <li>കൺവീനിയൻസ് സ്റ്റോർ</li>
+                </ul>
+                <p><strong>ചെയിൻ സ്റ്റോറുകൾ:</strong> ഒരേ ബ്രാൻഡിൽ പല സ്ഥലങ്ങളിലും (റിലയൻസ് ഫ്രഷ്)</p>
+                <p><strong>ഫ്രാഞ്ചൈസികൾ:</strong> ലൈസൻസിൽ പ്രവർത്തിക്കുന്നത്</p>
+            </div>
+
+            <h4>ഹോൾസെയിൽ (Wholesale)</h4>
+            <div class="card">
+                <p>വലിയ അളവിൽ വിതരണക്കാർക്ക് വിൽക്കൽ.</p>
+                <ul>
+                    <li><strong>മെർച്ചന്റ് ഹോൾസെയിലർമാർ:</strong> സ്വന്തമായി വാങ്ങി വിൽക്കുന്നു</li>
+                    <li><strong>ഏജന്റുകൾ:</strong> കമീഷനിൽ വിൽക്കുന്നു</li>
+                </ul>
+            </div>
+
+            <h4>ഇ-കൊമേഴ്സ് (E-commerce)</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>B2C (Business to Consumer):</strong> ആമസോൺ, ഫ്ലിപ്കാർട്ട്</li>
+                    <li><strong>B2B (Business to Business):</strong> ഇൻഡിയാമാർട്ട്</li>
+                    <li><strong>C2C (Consumer to Consumer):</strong> ഒഎൽഎക്സ്</li>
+                    <li><strong>D2C (Direct to Consumer):</strong> ബ്രാൻഡ് നേരിട്ട് ഉപഭോക്താവിന്</li>
+                </ul>
+            </div>
+
+            <h4>ഇ-കൊമേഴ്സിന്റെ ഗുണങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>24/7 ലഭ്യത</li>
+                    <li>വലിയ തിരഞ്ഞെടുപ്പ്</li>
+                    <li>വീട്ടിലിരുന്ന് വാങ്ങൽ</li>
+                    <li>വില താരതമ്യം ചെയ്യാം</li>
+                    <li>വ്യക്തിഗതീകരിച്ച അനുഭവം</li>
+                </ul>
+            </div>
+
+            <!-- Unit 3.5 -->
+            <h3 id="u3-5">യൂണിറ്റ് 3.5: ലോജിസ്റ്റിക്സും സപ്ലൈ ചെയിൻ മാനേജ്മെന്റും</h3>
+
+            <h4>ലോജിസ്റ്റിക്സ് (Logistics)</h4>
+            <div class="card">
+                <p>ഉൽപ്പന്നം നിർമ്മാണസ്ഥലത്ത് നിന്ന് ഉപഭോക്താവിലേക്ക് കൊണ്ടുപോകുന്ന പ്രക്രിയ.</p>
+                <ul>
+                    <li><strong>ട്രാൻസ്പോർട്ടേഷൻ:</strong> Road, Rail, Air, Water</li>
+                    <li><strong>വെയർഹൗസിംഗ്:</strong> സംഭരണം</li>
+                    <li><strong>ഇൻവെന്ററി മാനേജ്മെന്റ്:</strong> സ്റ്റോക്ക് നിയന്ത്രണം</li>
+                    <li><strong>ഓർഡർ പ്രോസസ്സിംഗ്</strong></li>
+                </ul>
+            </div>
+
+            <h4>സപ്ലൈ ചെയിൻ മാനേജ്മെന്റ് (SCM)</h4>
+            <div class="highlight-box">
+                <p>അസംസ്കൃത വസ്തുക്കൾ മുതൽ അവസാന ഉപഭോക്താവ് വരെയുള്ള എല്ലാ പ്രവർത്തനങ്ങളും ഏകോപിപ്പിക്കൽ.</p>
+            </div>
+
+            <h4>SCM-ന്റെ ഘടകങ്ങൾ</h4>
+            <div class="card">
+                <ol>
+                    <li><strong>പ്ലാനിംഗ്:</strong> ആവശ്യം കണക്കാക്കൽ</li>
+                    <li><strong>സോഴ്സിംഗ്:</strong> വസ്തുക്കൾ വാങ്ങൽ</li>
+                    <li><strong>മേക്കിംഗ്:</strong> നിർമ്മാണം</li>
+                    <li><strong>ഡെലിവറി:</strong> വിതരണം</li>
+                    <li><strong>റിട്ടേൺ:</strong> തിരികെ നൽകൽ</li>
+                </ol>
+            </div>
+
+            <h4>SCM-ന്റെ പ്രാധാന്യം</h4>
+            <div class="card">
+                <ul>
+                    <li>ചെലവ് കുറയ്ക്കൽ</li>
+                    <li>സമയം ലാഭിക്കൽ</li>
+                    <li>ഉപഭോക്തൃ സംതൃപ്തി</li>
+                    <li>മത്സരാധികാരം</li>
+                </ul>
+            </div>
+
+            <h4>ടെക്നോളജികൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>RFID</li>
+                    <li>GPS</li>
+                    <li>ERP സിസ്റ്റം</li>
+                    <li>AI</li>
+                    <li>ബ്ലോക്ക്ചെയിൻ</li>
+                </ul>
+            </div>
+
+            <!-- Unit 3.6 -->
+            <h3 id="u3-6">യൂണിറ്റ് 3.6: ഫീൽഡ് സ്റ്റഡി, കേസ് സ്റ്റഡി</h3>
+
+            <h4>പഠിക്കേണ്ട വിഷയങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>കമ്പനികളുടെ പ്രൈസിംഗ് തന്ത്രങ്ങൾ</li>
+                    <li>ഡിസ്ട്രിബ്യൂഷൻ നെറ്റ്‌വർക്കുകൾ</li>
+                    <li>റീട്ടെയിൽ സ്റ്റോർ സന്ദർശനം</li>
+                    <li>സപ്ലൈ ചെയിൻ വിശകലനം</li>
+                    <li>ഇ-കൊമേഴ്സ് vs ട്രഡിഷണൽ റീട്ടെയിൽ</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MODULE 4 -->
+        <section class="section" id="mod4">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 4</span>
+                <h2>പ്രമോഷനും മാർക്കറ്റിംഗ് കമ്യൂണിക്കേഷനും</h2>
+            </div>
+
+            <!-- Unit 4.1 -->
+            <h3 id="u4-1">യൂണിറ്റ് 4.1: പ്രമോഷൻ മിക്സ്</h3>
+
+            <h4>പ്രമോഷൻ മിക്സ് (Promotion Mix)</h4>
+            <div class="highlight-box">
+                <p>ഉപഭോക്താവിനെ സ്വാധീനിക്കുന്ന ആശയവിനിമയ ഉപാധികൾ.</p>
+            </div>
+
+            <h4>ഘടകങ്ങൾ</h4>
+
+            <h4>1. പരസ്യം (Advertising)</h4>
+            <div class="card">
+                <ul>
+                    <li>പണം നൽകി, വ്യക്തമാക്കിയ സ്പോൺസർ, മാസ് മീഡിയയിലൂടെ</li>
+                    <li><strong>ഗുണങ്ങൾ:</strong> വലിയ എത്തിച്ചേരൽ, നിയന്ത്രണം, വ്യക്തിത്വം</li>
+                    <li><strong>പരിമിതികൾ:</strong> ചെലവ്, ഫീഡ്ബാക്ക് ഇല്ല</li>
+                </ul>
+            </div>
+
+            <h4>2. വിൽപന പ്രോത്സാഹനം (Sales Promotion)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഹ്രസ്വകാല പ്രോത്സാഹനങ്ങൾ</li>
+                    <li>ഡിസ്കൗണ്ട്, ഓഫർ, കോംപറ്റീഷൻ, സാമ്പിൾ</li>
+                    <li><strong>ഉദേശ്യം:</strong> വിൽപന വേഗത്തിൽ വർദ്ധിപ്പിക്കൽ</li>
+                </ul>
+            </div>
+
+            <h4>3. പബ്ലിസിറ്റി (Publicity)</h4>
+            <div class="card">
+                <ul>
+                    <li>പണം നൽകാത്ത മാധ്യമ പ്രചാരണം</li>
+                    <li>പത്രക്കുറിപ്പുകൾ, വാർത്തകൾ</li>
+                    <li><strong>ഗുണങ്ങൾ:</strong> വിശ്വസനീയത കൂടുതൽ, നിയന്ത്രണം കുറവ്</li>
+                </ul>
+            </div>
+
+            <h4>4. പേഴ്സണൽ സെല്ലിംഗ് (Personal Selling)</h4>
+            <div class="card">
+                <ul>
+                    <li>വ്യക്തിപരമായ ആശയവിനിമയം</li>
+                    <li>വിൽപനക്കാരൻ നേരിട്ട് ഉപഭോക്താവിനെ കാണുന്നു</li>
+                    <li>B2B, ഉയർന്ന മൂല്യ ഉൽപ്പന്നങ്ങൾക്ക് അനുയോജ്യം</li>
+                </ul>
+            </div>
+
+            <h4>5. ഡയറക്റ്റ് മാർക്കറ്റിംഗ് (Direct Marketing)</h4>
+            <div class="card">
+                <ul>
+                    <li>നേരിട്ട് ഉപഭോക്താവിനെ ലക്ഷ്യമിടുന്നു</li>
+                    <li>ഇമെയിൽ, SMS, ടെലിമാർക്കറ്റിംഗ്, ഡയറക്റ്റ് മെയിൽ</li>
+                </ul>
+            </div>
+
+            <!-- Unit 4.2 -->
+            <h3 id="u4-2">യൂണിറ്റ് 4.2: ഡിജിറ്റൽ മാർക്കറ്റിംഗ്</h3>
+
+            <h4>ഡിജിറ്റൽ മാർക്കറ്റിംഗ്</h4>
+            <div class="highlight-box">
+                <p>ഡിജിറ്റൽ ചാനലുകൾ ഉപയോഗിച്ച് മാർക്കറ്റിംഗ്.</p>
+            </div>
+
+            <h4>സോഷ്യൽ മീഡിയ മാർക്കറ്റിംഗ്</h4>
+            <div class="card">
+                <ul>
+                    <li>Facebook, Instagram, Twitter, LinkedIn, YouTube</li>
+                    <li>ബ്രാൻഡ് അവബോധം, എൻഗേജ്മെന്റ്, ലീഡ് ജനറേഷൻ</li>
+                    <li>ഇൻഫ്ലുവൻസർ മാർക്കറ്റിംഗ്</li>
+                </ul>
+            </div>
+
+            <h4>കണ്ടന്റ് മാർക്കറ്റിംഗ്</h4>
+            <div class="card">
+                <ul>
+                    <li>വിലയേറിയ ഉള്ളടക്കം സൃഷ്ടിക്കൽ</li>
+                    <li>ബ്ലോഗുകൾ, വീഡിയോകൾ, ഇൻഫോഗ്രാഫിക്സ്</li>
+                    <li>SEO (സെർച്ച് എഞ്ചിൻ ഒപ്റ്റിമൈസേഷൻ)</li>
+                </ul>
+            </div>
+
+            <h4>ഇമെയിൽ മാർക്കറ്റിംഗ്</h4>
+            <div class="card">
+                <ul>
+                    <li>വ്യക്തിഗതീകരിച്ച ഇമെയിലുകൾ</li>
+                    <li>ന്യൂസ് ലെറ്റർ, പ്രൊമോഷണൽ ഇമെയിൽ</li>
+                    <li>ഓട്ടോമേഷൻ, ട്രാക്കിംഗ്</li>
+                </ul>
+            </div>
+
+            <h4>മറ്റ് ഘടകങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>SEO:</strong> ഗൂഗിളിൽ ഉയർന്ന റാങ്കിംഗ്</li>
+                    <li><strong>SEM:</strong> പണം നൽകിയുള്ള സെർച്ച് പരസ്യം</li>
+                    <li><strong>PPC:</strong> ക്ലിക്കിന് പണം നൽകൽ</li>
+                    <li><strong>അഫിലിയേറ്റ് മാർക്കറ്റിംഗ്:</strong> കമീഷനിൽ മറ്റുള്ളവരെ വിൽപനയ്ക്ക് നിയോഗിക്കൽ</li>
+                </ul>
+            </div>
+
+            <!-- Unit 4.3 -->
+            <h3 id="u4-3">യൂണിറ്റ് 4.3: ബ്രാൻഡിംഗ്</h3>
+
+            <h4>ബ്രാൻഡ് (Brand)</h4>
+            <div class="highlight-box">
+                <p>ഉൽപ്പന്നത്തിനോ സേവനത്തിനോ നൽകുന്ന പേര്, ചിഹ്നം, ഡിസൈൻ എന്നിവയുടെ സംയോജനം.</p>
+            </div>
+
+            <h4>ബ്രാൻഡ് ഐഡന്റിറ്റി (Brand Identity)</h4>
+            <div class="card">
+                <ul>
+                    <li>ബ്രാൻഡിന്റെ കാഴ്ചപ്പാട് - "ഞങ്ങൾ ആരാണ്?"</li>
+                    <li>ലോഗോ, നിറം, ടാഗ്ലൈൻ, പാക്കേജിംഗ്</li>
+                    <li>ഉദാഹരണം: നൈക്കിന്റെ "സൂഷ്", കൊക്ക-കോളയുടെ ചുവപ്പ്</li>
+                </ul>
+            </div>
+
+            <h4>ബ്രാൻഡ് ഇക്വിറ്റി (Brand Equity)</h4>
+            <div class="card">
+                <p>ബ്രാൻഡിന് കൂടുതൽ മൂല്യം നൽകുന്ന ഘടകങ്ങൾ:</p>
+                <ul>
+                    <li><strong>ബ്രാൻഡ് അവയർനസ്:</strong> ബ്രാൻഡ് അറിയാമോ?</li>
+                    <li><strong>ബ്രാൻഡ് അസോസിയേഷൻ:</strong> ബ്രാൻഡുമായി ബന്ധപ്പെടുത്തുന്നത്</li>
+                    <li><strong>പെർസീവ്ഡ് ക്വാളിറ്റി:</strong> ഉപഭോക്താവിന്റെ നിലവാര അവബോധം</li>
+                    <li><strong>ബ്രാൻഡ് ലോയൽറ്റി:</strong> വീണ്ടും വാങ്ങൽ, ശുപാർശ ചെയ്യൽ</li>
+                </ul>
+            </div>
+
+            <h4>ബ്രാൻഡിംഗിന്റെ പ്രാധാന്യം</h4>
+            <div class="card">
+                <ul>
+                    <li>വില വർദ്ധിപ്പിക്കാം</li>
+                    <li>മത്സരത്തിൽ വേർതിരിക്കാം</li>
+                    <li>ഉപഭോക്തൃ വിശ്വാസം നേടാം</li>
+                    <li>പുതിയ ഉൽപ്പന്നങ്ങൾ അവതരിപ്പിക്കാൻ സഹായിക്കും</li>
+                </ul>
+            </div>
+
+            <!-- Unit 4.4 -->
+            <h3 id="u4-4">യൂണിറ്റ് 4.4: മാർക്കറ്റിംഗ് കമ്യൂണിക്കേഷൻ - IMC</h3>
+
+            <h4>ഇന്റഗ്രേറ്റഡ് മാർക്കറ്റിംഗ് കമ്യൂണിക്കേഷൻ (IMC)</h4>
+            <div class="highlight-box">
+                <p>എല്ലാ മാർക്കറ്റിംഗ് കമ്യൂണിക്കേഷൻ ഉപാധികളും ഏകോപിപ്പിച്ച്, ഒരേ സന്ദേശം എല്ലാ ചാനലുകളിലൂടെയും നൽകൽ.</p>
+            </div>
+
+            <h4>IMC-ന്റെ ഘടകങ്ങൾ</h4>
+            <div class="card">
+                <ol>
+                    <li>പരസ്യം (Advertising)</li>
+                    <li>വിൽപന പ്രോത്സാഹനം (Sales Promotion)</li>
+                    <li>പബ്ലിക് റിലേഷൻസ് (PR)</li>
+                    <li>പേഴ്സണൽ സെല്ലിംഗ്</li>
+                    <li>ഡയറക്റ്റ് മാർക്കറ്റിംഗ്</li>
+                    <li>ഡിജിറ്റൽ/സോഷ്യൽ മീഡിയ</li>
+                </ol>
+            </div>
+
+            <h4>IMC-ന്റെ പ്രാധാന്യം</h4>
+            <div class="card">
+                <ul>
+                    <li>ഒരേ സന്ദേശം - ശക്തമായ ബ്രാൻഡ് ഇമേജ്</li>
+                    <li>ചെലവ് ലാഭിക്കൽ</li>
+                    <li>ഉപഭോക്താവിന് വ്യത്യസ്ത ചാനലുകളിലൂടെ ഒരേ അനുഭവം</li>
+                    <li>ഫലപ്രദമായ ആശയവിനിമയം</li>
+                </ul>
+            </div>
+
+            <h4>IMC പ്ലാനിംഗ് പ്രക്രിയ</h4>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1. ടാർഗെറ്റ് ഓഡിയൻസ് തിരിച്ചറിയൽ</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2. കമ്യൂണിക്കേഷൻ ലക്ഷ്യങ്ങൾ നിർണയിക്കൽ</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">3. സന്ദേശം തയ്യാറാക്കൽ</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">4. ചാനലുകൾ തിരഞ്ഞെടുക്കൽ</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">5. ബജറ്റ് നിർണയിക്കൽ</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">6. ഫലം വിലയിരുത്തൽ</div>
+                </div>
+            </div>
+
+            <!-- Unit 4.5 -->
+            <h3 id="u4-5">യൂണിറ്റ് 4.5: ഫീൽഡ് സ്റ്റഡി, കേസ് സ്റ്റഡി</h3>
+
+            <h4>പഠിക്കേണ്ട വിഷയങ്ങൾ</h4>
+            <div class="card">
+                <ul>
+                    <li>പ്രമോഷൻ തന്ത്രങ്ങൾ</li>
+                    <li>പ്രസിദ്ധ പരസ്യ കാമ്പെയ്‌നുകൾ (അമൂൽ, നൈക്ക്, കൊക്ക-കോള)</li>
+                    <li>ബ്രാൻഡിംഗ് തന്ത്രങ്ങൾ</li>
+                    <li>ഡിജിറ്റൽ മാർക്കറ്റിംഗ് പ്രയോഗങ്ങൾ</li>
+                    <li>സോഷ്യൽ മീഡിയ കാമ്പെയ്‌നുകൾ</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MODULE 5 -->
+        <section class="section" id="mod5">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 5</span>
+                <h2>ടീച്ചർ സ്പെസിഫിക് മൊഡ്യൂൾ</h2>
+            </div>
+
+            <div class="card">
+                <p>അധ്യാപകന്റെ തിരഞ്ഞെടുപ്പനുസരിച്ചുള്ള പ്രത്യേക വിഷയം.</p>
+                <ul>
+                    <li>അധ്യാപകൻ തിരഞ്ഞെടുക്കുന്ന പ്രത്യേക വിഷയം</li>
+                    <li>സമകാലീന വിഷയങ്ങൾ, കേസ് സ്റ്റഡികൾ</li>
+                    <li>വ്യവസായ പരിചയം, അതിഥി പ്രഭാഷണങ്ങൾ</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- COURSE OUTCOMES -->
+        <section class="section" id="co">
+            <div class="section-header">
+                <span class="section-number">🎯</span>
+                <h2>കോഴ്സ് ഔട്ട്കമുകൾ (CO) - സംക്ഷേപം</h2>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>CO</th>
+                        <th>പ്രതീക്ഷിക്കുന്ന ഫലം</th>
+                    </tr>
+                    <tr>
+                        <td><strong>CO1</strong></td>
+                        <td>അടിസ്ഥാന മാർക്കറ്റിംഗ് ആശയങ്ങൾ, സിദ്ധാന്തങ്ങൾ, തത്വങ്ങൾ മനസ്സിലാക്കുക</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CO2</strong></td>
+                        <td>ഉപഭോക്തൃ പെരുമാറ്റം മനസ്സിലാക്കുക; STP പ്രയോഗത്തിൽ വരുത്തുക</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CO3</strong></td>
+                        <td>അടിസ്ഥാന മാർക്കറ്റിംഗ് മിക്സും തന്ത്രവും വികസിപ്പിക്കുക</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CO4</strong></td>
+                        <td>മാർക്കറ്റിംഗിലെ സമകാലീന പ്രവണതകൾ മനസ്സിലാക്കുക</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- REFERENCES -->
+        <section class="section" id="ref">
+            <div class="section-header">
+                <span class="section-number">📚</span>
+                <h2>അവലംബ ഗ്രന്ഥങ്ങൾ - പ്രധാന പോയിന്റുകൾ</h2>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>പുസ്തകം</th>
+                        <th>പ്രധാന സവിശേഷത</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Philip Kotler</strong></td>
+                        <td>മാർക്കറ്റിംഗിന്റെ പിതാവ്; STP, 4P, മാർക്കറ്റിംഗ് മാനേജ്മെന്റിന്റെ സമഗ്ര അടിസ്ഥാനം</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>📘 മാർക്കറ്റിംഗ് മാനേജ്മെന്റ് - MG University B.Com Honours</p>
+        <p>MG1DSC BST100 | DSC B | സെമസ്റ്റർ 1</p>
+        <p>നോട്ടുകൾ പരീക്ഷാ പഠനത്തിനുള്ള ഒരു സഹായിക ഗ്രന്ഥം മാത്രമാണ്</p>
+        <p style="margin-top: 1rem;">Made with ❤️ albin baby</p>
+    </footer>
+
+    <!-- Instagram Feedback Button -->
+    <div class="feedback-float">
+        <a href="https://www.instagram.com/albin___baby___" target="_blank" class="feedback-btn" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+            <span>📩 ഫീഡ്ബാക്ക് നൽകുക</span>
+        </a>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 500);
+        });
+
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        });
+
+        // Back to Top Button
+        window.addEventListener('scroll', () => {
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Scroll Animations using Intersection Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Navigation Dots
+        const sections = document.querySelectorAll('.section');
+        const navContainer = document.getElementById('navContainer');
+        const sectionTitles = [
+            'മൊഡ്യൂൾ 1: പരിചയവും വികസനവും',
+            'മൊഡ്യൂൾ 2: STP & പ്രൊഡക്റ്റ് മിക്സ്',
+            'മൊഡ്യൂൾ 3: പ്രൈസിംഗ് & ഡിസ്ട്രിബ്യൂഷൻ',
+            'മൊഡ്യൂൾ 4: പ്രമോഷൻ & IMC',
+            'മൊഡ്യൂൾ 5: ടീച്ചർ സ്പെസിഫിക്',
+            'കോഴ്സ് ഔട്ട്കമുകൾ',
+            'അവലംബ ഗ്രന്ഥങ്ങൾ'
+        ];
+
+        sections.forEach((section, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'nav-dot';
+            dot.setAttribute('data-title', sectionTitles[index] || 'Section');
+            dot.addEventListener('click', () => {
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+            navContainer.appendChild(dot);
+        });
+
+        // Active Navigation Dot
+        const navDots = document.querySelectorAll('.nav-dot');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = index;
+                }
+            });
+            navDots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+
+        // Search Functionality
+        const searchData = [];
+
+        // Build search index from content
+        document.querySelectorAll('.section').forEach((section, secIndex) => {
+            const sectionId = section.id;
+            const sectionTitle = section.querySelector('h2')?.textContent || '';
+
+            // Add section title to search
+            searchData.push({
+                id: sectionId,
+                title: sectionTitle,
+                text: sectionTitle,
+                type: 'section'
+            });
+
+            // Add subsections
+            section.querySelectorAll('h3, h4').forEach(heading => {
+                const headingText = heading.textContent;
+                let previewText = headingText;
+
+                // Get next sibling text for preview
+                let nextEl = heading.nextElementSibling;
+                if (nextEl && (nextEl.tagName === 'P' || nextEl.classList.contains('card'))) {
+                    previewText = nextEl.textContent.substring(0, 150) + '...';
+                }
+
+                searchData.push({
+                    id: sectionId,
+                    title: headingText,
+                    text: previewText,
+                    type: 'topic'
+                });
+            });
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            if (query.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            const filtered = searchData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.text.toLowerCase().includes(query)
+            ).slice(0, 8);
+
+            if (filtered.length === 0) {
+                searchResults.innerHTML = '<div class="search-result-item" style="text-align:center;padding:2rem;"><div class="search-result-text" style="font-size:1.3rem;font-weight:600;">🔍 ഫലങ്ങൾ കണ്ടെത്തിയില്ല</div></div>';
+            } else {
+                searchResults.innerHTML = filtered.map(item => `
+                    <div class="search-result-item" onclick="scrollToSection('${item.id}')">
+                        <div class="search-result-title">${item.title}</div>
+                        <div class="search-result-text">${item.text}</div>
+                    </div>
+                `).join('');
+            }
+
+            searchResults.classList.add('active');
+        });
+
+        // Close search when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.classList.remove('active');
+            }
+        });
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                searchResults.classList.remove('active');
+                searchInput.value = '';
+            }
+        }
+
+        // Keyboard shortcut for search
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            if (e.key === 'Escape') {
+                searchResults.classList.remove('active');
+                searchInput.blur();
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add Malayalam font support check
+        document.fonts.ready.then(() => {
+            console.log('Fonts loaded successfully');
+        });
+    </script>
+</body>
+</html>

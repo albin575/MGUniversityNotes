@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MG University B.Com Second Language Malayalam - AI Study Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.85);
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.15);
+            --card-glow: 0 0 30px rgba(139, 92, 246, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Sans Malayalam', 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.9;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 15% 15%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 85%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.05) 0%, transparent 60%),
+                var(--bg-primary);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.6;
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; overflow: hidden;
+        }
+        .particle {
+            position: absolute; width: 4px; height: 4px;
+            background: rgba(59, 130, 246, 0.3); border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            50% { transform: translateY(-100vh) translateX(50px); }
+        }
+
+        /* Header */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(20px) saturate(1.2);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 1rem;
+            min-height: 80px;
+        }
+
+        .logo {
+            font-size: 1.6rem; font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+            letter-spacing: 0.5px;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+
+        .search-container {
+            position: relative; flex: 1; max-width: 600px; min-width: 280px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.7rem 1rem 0.7rem 2.8rem;
+            border-radius: 50px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff; font-family: inherit; font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4), 0 0 60px rgba(139, 92, 246, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.02);
+        }
+        .search-input::placeholder { color: rgba(255,255,255,0.4); }
+
+        .search-icon {
+            position: absolute; left: 1rem; top: 50%;
+            transform: translateY(-50%);
+            color: #60a5fa; font-size: 1.1rem;
+        }
+
+        .search-results {
+            position: absolute; top: calc(100% + 10px); left: 0; right: 0;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            max-height: 500px; overflow-y: auto;
+            display: none;
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(139, 92, 246, 0.2);
+            z-index: 1001; padding: 0.75rem;
+        }
+        .search-results.active { display: block; animation: slideDown 0.3s ease; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-result-item {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: pointer; transition: all 0.25s ease;
+            border-radius: 12px; margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .search-result-item:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            transform: translateX(8px);
+            border-left: 3px solid #60a5fa;
+        }
+        .search-result-item:last-child { border-bottom: none; margin-bottom: 0; }
+        .search-result-title {
+            font-weight: 700; color: #60a5fa; margin-bottom: 0.4rem;
+            font-size: 1rem; letter-spacing: 0.3px;
+        }
+        .search-result-text {
+            font-size: 0.85rem; color: #cbd5e1;
+            display: -webkit-box; -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+        }
+        .search-result-badge {
+            display: inline-block; padding: 0.15rem 0.5rem;
+            background: rgba(59, 130, 246, 0.2); border-radius: 4px;
+            font-size: 0.7rem; color: #60a5fa; margin-bottom: 0.3rem;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 10rem 2rem 5rem; position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px; font-size: 0.85rem;
+            color: #60a5fa; margin-bottom: 1.5rem;
+            animation: pulse 2.5s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 4rem); font-weight: 800;
+            line-height: 1.15; margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 50%, #60a5fa 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero h2 {
+            font-size: clamp(1.2rem, 3vw, 2rem); font-weight: 600;
+            color: #60a5fa; margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+            color: #94a3b8; max-width: 600px; margin-bottom: 2rem; line-height: 1.8;
+        }
+
+        .scroll-indicator {
+            position: absolute; bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            color: #64748b; font-size: 0.8rem;
+            animation: bounce 2.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-12px); }
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex; justify-content: center; gap: 3rem;
+            margin-top: 1rem; flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
+        .stat-number {
+            font-size: 2rem; font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .stat-label { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; }
+
+        /* Content */
+        .content-wrapper { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+        .section {
+            margin-bottom: 5rem;
+            opacity: 0; transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .section.visible { opacity: 1; transform: translateY(0); }
+
+        .section-header {
+            margin-bottom: 2.5rem; padding-bottom: 1.25rem;
+            border-bottom: 2px solid;
+            border-image: var(--accent-gradient) 1;
+            position: relative;
+        }
+        .section-header::after {
+            content: ''; position: absolute; bottom: -2px; left: 0;
+            width: 80px; height: 2px;
+            background: linear-gradient(90deg, #ec4899, #8b5cf6);
+        }
+
+        .section-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15));
+            border: 1px solid rgba(59,130,246,0.25);
+            border-radius: 8px; font-size: 0.8rem; font-weight: 600;
+            color: #60a5fa; margin-bottom: 0.75rem; letter-spacing: 0.5px;
+        }
+
+        .section h2 {
+            font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700;
+            color: #ffffff; line-height: 1.3;
+        }
+        .section h3 {
+            font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 600;
+            color: #60a5fa; margin: 2.5rem 0 1rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent-primary);
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .section h4 {
+            font-size: 1.05rem; font-weight: 600;
+            color: #e2e8f0; margin: 1.5rem 0 0.75rem;
+        }
+        .section p {
+            color: #cbd5e1; margin-bottom: 1rem;
+            text-align: justify; font-size: 0.95rem;
+        }
+        .section ul, .section ol {
+            margin: 1rem 0 1rem 1.5rem; color: #cbd5e1;
+        }
+        .section li { margin-bottom: 0.6rem; font-size: 0.95rem; line-height: 1.7; }
+        .section li strong { color: #93c5fd; }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 1.5rem; margin: 1.25rem 0;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative; overflow: hidden;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);
+        }
+        .card:hover {
+            border-color: rgba(59, 130, 246, 0.25);
+            box-shadow: var(--card-glow);
+            transform: translateY(-3px);
+        }
+        .card-title {
+            font-size: 1rem; font-weight: 700; color: #93c5fd;
+            margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto; margin: 1.5rem 0;
+            border-radius: 12px; border: 1px solid var(--border-color);
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th {
+            background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.15));
+            color: #93c5fd; font-weight: 600; text-align: left;
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid rgba(59,130,246,0.2);
+        }
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: #cbd5e1;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(59, 130, 246, 0.04); }
+        tr { transition: background 0.2s ease; }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(139,92,246,0.08) 100%);
+            border-left: 3px solid var(--accent-primary);
+            padding: 1.25rem; border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0; position: relative;
+        }
+        .highlight-box p { margin: 0; color: #e2e8f0; font-size: 0.95rem; }
+        .highlight-box strong { color: #93c5fd; }
+
+        /* Timeline */
+        .timeline {
+            position: relative; padding-left: 1.75rem; margin: 1.5rem 0;
+        }
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #3b82f6, #8b5cf6, #ec4899);
+        }
+        .timeline-item {
+            position: relative; padding-bottom: 1.5rem;
+        }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -1.75rem; top: 0.4rem;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: 2px solid var(--bg-primary);
+            transform: translateX(-4px);
+            box-shadow: 0 0 10px rgba(59,130,246,0.4);
+        }
+        .timeline-title {
+            font-weight: 700; color: #93c5fd; font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+        .timeline-item p { font-size: 0.9rem; color: #94a3b8; margin: 0; }
+
+        /* Quick Reference Table */
+        .quick-ref-table th { text-align: center; }
+        .quick-ref-table td { text-align: center; }
+        .quick-ref-table td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+
+        /* Instagram Feedback Button */
+        .feedback-float {
+            position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 1000;
+        }
+        .feedback-btn {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.875rem 1.25rem;
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white; text-decoration: none; border-radius: 50px;
+            font-weight: 600; font-size: 0.9rem;
+            box-shadow: 0 4px 20px rgba(220, 39, 67, 0.35);
+            transition: all 0.3s ease; border: none; cursor: pointer;
+            font-family: inherit;
+        }
+        .feedback-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 30px rgba(220, 39, 67, 0.5);
+        }
+        .feedback-btn svg { width: 22px; height: 22px; fill: white; }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--accent-gradient); z-index: 1001;
+            transition: width 0.1s ease;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed; bottom: 1.5rem; left: 1.5rem;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: #ffffff; display: flex;
+            align-items: center; justify-content: center;
+            cursor: pointer; opacity: 0;
+            transition: all 0.3s ease; z-index: 999;
+            backdrop-filter: blur(10px);
+        }
+        .back-to-top.visible { opacity: 1; }
+        .back-to-top:hover {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-color: transparent; box-shadow: 0 0 20px rgba(59,130,246,0.4);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center; padding: 3rem 2rem;
+            border-top: 1px solid var(--border-color);
+            color: #64748b; font-size: 0.85rem;
+        }
+        .footer a { color: #60a5fa; text-decoration: none; }
+        .footer-heart { color: #ec4899; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header { padding: 0.75rem 1rem; }
+            .search-container { order: 3; width: 100%; max-width: none; }
+            .hero { padding: 8rem 1rem 3rem; }
+            .content-wrapper { padding: 1rem; }
+            .stats-bar { gap: 1.5rem; }
+            .stat-number { font-size: 1.5rem; }
+            .feedback-float { bottom: 1rem; right: 1rem; }
+            .feedback-btn { padding: 0.7rem 1rem; font-size: 0.8rem; }
+            .feedback-btn span { display: none; }
+            .back-to-top { bottom: 1rem; left: 1rem; }
+            .search-results { max-height: 400px; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #60a5fa, #a78bfa);
+        }
+
+        /* Selection */
+        ::selection {
+            background: rgba(59, 130, 246, 0.3); color: #ffffff;
+        }
+
+        /* Loading */
+        .loading {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-primary);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.5s ease;
+        }
+        .loading.hidden { opacity: 0; pointer-events: none; }
+        .loading-spinner {
+            width: 45px; height: 45px;
+            border: 3px solid rgba(59,130,246,0.15);
+            border-top-color: var(--accent-primary); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);
+            margin: 3rem 0;
+        }
+
+        /* Author tag */
+        .author-tag {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.25rem 0.6rem;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 6px; font-size: 0.75rem;
+            color: #a78bfa; font-weight: 500;
+        }
+
+        /* Poem quote */
+        .poem-quote {
+            font-style: italic; color: #a78bfa;
+            padding: 0.75rem 1rem;
+            background: rgba(139, 92, 246, 0.06);
+            border-radius: 8px; border-left: 2px solid rgba(139, 92, 246, 0.3);
+            margin: 0.75rem 0; font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Background -->
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">📚 MG University Malayalam</div>
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="തിരയുക... കവി, കൃതി, ആശയം (Ctrl+K)">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span>✨</span> AI-Powered Study Notes
+        </div>
+        <h1>B.Com Second Language Malayalam</h1>
+        <h2>MG University</h2>
+        <p>കവിതകളും കഥകളും — വിശദമായ നോട്ടുകൾ<br>പരീക്ഷാ വിജയത്തിന് AI-സഹായിത പഠന സാമഗ്രി</p>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">6</div>
+                <div class="stat-label">കവിതകൾ</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">6</div>
+                <div class="stat-label">കഥകൾ</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">കൃതികൾ</div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>സ്ക്രോൾ ചെയ്യുക</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="content-wrapper" id="content">
+
+        <!-- POEMS SECTION -->
+        <section class="section" id="poems" data-title="കവിതകൾ">
+            <div class="section-header">
+                <span class="section-badge">📚 ഭാഗം 1</span>
+                <h2>കവിതകൾ (Poems)</h2>
+            </div>
+
+            <!-- Poem 1: Kavile Pattu -->
+            <div id="kavile-pattu">
+                <h3>1. ഇടശ്ശേരി ഗോവിന്ദൻ നായർ — കാവിലെ പാട്ട്</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കവി പരിചയം</div>
+                    <ul>
+                        <li><strong>ഇടശ്ശേരി</strong> (1912–1974) — മലയാളത്തിലെ ആധുനിക കവിതയുടെ <strong>പിതാവ്</strong> എന്ന് അറിയപ്പെടുന്നു.</li>
+                        <li>തൃശ്ശൂർ ജില്ലയിലെ <strong>പെരിഞ്ചല്ലൂരിൽ</strong> ജനനം.</li>
+                        <li>"<strong>കാവിലെ പാട്ട്</strong>" (1939) — മലയാള ആധുനിക കവിതയിലെ <strong>വഴിത്തിരിവായ കൃതി</strong>.</li>
+                    </ul>
+                </div>
+
+                <h4>കൃതി വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>പശ്ചാത്തലം:</strong> ഒരു കാവിലെ ദേവതയുടെ പാട്ടാണ് കവിതയുടെ കാതൽ.</p>
+                    <p><strong>മുഖ്യ ആശയം:</strong> പ്രകൃതിയും മനുഷ്യനും തമ്മിലുള്ള ആത്മബന്ധം, ആദിമമായ ആരാധനാഭാവം.</p>
+                    <p><strong>കാല്പനികതയും യാഥാർത്ഥ്യവും:</strong> കാവിലെ ദൃശ്യങ്ങൾ (വേപ്പ്, പാല, കരിമരം, നീർക്കാവൽ) വർണ്ണനാത്മകമായി അവതരിപ്പിക്കുന്നു.</p>
+                    <p><strong>ഭാഷാ ശൈലി:</strong> മലയാളത്തിന്റെ ശുദ്ധമായ സൗന്ദര്യം. പഴയ മലയാള പദങ്ങൾ സമൃദ്ധമായി ഉപയോഗിച്ചിരിക്കുന്നു.</p>
+                    <p><strong>പ്രതീകങ്ങൾ:</strong></p>
+                    <ul>
+                        <li><strong>കാവ്</strong> = മനുഷ്യന്റെ ആന്തരിക ലോകം</li>
+                        <li><strong>ദേവത</strong> = പ്രകൃതി ശക്തി</li>
+                    </ul>
+                    <div class="poem-quote">
+                        "കാവിലെ പാട്ട് പാടി നിൽക്കുന്നു കാവിലെ ദേവത..." — ദേവതയുടെ സാന്നിധ്യം പ്രകൃതിയിലൂടെ അനുഭവപ്പെടുന്നു.
+                    </div>
+                    <p><strong>പ്രാധാന്യം:</strong> മലയാള കവിതയിൽ ആദ്യമായി <strong>ആധുനിക സൗന്ദര്യശാസ്ത്രം</strong> കൊണ്ടുവന്ന കൃതി.</p>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Poem 2: Ente Shilpam -->
+            <div id="ente-shilpam">
+                <h3>2. വയലാർ രാമവർമ്മ — എന്റെ ശില്പം</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കവി പരിചയം</div>
+                    <ul>
+                        <li><strong>വയലാർ രാമവർമ്മ</strong> (1928–1975) — മലയാളത്തിലെ <strong>ജനകീയ കവി</strong>.</li>
+                        <li>"<strong>എന്റെ ശില്പം</strong>" — കാലത്തിന്റെ നിർമ്മിതിയെക്കുറിച്ചുള്ള ആത്മപരിശീലനം.</li>
+                    </ul>
+                </div>
+
+                <h4>കൃതി വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>മുഖ്യ ആശയം:</strong> കവി തന്റെ ജീവിതത്തെ ഒരു ശില്പമായി കാണുന്നു. സ്വന്തം കൈകളാൽ തന്റെ ജീവിതം നിർമ്മിക്കുന്നു.</p>
+                    <p><strong>പ്രതീകാത്മകത:</strong></p>
+                    <ul>
+                        <li><strong>ശില്പം</strong> = ജീവിതം</li>
+                        <li><strong>ശില്പി</strong> = കവി / മനുഷ്യൻ</li>
+                        <li><strong>കല്ല്</strong> = കാലം / വിധി</li>
+                    </ul>
+                    <div class="poem-quote">
+                        "ഞാൻ എന്റെ ശില്പം കൊത്തി എടുക്കുന്നു" — സ്വയം നിർണയത്തിന്റെ പ്രഖ്യാപനം.
+                    </div>
+                    <p><strong>ഭാഷ:</strong> ലളിതവും ശക്തവുമായ ഭാഷ. ജനകീയ അടിസ്ഥാനത്തിൽ എഴുതിയിട്ടുണ്ടെങ്കിലും ആഴമേറിയ തത്ത്വചിന്ത അടങ്ങിയിരിക്കുന്നു.</p>
+                    <p><strong>സാമൂഹിക സന്ദേശം:</strong> മനുഷ്യൻ സ്വന്തം വിധി സ്വയം നിർമ്മിക്കണം എന്ന ആഹ്വാനം.</p>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Poem 3: Kaadu -->
+            <div id="kaadu">
+                <h3>3. ഡി. വിനയചന്ദ്രൻ — കാട്</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കവി പരിചയം</div>
+                    <ul>
+                        <li><strong>ഡി. വിനയചന്ദ്രൻ</strong> (1946–2013) — കേരളത്തിലെ ആധുനിക കവികളിൽ പ്രധാനി.</li>
+                        <li>"<strong>കാട്</strong>" കവിത പ്രകൃതിയുടെ ആദിമ ശക്തിയെ ആവിഷ്കരിക്കുന്നു.</li>
+                    </ul>
+                </div>
+
+                <h4>കൃതി വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>മുഖ്യ ആശയം:</strong> കാട് മനുഷ്യന്റെ ആന്തരിക മനസ്സിന്റെ പ്രതീകമാണ്. ആദിമമായ ആവേശങ്ങളും ഭയവും ആകാംക്ഷയും കാട്ടിൽ നിറഞ്ഞു നിൽക്കുന്നു.</p>
+                    <p><strong>പ്രകൃതി വർണന:</strong> കാട്ടിലെ ശബ്ദങ്ങൾ, നിഴലുകൾ, ജന്തുക്കൾ — എല്ലാം ജീവനുള്ളവയായി അവതരിപ്പിക്കപ്പെടുന്നു.</p>
+                    <p><strong>ഭാഷാ ശൈലി:</strong> അപൂർവമായ ചിത്രീകരണശക്തി. കാടിന്റെ അന്തരീക്ഷം വായനക്കാരനിലേക്ക് കൊണ്ടുവരുന്നു.</p>
+                    <p><strong>പ്രതീകങ്ങൾ:</strong></p>
+                    <ul>
+                        <li><strong>കാട്</strong> = അജ്ഞാതമായ ഭാവി / മനസ്സിന്റെ അഗാധത</li>
+                        <li><strong>വഴി</strong> = ജീവിതയാത്ര</li>
+                    </ul>
+                    <p><strong>പ്രത്യേകത:</strong> മലയാള കവിതയിൽ കാടിനെ ഇത്ര ആഴത്തിൽ ചിത്രീകരിച്ച മറ്റൊരു കവിത ഇല്ല.</p>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Poem 4: Kiratavrutham -->
+            <div id="kiratavrutham">
+                <h3>4. കടമ്മനിട്ട രാമകൃഷ്ണൻ — കിരാതവൃത്തം</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കവി പരിചയം</div>
+                    <ul>
+                        <li><strong>കടമ്മനിട്ട രാമകൃഷ്ണൻ</strong> (1915–1996) — മഹാകാവ്യരചയിതാവ്.</li>
+                        <li>"<strong>കിരാതവൃത്തം</strong>" — ഭാരതിയുടെ "കിരാതാർജുനീയം" ആശ്രയിച്ചുള്ള ആധുനിക മലയാള കവിത.</li>
+                    </ul>
+                </div>
+
+                <h4>കൃതി വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>പശ്ചാത്തലം:</strong> മഹാഭാരതത്തിലെ കിരാതാർജുനീയ കഥ — അർജുനനും ശിവനും (കിരാതരൂപത്തിൽ) തമ്മിലുള്ള യുദ്ധം.</p>
+                    <p><strong>മുഖ്യ ആശയം:</strong> അഹങ്കാരത്തിന്റെ പരാജയം, ഭക്തി, ദൈവീക ദർശനം.</p>
+                    <p><strong>അർജുനന്റെ അഹങ്കാരം:</strong> പാഞ്ചാലിയെ ജയിച്ച അഹങ്കാരത്തിൽ അർജുനൻ കാട്ടിൽ വനവാസത്തിന് പോകുന്നു.</p>
+                    <p><strong>കിരാതൻ (ശിവൻ):</strong> ഒരു വേടന്റെ രൂപത്തിൽ പ്രത്യക്ഷപ്പെടുന്ന ശിവൻ അർജുനനെ പരീക്ഷിക്കുന്നു.</p>
+                    <p><strong>യുദ്ധം:</strong> അർജുനന്റെ വില്ലും അസ്ത്രങ്ങളും കിരാതനിൽ പ്രയോഗിക്കാൻ കഴിയുന്നില്ല — ദൈവീക ശക്തിയുടെ അപാരത്വം.</p>
+                    <p><strong>പാഠം:</strong> മനുഷ്യന്റെ കഴിവുകൾ ദൈവീകമായവയാണ്; അഹങ്കരിക്കരുത്.</p>
+                    <p><strong>ഭാഷ:</strong> ശ്ലോകാനുസൃതമായ ഭാഷ, സംസ്കൃത പദങ്ങളുടെ സമൃദ്ധി.</p>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Poem 5: Thiruvonam -->
+            <div id="thiruvonam">
+                <h3>5. വിജയലക്ഷ്മി — തിരുവോണം</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കവി പരിചയം</div>
+                    <ul>
+                        <li><strong>വിജയലക്ഷ്മി</strong> — മലയാളത്തിലെ പ്രമുഖ <strong>സ്ത്രീകവി</strong>.</li>
+                        <li>"<strong>തിരുവോണം</strong>" — ഓണത്തിന്റെ സാംസ്കാരിക-സാമൂഹിക പ്രാധാന്യം ആവിഷ്കരിക്കുന്നു.</li>
+                    </ul>
+                </div>
+
+                <h4>കൃതി വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>മുഖ്യ ആശയം:</strong> ഓണം കേരളീയതയുടെ പ്രതീകമാണ്. സമൃദ്ധിയുടെയും ഐശ്വര്യത്തിന്റെയും ഉത്സവം.</p>
+                    <div class="poem-quote">
+                        "മാവേലി നാട് വാണീടും കാലം..." — സ്വപ്നഭൂമിയായ കേരളം.
+                    </div>
+                    <p><strong>സാമൂഹിക സന്ദേശം:</strong> ഓണം എല്ലാവർക്കും ഒരുപോലെയുള്ള ഉത്സവമാണ് — <strong>സമത്വത്തിന്റെ പ്രതീകം</strong>.</p>
+                    <p><strong>ഭാഷ:</strong> ലളിതവും ഭാവപൂർണ്ണവുമായ ഭാഷ. സ്ത്രീദൃഷ്ടിയിലൂടെ ഓണത്തെ കാണുന്നു.</p>
+                    <p><strong>പ്രതീകങ്ങൾ:</strong></p>
+                    <ul>
+                        <li><strong>പൂക്കളം</strong> = സൗന്ദര്യം / സമത്വം</li>
+                        <li><strong>ഓണസദ്യ</strong> = സമൃദ്ധി</li>
+                        <li><strong>തിരുവോണനാൾ</strong> = പുതുമ</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Poem 6: Oonu -->
+            <div id="oonu">
+                <h3>6. അനിത തമ്പി — ഊണ്</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കവി പരിചയം</div>
+                    <ul>
+                        <li><strong>അനിത തമ്പി</strong> — മലയാളത്തിലെ ആധുനിക <strong>സ്ത്രീകവി</strong>.</li>
+                        <li>"<strong>ഊണ്</strong>" — സാധാരണമായ ഒരു കൃത്യത്തെ (ഭക്ഷണം) ആഴത്തിലുള്ള തത്ത്വചിന്തയിലേക്ക് കൊണ്ടുപോകുന്നു.</li>
+                    </ul>
+                </div>
+
+                <h4>കൃതി വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>മുഖ്യ ആശയം:</strong> ഊണ് വെറും ശാരീരിക ആവശ്യമല്ല — സാമൂഹിക, സാംസ്കാരിക, മതപരമായ പ്രാധാന്യമുണ്ട്.</p>
+                    <p><strong>സ്ത്രീദൃഷ്ടി:</strong> വീട്ടമ്മയുടെ ഊണ് — അവസാനം കഴിക്കുന്നത്, മറ്റുള്ളവരെ നോക്കിയുള്ളത്.</p>
+                    <p><strong>പ്രതീകാത്മകത:</strong></p>
+                    <ul>
+                        <li><strong>ഊണ്</strong> = ജീവിതം</li>
+                        <li><strong>വിളമ്പൽ</strong> = സേവനം</li>
+                        <li><strong>വിശപ്പ്</strong> = ആഗ്രഹങ്ങൾ</li>
+                    </ul>
+                    <p><strong>ഭാഷ:</strong> ലളിതവും ആഴവുമായ ഭാഷ. ദൈനംദിന ജീവിതത്തിൽ നിന്ന് തത്ത്വചിന്തയിലേക്കുള്ള പ്രയാണം.</p>
+                    <p><strong>പ്രത്യേകത:</strong> സാധാരണമായ വിഷയത്തെ അസാധാരണമായ രീതിയിൽ കാണിക്കുന്നു.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- STORIES SECTION -->
+        <section class="section" id="stories" data-title="കഥകൾ">
+            <div class="section-header">
+                <span class="section-badge">📖 ഭാഗം 2</span>
+                <h2>കഥകൾ (Short Stories)</h2>
+            </div>
+
+            <!-- Story 1: Utharakadalas -->
+            <div id="utharakadalas">
+                <h3>1. കാരൂർ നീലകണ്ഠപിള്ള — ഉത്തരകടലാസ്</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കഥാകൃത്ത് പരിചയം</div>
+                    <ul>
+                        <li><strong>കാരൂർ നീലകണ്ഠപിള്ള</strong> (1887–1962) — മലയാളത്തിലെ ആദ്യകാല ചെറുകഥാകൃത്തുക്കളിൽ ഒരാളും <strong>സാമൂഹിക നവോത്ഥാനകാരനും</strong>.</li>
+                        <li>"<strong>ഉത്തരകടലാസ്</strong>" — സാമൂഹിക വിമർശനത്തിന്റെ മികച്ച ഉദാഹരണം.</li>
+                    </ul>
+                </div>
+
+                <h4>കഥാ വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>കഥാസാരം:</strong> ഒരു പാവപ്പെട്ട കുടുംബത്തിലെ അച്ഛൻ മകൾക്ക് വിവാഹത്തിന് ഉത്തരകടലാസ് (വിവാഹത്തിന് മറുപടി) എഴുതാൻ ശ്രമിക്കുന്നു.</p>
+                    <p><strong>മുഖ്യ കഥാപാത്രങ്ങൾ:</strong> അച്ഛൻ (പാവപ്പെട്ട കർഷകൻ), മകൾ, വരൻ.</p>
+                    <p><strong>സാമൂഹിക പശ്ചാത്തലം:</strong> ജാതിവ്യവസ്ഥ, പണക്കാരുടെ അഹങ്കാരം, പാവപ്പെട്ടവരുടെ അവസ്ഥ.</p>
+                    <p><strong>പ്രധാന സന്ദർഭം:</strong> വരന്റെ അച്ഛൻ പണക്കാരനും ഉയർന്ന ജാതിക്കാരനും ആയതിനാൽ അവരുടെ മറുപടി കാത്തിരിക്കുന്നു.</p>
+                    <p><strong>ഉത്തരകടലാസിന്റെ പ്രാധാന്യം:</strong> അക്കാലത്ത് വിവാഹത്തിന് മറുപടി എഴുതുന്നത് ഒരു ആചാരമായിരുന്നു. പാവപ്പെട്ടവന് അത് എഴുതാൻ പോലും കഴിയില്ല.</p>
+                    <p><strong>സാമൂഹിക സന്ദേശം:</strong> ജാതിവ്യവസ്ഥയുടെ ക്രൂരത, പണത്തിന്റെ അധികാരം, പാവപ്പെട്ടവരുടെ മനോവേദന.</p>
+                    <p><strong>ഭാഷാ ശൈലി:</strong> ലളിതവും ഹൃദയസ്പർശിയുമായ ഭാഷ. വായനക്കാരനെ കഥാപാത്രങ്ങളോട് അടുപ്പിക്കുന്നു.</p>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Story 2: Ullavum Illathavum -->
+            <div id="ullavum-illathavum">
+                <h3>2. ഉറൂബ് — ഉള്ളവരും ഇല്ലാത്തവരും</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കഥാകൃത്ത് പരിചയം</div>
+                    <ul>
+                        <li><strong>ഉറൂബ്</strong> (പി.സി. കുട്ടികൃഷ്ണൻ, 1915–1979) — മലയാളത്തിലെ മഹത്തായ ചെറുകഥാകൃത്ത്.</li>
+                        <li>"<strong>ഉള്ളവരും ഇല്ലാത്തവരും</strong>" — സാമ്പത്തിക അസമത്വത്തെ ആഴത്തിൽ അവലോകനം ചെയ്യുന്നു.</li>
+                    </ul>
+                </div>
+
+                <h4>കഥാ വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>കഥാസാരം:</strong> രണ്ട് കുടുംബങ്ങൾ — ഒന്ന് സമ്പന്നം, മറ്റൊന്ന് ദരിദ്രം. അവരുടെ ജീവിതങ്ങൾ പരസ്പരം ബന്ധപ്പെട്ടിരിക്കുന്നു.</p>
+                    <p><strong>മുഖ്യ കഥാപാത്രങ്ങൾ:</strong> രാമൻ (ദരിദ്രൻ), ഗോപാലൻ (സമ്പന്നൻ), അവരുടെ കുടുംബങ്ങൾ.</p>
+                    <p><strong>പശ്ചാത്തലം:</strong> ഗ്രാമീണ കേരളം, കൃഷി, കടം, പണം.</p>
+                    <p><strong>പ്രധാന സന്ദർഭങ്ങൾ:</strong></p>
+                    <ul>
+                        <li>രാമന്റെ കുട്ടികൾ പട്ടിണി കിടക്കുന്നു.</li>
+                        <li>ഗോപാലന്റെ വീട്ടിൽ ഐശ്വര്യം.</li>
+                        <li>രാമൻ ഗോപാലനിൽ നിന്ന് കടം വാങ്ങുന്നു.</li>
+                        <li>കടം തിരിച്ചടയ്ക്കാൻ കഴിയാതെ രാമന്റെ അവസ്ഥ.</li>
+                    </ul>
+                    <p><strong>സാമൂഹിക സന്ദേശം:</strong> "ഉള്ളവർ" (സമ്പന്നർ) "ഇല്ലാത്തവരെ" (ദരിദ്രരെ) ചൂഷണം ചെയ്യുന്നു. സാമ്പത്തിക അസമത്വം മനുഷ്യത്വത്തിന് എതിരാണ്.</p>
+                    <p><strong>പ്രതീകങ്ങൾ:</strong></p>
+                    <ul>
+                        <li><strong>ഭക്ഷണം</strong> = അസ്തിത്വം</li>
+                        <li><strong>കടം</strong> = അടിമത്തം</li>
+                        <li><strong>വീട്</strong> = സാമൂഹിക നില</li>
+                    </ul>
+                    <p><strong>ഭാഷ:</strong> യഥാർത്ഥവാദി ശൈലി. കഥാപാത്രങ്ങളുടെ ഭാഷ അവരുടെ സാമൂഹിക നില കാണിക്കുന്നു.</p>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Story 3: Prakasam Parathunna -->
+            <div id="prakasam-parathunna">
+                <h3>3. ടി. പത്മനാഭൻ — പ്രകാശം പരത്തുന്ന ഒരു പെൺകുട്ടി</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കഥാകൃത്ത് പരിചയം</div>
+                    <ul>
+                        <li><strong>ടി. പത്മനാഭൻ</strong> (1931–) — മലയാളത്തിലെ ആധുനിക ചെറുകഥയുടെ മുഖ്യപ്രതിനിധി.</li>
+                        <li>"<strong>പ്രകാശം പരത്തുന്ന ഒരു പെൺകുട്ടി</strong>" — സ്ത്രീ സ്വാതന്ത്ര്യത്തിന്റെ കഥ.</li>
+                    </ul>
+                </div>
+
+                <h4>കഥാ വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>കഥാസാരം:</strong> ഒരു പെൺകുട്ടി സ്വന്തം ജീവിതത്തിൽ പ്രകാശം പരത്തുന്നു — സ്വാതന്ത്ര്യത്തിലൂടെ, കലയിലൂടെ, സ്വപ്നങ്ങളിലൂടെ.</p>
+                    <p><strong>മുഖ്യ കഥാപാത്രം:</strong> പെൺകുട്ടി — സാധാരണ ഗ്രാമീണ പശ്ചാത്തലത്തിൽ നിന്ന് വരുന്നു, പക്ഷേ അസാധാരണമായ സ്വപ്നങ്ങൾ കാണുന്നു.</p>
+                    <p><strong>പ്രകാശത്തിന്റെ പ്രതീകം:</strong></p>
+                    <ul>
+                        <li><strong>പ്രകാശം</strong> = അറിവ്, സ്വാതന്ത്ര്യം, ആത്മവിശ്വാസം, പുതിയ കാഴ്ചപ്പാട്</li>
+                    </ul>
+                    <p><strong>സ്ത്രീവാദ കാഴ്ചപ്പാട്:</strong> പെൺകുട്ടി പരമ്പരാഗത ബന്ധനങ്ങളെ മറികടക്കുന്നു.</p>
+                    <p><strong>പ്രധാന സന്ദർഭങ്ങൾ:</strong></p>
+                    <ul>
+                        <li>പെൺകുട്ടിയുടെ സ്വപ്നങ്ങൾ.</li>
+                        <li>കുടുംബത്തിന്റെ പരമ്പരാഗത കാഴ്ചപ്പാടുകൾ.</li>
+                        <li>പെൺകുട്ടിയുടെ പ്രതിരോധം.</li>
+                    </ul>
+                    <p><strong>ഭാഷ:</strong> കാവ്യാത്മകവും ആധുനികവുമായ ഭാഷ. ചിത്രീകരണം അതിമനോഹരം.</p>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Story 4: Otthutheerppukal -->
+            <div id="otthutheerppukal">
+                <h3>4. അക്ഷിക — ഒത്തുതീർപ്പുകൾ</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കഥാകൃത്ത് പരിചയം</div>
+                    <ul>
+                        <li><strong>അക്ഷിക</strong> (സി.വി. ശ്രീരാമൻ, 1930–1999) — മലയാളത്തിലെ ആധുനിക കഥാകൃത്ത്.</li>
+                        <li>"<strong>ഒത്തുതീർപ്പുകൾ</strong>" — മനുഷ്യബന്ധങ്ങളിലെ ഒത്തുതീർപ്പുകളെ വിശകലനം ചെയ്യുന്നു.</li>
+                    </ul>
+                </div>
+
+                <h4>കഥാ വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>കഥാസാരം:</strong> രണ്ട് പേരുടെ ബന്ധത്തിൽ ഒത്തുതീർപ്പുകൾ എങ്ങനെ ഉണ്ടാകുന്നു, അവ എങ്ങനെ ബന്ധങ്ങളെ രൂപപ്പെടുത്തുന്നു.</p>
+                    <p><strong>മുഖ്യ ആശയം:</strong> ജീവിതം ഒത്തുതീർപ്പുകളുടെ നിരന്തര പ്രക്രിയയാണ്. സ്വപ്നങ്ങളും യാഥാർത്ഥ്യവും തമ്മിലുള്ള ഒത്തുതീർപ്പ്.</p>
+                    <p><strong>കഥാപാത്രങ്ങൾ:</strong> സാധാരണ മധ്യവർഗ്ഗ കുടുംബത്തിൽ നിന്നുള്ളവർ. അവരുടെ ആഗ്രഹങ്ങളും പരിമിതികളും.</p>
+                    <p><strong>പ്രധാന സന്ദർഭങ്ങൾ:</strong></p>
+                    <ul>
+                        <li>കഥാപാത്രങ്ങളുടെ ആന്തരിക സംഘർഷങ്ങൾ.</li>
+                        <li>പരസ്പരം വിട്ടുവീഴ്ച ചെയ്യുന്ന രംഗങ്ങൾ.</li>
+                        <li>ഒത്തുതീർപ്പുകളുടെ ഫലങ്ങൾ.</li>
+                    </ul>
+                    <p><strong>സാമൂഹിക സന്ദേശം:</strong> ആദർശവാദത്തിനും യാഥാർത്ഥ്യത്തിനും ഇടയിലുള്ള ഒത്തുതീർപ്പ് അനിവാര്യമാണ്. എന്നാൽ ചില ഒത്തുതീർപ്പുകൾ മനുഷ്യത്വത്തിന് ഹാനികരവുമാണ്.</p>
+                    <p><strong>ഭാഷ:</strong> മനോവിശകലനാത്മക ശൈലി. ആന്തരിക മൊണോളോഗുകൾ.</p>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Story 5: KP Umman -->
+            <div id="kp-umman">
+                <h3>5. ശിഹാബുദ്ദീൻ കൊയ്ത്തുംകടവ് — കെ.പി. ഉമ്മൻ</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കഥാകൃത്ത് പരിചയം</div>
+                    <ul>
+                        <li><strong>ശിഹാബുദ്ദീൻ കൊയ്ത്തുംകടവ്</strong> (1953–) — മലയാളത്തിലെ ആധുനിക കഥാകൃത്ത്.</li>
+                        <li>"<strong>കെ.പി. ഉമ്മൻ</strong>" — ഒരു സാധാരണ മനുഷ്യന്റെ ജീവിതത്തെ ആഴത്തിൽ ചിത്രീകരിക്കുന്നു.</li>
+                    </ul>
+                </div>
+
+                <h4>കഥാ വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>കഥാസാരം:</strong> കെ.പി. ഉമ്മൻ എന്ന സാധാരണ മനുഷ്യന്റെ ജീവിതം — അവന്റെ സ്വപ്നങ്ങൾ, പരാജയങ്ങൾ, വിജയങ്ങൾ, ഒടുവിലുള്ള മരണം.</p>
+                    <p><strong>മുഖ്യ കഥാപാത്രം:</strong> കെ.പി. ഉമ്മൻ — സാധാരണ മധ്യവർഗ്ഗ മലയാളി. അവന്റെ പേരിൽ തന്നെ "കെ.പി." (കേരള പോലീസ്/സർക്കാർ ഉദ്യോഗസ്ഥൻ) എന്ന അർത്ഥം.</p>
+                    <p><strong>ജീവിതയാത്ര:</strong></p>
+                    <ul>
+                        <li>ചെറുപ്പത്തിലെ ആശകൾ</li>
+                        <li>വളർന്നപ്പോൾ യാഥാർത്ഥ്യങ്ങൾ</li>
+                        <li>വാർധക്യത്തിലെ നിരാശ</li>
+                    </ul>
+                    <p><strong>പ്രധാന സന്ദർഭങ്ങൾ:</strong></p>
+                    <ul>
+                        <li>ഉമ്മന്റെ ബാല്യകാല സ്വപ്നങ്ങൾ.</li>
+                        <li>ഉദ്യോഗജീവിതത്തിലെ ഒത്തുതീർപ്പുകൾ.</li>
+                        <li>കുടുംബബന്ധങ്ങളിലെ സങ്കീർണതകൾ.</li>
+                        <li>മരണം — എല്ലാ മനുഷ്യരുടെയും അവസാനം.</li>
+                    </ul>
+                    <p><strong>സാമൂഹിക സന്ദേശം:</strong> സാധാരണ മനുഷ്യന്റെ ജീവിതത്തിന് പ്രാധാന്യമുണ്ട്. ചരിത്രത്തിൽ പേരുകൾ ഇല്ലാത്തവർ തന്നെ സമൂഹത്തിന്റെ അടിസ്ഥാനം.</p>
+                    <p><strong>ഭാഷ:</strong> യഥാർത്ഥവാദി ശൈലി. കഥാപാത്രത്തിന്റെ മനസ്സിനെ ആഴത്തിൽ കാണിക്കുന്നു.</p>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Story 6: Kuttu Kurukathi -->
+            <div id="kuttu-kurukathi">
+                <h3>6. ബിനോയ് തോമസ് — കുട്ടു കുറുക്കത്തി കുർ കുർ</h3>
+
+                <div class="card">
+                    <div class="card-title">👤 കഥാകൃത്ത് പരിചയം</div>
+                    <ul>
+                        <li><strong>ബിനോയ് തോമസ്</strong> — മലയാളത്തിലെ യുവ കഥാകൃത്ത്.</li>
+                        <li>"<strong>കുട്ടു കുറുക്കത്തി കുർ കുർ</strong>" — ആധുനിക ജീവിതത്തിന്റെ വിഡംബനം ആവിഷ്കരിക്കുന്നു.</li>
+                    </ul>
+                </div>
+
+                <h4>കഥാ വിശകലനം</h4>
+                <div class="card">
+                    <p><strong>കഥാസാരം:</strong> "കുട്ടു കുറുക്കത്തി" എന്ന വിളിപ്പേരുള്ള ഒരു കഥാപാത്രത്തിന്റെ ജീവിതം. "കുർ കുർ" എന്ന ശബ്ദം ആവർത്തനാത്മകമായ ജീവിതത്തിന്റെ പ്രതീകമാണ്.</p>
+                    <p><strong>മുഖ്യ കഥാപാത്രം:</strong> കുട്ടു കുറുക്കത്തി — സാധാരണ സ്ത്രീ, അല്ലെങ്കിൽ ആധുനിക ജീവിതത്തിലെ ഏതൊരു മനുഷ്യൻ.</p>
+                    <p><strong>ആധുനികതയുടെ വിഡംബനം:</strong></p>
+                    <ul>
+                        <li>യന്ത്രസഭ്യത</li>
+                        <li>ഒരേപോലെയുള്ള ദിനചര്യ</li>
+                        <li>ആശയവിനിമയത്തിന്റെ അഭാവ</li>
+                    </ul>
+                    <p><strong>പ്രധാന സന്ദർഭങ്ങൾ:</strong></p>
+                    <ul>
+                        <li>കഥാപാത്രത്തിന്റെ ദൈനംദിന ജീവിതം.</li>
+                        <li>"കുർ കുർ" എന്ന ശബ്ദത്തിന്റെ ആവർത്തനം.</li>
+                        <li>ആശയവിനിമയത്തിന്റെ പരാജയം.</li>
+                    </ul>
+                    <p><strong>സാമൂഹിക സന്ദേശം:</strong> ആധുനിക ജീവിതത്തിൽ മനുഷ്യർ യന്ത്രങ്ങളെപ്പോലെയാണ്. ആശയവിനിമയം ഇല്ലാതാകുന്നു, മനുഷ്യബന്ധങ്ങൾ ദുർബലമാകുന്നു.</p>
+                    <p><strong>ഭാഷ:</strong> ആധുനിക ശൈലി. ചിലപ്പോൾ ബോധപൂർവമായ ഭംഗികൾ. ആവർത്തനങ്ങൾ മനോഹരമായി ഉപയോഗിച്ചിരിക്കുന്നു.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUICK REFERENCE TABLE -->
+        <section class="section" id="quick-ref" data-title="പ്രധാന പോയിന്റുകൾ">
+            <div class="section-header">
+                <span class="section-badge">📝 പരീക്ഷാ ഗൈഡ്</span>
+                <h2>പരീക്ഷയ്ക്കുള്ള പ്രധാന പോയിന്റുകൾ</h2>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="quick-ref-table">
+                    <tr>
+                        <th>കൃതി</th>
+                        <th>കർത്താവ്</th>
+                        <th>മുഖ്യ ആശയം</th>
+                    </tr>
+                    <tr>
+                        <td>കാവിലെ പാട്ട്</td>
+                        <td>ഇടശ്ശേരി</td>
+                        <td>പ്രകൃതിയും ആരാധനയും</td>
+                    </tr>
+                    <tr>
+                        <td>എന്റെ ശില്പം</td>
+                        <td>വയലാർ രാമവർമ്മ</td>
+                        <td>സ്വയം നിർണയം</td>
+                    </tr>
+                    <tr>
+                        <td>കാട്</td>
+                        <td>വിനയചന്ദ്രൻ</td>
+                        <td>ആദിമ പ്രകൃതി</td>
+                    </tr>
+                    <tr>
+                        <td>കിരാതവൃത്തം</td>
+                        <td>കടമ്മനിട്ട രാമകൃഷ്ണൻ</td>
+                        <td>അഹങ്കാരത്തിന്റെ പരാജയം</td>
+                    </tr>
+                    <tr>
+                        <td>തിരുവോണം</td>
+                        <td>വിജയലക്ഷ്മി</td>
+                        <td>ഓണം-സമത്വം</td>
+                    </tr>
+                    <tr>
+                        <td>ഊണ്</td>
+                        <td>അനിത തമ്പി</td>
+                        <td>സ്ത്രീ-സാമൂഹിക ബന്ധം</td>
+                    </tr>
+                    <tr>
+                        <td>ഉത്തരകടലാസ്</td>
+                        <td>കാരൂർ നീലകണ്ഠപിള്ള</td>
+                        <td>ജാതി-സാമ്പത്തിക അസമത്വം</td>
+                    </tr>
+                    <tr>
+                        <td>ഉള്ളവരും ഇല്ലാത്തവരും</td>
+                        <td>ഉറൂബ്</td>
+                        <td>സാമ്പത്തിക ചൂഷണം</td>
+                    </tr>
+                    <tr>
+                        <td>പ്രകാശം പരത്തുന്ന...</td>
+                        <td>ടി. പത്മനാഭൻ</td>
+                        <td>സ്ത്രീ സ്വാതന്ത്ര്യം</td>
+                    </tr>
+                    <tr>
+                        <td>ഒത്തുതീർപ്പുകൾ</td>
+                        <td>അക്ഷിക</td>
+                        <td>മനുഷ്യബന്ധങ്ങൾ</td>
+                    </tr>
+                    <tr>
+                        <td>കെ.പി. ഉമ്മൻ</td>
+                        <td>ശിഹാബുദ്ദീൻ കൊയ്ത്തുംകടവ്</td>
+                        <td>സാധാരണ മനുഷ്യൻ</td>
+                    </tr>
+                    <tr>
+                        <td>കുട്ടു കുറുക്കത്തി...</td>
+                        <td>ബിനോയ് തോമസ്</td>
+                        <td>ആധുനികതയുടെ വിഡംബനം</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 2rem;">
+                <p><strong>💡 പഠന ടിപ്പ്:</strong> ഓരോ കൃതിയുടെയും കർത്താവ്, കൃതിയുടെ മുഖ്യ ആശയം, പ്രധാന കഥാപാത്രങ്ങൾ/പ്രതീകങ്ങൾ, സാമൂഹിക സന്ദേശം എന്നിവ ഓർത്തുവെക്കുക. വിജയം നേടാൻ ആശംസകൾ! 🎓</p>
+            </div>
+        </section>
+
+        <!-- SUMMARY SECTION -->
+        <section class="section" id="summary" data-title="സംഗ്രഹം">
+            <div class="section-header">
+                <span class="section-badge">📋 സംഗ്രഹം</span>
+                <h2>സംഗ്രഹം (Summary)</h2>
+            </div>
+
+            <div class="card">
+                <h4 style="color:#93c5fd; margin-bottom:1rem;">📚 കവിതകൾ</h4>
+                <ul>
+                    <li><strong>കാവിലെ പാട്ട്</strong> — പ്രകൃതിയും ആരാധനയും (ഇടശ്ശേരി)</li>
+                    <li><strong>എന്റെ ശില്പം</strong> — സ്വയം നിർണയം (വയലാർ)</li>
+                    <li><strong>കാട്</strong> — ആദിമ പ്രകൃതി (വിനയചന്ദ്രൻ)</li>
+                    <li><strong>കിരാതവൃത്തം</strong> — അഹങ്കാരത്തിന്റെ പരാജയം (കടമ്മനിട്ട)</li>
+                    <li><strong>തിരുവോണം</strong> — ഓണം-സമത്വം (വിജയലക്ഷ്മി)</li>
+                    <li><strong>ഊണ്</strong> — സ്ത്രീ-സാമൂഹിക ബന്ധം (അനിത തമ്പി)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4 style="color:#93c5fd; margin-bottom:1rem;">📖 കഥകൾ</h4>
+                <ul>
+                    <li><strong>ഉത്തരകടലാസ്</strong> — ജാതി-സാമ്പത്തിക അസമത്വം (കാരൂർ)</li>
+                    <li><strong>ഉള്ളവരും ഇല്ലാത്തവരും</strong> — സാമ്പത്തിക ചൂഷണം (ഉറൂബ്)</li>
+                    <li><strong>പ്രകാശം പരത്തുന്ന...</strong> — സ്ത്രീ സ്വാതന്ത്ര്യം (ടി.പത്മനാഭൻ)</li>
+                    <li><strong>ഒത്തുതീർപ്പുകൾ</strong> — മനുഷ്യബന്ധങ്ങൾ (അക്ഷിക)</li>
+                    <li><strong>കെ.പി. ഉമ്മൻ</strong> — സാധാരണ മനുഷ്യൻ (ശിഹാബുദ്ദീൻ)</li>
+                    <li><strong>കുട്ടു കുറുക്കത്തി...</strong> — ആധുനികതയുടെ വിഡംബനം (ബിനോയ് തോമസ്)</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>📚 MG University B.Com Second Language Malayalam</p>
+        <p>നോട്ടുകൾ പരീക്ഷാ പഠനത്തിനുള്ള ഒരു സഹായിക ഗ്രന്ഥം മാത്രമാണ്</p>
+        <p style="margin-top: 1rem;">Made with <span class="footer-heart">❤️</span> by Albin Baby</p>
+    </footer>
+
+    <!-- Instagram Feedback Button -->
+    <div class="feedback-float">
+        <a href="https://www.instagram.com/albin___baby___/" target="_blank" class="feedback-btn" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+            <span>📩 ഫീഡ്ബാക്ക്</span>
+        </a>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 600);
+        });
+
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        });
+
+        // Back to Top Button
+        window.addEventListener('scroll', () => {
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 400) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Scroll Animations
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.08 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.top = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 15 + 's';
+            p.style.animationDuration = (10 + Math.random() * 20) + 's';
+            particlesContainer.appendChild(p);
+        }
+
+        // Search Data
+        const searchData = [];
+
+        // Build search index
+        document.querySelectorAll('.section').forEach((section) => {
+            const sectionId = section.id;
+            const sectionTitle = section.querySelector('h2')?.textContent?.trim() || '';
+            const sectionBadge = section.querySelector('.section-badge')?.textContent?.trim() || '';
+
+            if (sectionTitle) {
+                searchData.push({
+                    id: sectionId, title: sectionTitle, text: sectionBadge,
+                    type: 'section', badge: 'Section'
+                });
+            }
+
+            // Sub-sections (poems/stories)
+            section.querySelectorAll('h3').forEach(heading => {
+                const headingText = heading.textContent.trim();
+                let previewText = headingText;
+                let nextEl = heading.nextElementSibling;
+                while (nextEl && nextEl.tagName !== 'H3' && nextEl.tagName !== 'H2') {
+                    if (nextEl.classList.contains('card') || nextEl.tagName === 'P') {
+                        previewText = nextEl.textContent.substring(0, 180) + '...';
+                        break;
+                    }
+                    nextEl = nextEl.nextElementSibling;
+                }
+
+                searchData.push({
+                    id: sectionId, title: headingText, text: previewText,
+                    type: 'topic', badge: headingText.includes('കവി') || headingText.includes('കഥാകൃത്ത്') ? 'Author' : 'Work'
+                });
+            });
+
+            // h4 headings
+            section.querySelectorAll('h4').forEach(heading => {
+                const headingText = heading.textContent.trim();
+                let previewText = headingText;
+                let nextEl = heading.nextElementSibling;
+                if (nextEl && (nextEl.tagName === 'P' || nextEl.classList.contains('card'))) {
+                    previewText = nextEl.textContent.substring(0, 150) + '...';
+                }
+                searchData.push({
+                    id: sectionId, title: headingText, text: previewText,
+                    type: 'subtopic', badge: 'Topic'
+                });
+            });
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            if (query.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            const filtered = searchData.filter(item =>
+                item.title.toLowerCase().includes(query) ||
+                item.text.toLowerCase().includes(query)
+            ).slice(0, 10);
+
+            if (filtered.length === 0) {
+                searchResults.innerHTML = `
+                    <div class="search-result-item" style="text-align:center;padding:2rem;">
+                        <div class="search-result-text" style="font-size:1rem;font-weight:600;color:#64748b;">
+                            🔍 ഫലങ്ങൾ കണ്ടെത്തിയില്ല
+                        </div>
+                    </div>`;
+            } else {
+                searchResults.innerHTML = filtered.map(item => `
+                    <div class="search-result-item" onclick="scrollToSection('${item.id}', '${item.title}')">
+                        <div class="search-result-badge">${item.badge}</div>
+                        <div class="search-result-title">${item.title}</div>
+                        <div class="search-result-text">${item.text}</div>
+                    </div>
+                `).join('');
+            }
+
+            searchResults.classList.add('active');
+        });
+
+        // Close search when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.classList.remove('active');
+            }
+        });
+
+        function scrollToSection(id, title) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                searchResults.classList.remove('active');
+                searchInput.value = '';
+
+                // Highlight the searched title
+                if (title) {
+                    const headings = element.querySelectorAll('h3, h4');
+                    headings.forEach(h => {
+                        if (h.textContent.trim() === title) {
+                            h.style.transition = 'all 0.5s ease';
+                            h.style.color = '#ec4899';
+                            setTimeout(() => { h.style.color = ''; }, 2000);
+                        }
+                    });
+                }
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            if (e.key === 'Escape') {
+                searchResults.classList.remove('active');
+                searchInput.blur();
+            }
+        });
+    </script>
+</body>
+</html>

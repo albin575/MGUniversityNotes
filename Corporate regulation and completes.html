@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>കോർപ്പറേറ്റ് റെഗുലേഷൻസ് ആൻഡ് കംപ്ലയൻസ് - MG University</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #ffffff;
+            --text-muted: #ffffff;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans Malayalam', 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: #ffffff;
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233b82f6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 26, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 3px solid rgba(59, 130, 246, 0.4);
+            padding: 1.5rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            min-height: 90px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.7));
+            letter-spacing: 1px;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 800px;
+            min-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.6), 0 0 80px rgba(139, 92, 246, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.03);
+        }
+
+        .search-input::placeholder {
+            color: #ffffff;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffffff;
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 1));
+        }
+
+        .search-results {
+            position: absolute;
+            top: calc(100% + 20px);
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 3px solid rgba(59, 130, 246, 0.5);
+            border-radius: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.4), 0 0 100px rgba(139, 92, 246, 0.3);
+            z-index: 1001;
+            padding: 1rem;
+        }
+
+        .search-results.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-result-item {
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            margin-bottom: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .search-result-item:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+            transform: translateX(12px) scale(1.02);
+            border-left: 5px solid #60a5fa;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .search-result-title {
+            font-weight: 800;
+            color: #60a5fa;
+            margin-bottom: 0.75rem;
+            font-size: 1.4rem;
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+            letter-spacing: 0.5px;
+        }
+
+        .search-result-text {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: #ffffff;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffffff;
+            font-size: 0.85rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .nav-container {
+            position: fixed;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: none;
+        }
+
+        @media (min-width: 1200px) {
+            .nav-container { display: block; }
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+            margin: 0.75rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-dot.active {
+            background: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .nav-dot:hover::after {
+            content: attr(data-title);
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+        }
+
+        .content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid;
+            border-image: var(--accent-gradient) 1;
+        }
+
+        .section-number {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--accent-gradient);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .section h3 {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin: 2rem 0 1rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .section p {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .section ul, .section ol {
+            margin: 1rem 0 1rem 1.5rem;
+            color: #ffffff;
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            color: #ffffff;
+        }
+
+        .card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-primary);
+            font-weight: 600;
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: #ffffff;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td { background: rgba(59, 130, 246, 0.05); }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.25rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p { margin: 0; color: #ffffff; }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-gradient);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            border: 3px solid var(--bg-primary);
+            transform: translateX(-5px);
+        }
+
+        .timeline-year {
+            font-weight: 700;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+        }
+
+        .feedback-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .feedback-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 20px rgba(220, 39, 67, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .feedback-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(220, 39, 67, 0.5);
+        }
+
+        .feedback-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-to-top.visible { opacity: 1; }
+
+        .back-to-top:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border-color);
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 0.75rem 1rem; }
+            .search-container { order: 3; width: 100%; max-width: none; }
+            .hero { padding: 7rem 1rem 3rem; }
+            .content-wrapper { padding: 1rem; }
+            .feedback-float { bottom: 1rem; right: 1rem; }
+            .feedback-btn { padding: 0.75rem 1rem; font-size: 0.85rem; }
+            .feedback-btn span { display: none; }
+            .back-to-top { bottom: 1rem; left: 1rem; }
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        ::selection {
+            background: rgba(59, 130, 246, 0.3);
+            color: #ffffff;
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden { opacity: 0; pointer-events: none; }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .section, .section *, .card, .card *, .timeline, .timeline *, 
+        table, table *, .highlight-box, .highlight-box *,
+        .hero, .hero *, .footer, .footer * {
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="bg-animation"></div>
+
+    <header class="header">
+        <div class="logo">📘 കോർപ്പറേറ്റ് റെഗുലേഷൻസ്</div>
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="തിരയുക... (Search notes)">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </header>
+
+    <nav class="nav-container" id="navContainer"></nav>
+
+    <section class="hero">
+        <div class="hero-badge">
+            <span>✨</span> AI-Powered Study Notes
+        </div>
+        <h1>കോർപ്പറേറ്റ് റെഗുലേഷൻസ്<br>ആൻഡ് കംപ്ലയൻസ്</h1>
+        <p>MG University - MG1DSCBLW100 | Semester 1 | Credit 4<br>വിശദമായ നോട്ടുകൾ - 5 മൊഡ്യൂളുകൾ</p>
+        <div class="scroll-indicator">
+            <span>സ്ക്രോൾ ചെയ്യുക</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <main class="content-wrapper" id="content">
+
+        <!-- MODULE 1 -->
+        <section class="section" id="mod1">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 1</span>
+                <h2>കമ്പനി - അടിസ്ഥാന ആശയങ്ങൾ</h2>
+            </div>
+
+            <h3>1.1 കമ്പനി (Company) - നിർവചനം</h3>
+            <div class="highlight-box">
+                <p><strong>ലോർഡ് ജസ്റ്റിസ് ലിൻഡ്‌ലിയുടെ നിർവചനം:</strong></p>
+                <p>"കമ്പനി ഒരു കൃത്രിമ വ്യക്തിയാണ് (Artificial Person) - അത് കാണാനോ തൊടാനോ കഴിയില്ല, എന്നാൽ നിയമപരമായി അത് ഒരു യഥാർത്ഥ വ്യക്തിയെപ്പോലെ കരുതപ്പെടുന്നു."</p>
+            </div>
+            <div class="card">
+                <p><strong>Companies Act 2013-ന്റെ Section 2(20) പ്രകാരം:</strong></p>
+                <p>കമ്പനി എന്നാൽ ഇന്ത്യയിൽ രജിസ്റ്റർ ചെയ്ത ഒരു കമ്പനി എന്നാണ് അർത്ഥം.</p>
+            </div>
+
+            <h3>1.2 കമ്പനിയുടെ സ്വഭാവസവിശേഷതകൾ</h3>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>സവിശേഷത</th>
+                        <th>വിശദീകരണം</th>
+                    </tr>
+                    <tr><td>കൃത്രിമ വ്യക്തിത്വം</td><td>നിയമപരമായി സൃഷ്ടിക്കപ്പെട്ട വ്യക്തി</td></tr>
+                    <tr><td>പരിമിതമായ ഉത്തരവാദിത്തം</td><td>ഓഹരidakalക്കാർ തങ്ങളുടെ ഓഹരി മൂല്യത്തിന് മാത്രം ഉത്തരവാദികൾ</td></tr>
+                    <tr><td>പ്രത്യേക അവകാശം</td><td>കമ്പനിക്ക് സ്വന്തം പേരിൽ കരാർ ചെയ്യാം, കേസ് കൊടുക്കാം/നേരിടാം</td></tr>
+                    <tr><td>സ്ഥിരത</td><td>അംഗങ്ങളുടെ മരണം/രാജി കമ്പനിയെ ബാധിക്കില്ല</td></tr>
+                    <tr><td>സ്വത്തിന്റെ വേർതിരിവ്</td><td>കമ്പനിയുടെ സ്വത്ത് അംഗങ്ങളുടേതല്ല</td></tr>
+                    <tr><td>പൊതു താൽപ്പര്യം</td><td>പൊതുജനങ്ങളിൽ നിന്ന് ധനസമ്പാദനം</td></tr>
+                </table>
+            </div>
+
+            <h3>1.3 കമ്പനികളുടെ വർഗ്ഗീകരണം</h3>
+            <div class="card">
+                <p><strong>അടിസ്ഥാനം: അംഗങ്ങളുടെ എണ്ണം</strong></p>
+                <ul>
+                    <li><strong>പ്രൈവറ്റ് ലിമിറ്റഡ് കമ്പനി</strong> - കുറഞ്ഞത് 2 അംഗങ്ങൾ, പരമാവധി 200</li>
+                    <li><strong>പബ്ലിക് ലിമിറ്റഡ് കമ്പനി</strong> - കുറഞ്ഞത് 7 അംഗങ്ങൾ, പരമാവധി ഇല്ല</li>
+                </ul>
+                <p><strong>അടിസ്ഥാനം: ഓഹരികളുടെ കൈമാറ്റം</strong></p>
+                <ul>
+                    <li><strong>പ്രൈവറ്റ് കമ്പനി</strong> - ഓഹരികൾ പരിമിതമായി കൈമാറാം</li>
+                    <li><strong>പബ്ലിക് കമ്പനി</strong> - ഓഹരികൾ സ്വതന്ത്രമായി കൈമാറാം</li>
+                </ul>
+            </div>
+
+            <h3>1.4 ഇന്ത്യയിലെ കമ്പനി നിയമത്തിന്റെ ചരിത്രം</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1850</div>
+                    <p><strong>Joint Stock Companies Act</strong> - ആദ്യ കമ്പനി നിയമം</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1857</div>
+                    <p><strong>Companies Act</strong> - ലിമിറ്റഡ് ലയബിലിറ്റി അവതരിപ്പിച്ചു</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1913</div>
+                    <p><strong>Companies Act</strong> - വിശദമായ നിയമസംഹിത</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1956</div>
+                    <p><strong>Companies Act</strong> - സ്വാതന്ത്ര്യാനന്തര നിയമം</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2013</div>
+                    <p><strong>Companies Act</strong> - നിലവിലുള്ള നിയമം - 29 അദ്ധ്യായങ്ങൾ, 470 സെക്ഷനുകൾ</p>
+                </div>
+            </div>
+
+            <h3>1.5 പ്രത്യേക തരം കമ്പനികൾ</h3>
+
+            <h4>One Person Company (OPC)</h4>
+            <div class="card">
+                <p><strong>Section 2(62) പ്രകാരം:</strong> ഒരേയൊരു അംഗവും ഒരു ഡയറക്ടറുമുള്ള കമ്പനി</p>
+                <p><strong>പ്രത്യേകതകൾ:</strong></p>
+                <ul>
+                    <li>ഒരാൾക്ക് മാത്രം കമ്പനി രൂപീകരിക്കാം</li>
+                    <li>പരിമിതമായ ഉത്തരവാദിത്തം</li>
+                    <li>ഒരു വ്യക്തിക്ക് ഒന്നിലധികം OPC ആകാം</li>
+                    <li>പ്രൈവറ്റ് ലിമിറ്റഡ് കമ്പനിയായി പരിവർത്തനം ചെയ്യാം</li>
+                </ul>
+            </div>
+
+            <h4>Small Company (ചെറുകമ്പനി)</h4>
+            <div class="card">
+                <p><strong>Section 2(85) പ്രകാരം:</strong></p>
+                <ul>
+                    <li>പെയ്ഡ്-അപ്പ് ഷെയർ കാപിറ്റൽ: ₹50 ലക്ഷം വരെ</li>
+                    <li>ടേൺഓവർ: ₹2 കോടി വരെ</li>
+                </ul>
+                <p><strong>പ്രയോജനങ്ങൾ:</strong> കുറഞ്ഞ നിയമപരമായ ബാധ്യതകൾ, ഓഡിറ്റ് ഒഴിവാക്കാം</p>
+            </div>
+
+            <h4>Associate Company</h4>
+            <div class="card">
+                <p><strong>Section 2(6) പ്രകാരം:</strong> മറ്റൊരു കമ്പനിയുടെ നിയന്ത്രണത്തിൽ (Control) ഉള്ള കമ്പനി</p>
+                <p>20% ഓഹരികൾ വരെ ഉടമസ്ഥാവകാശം ഉണ്ടായാൽ</p>
+            </div>
+
+            <h4>Dormant Company (നിഷ്ക്രിയ കമ്പനി)</h4>
+            <div class="card">
+                <p><strong>Section 455 പ്രകാരം:</strong></p>
+                <ul>
+                    <li>പ്രത്യേക ലക്ഷ്യത്തിനായി രൂപീകരിച്ച് ഇപ്പോൾ പ്രവർത്തിക്കാത്ത കമ്പനി</li>
+                    <li>"Dormant" എന്ന പദം പേരിൽ ഉൾപ്പെടുത്തണം</li>
+                </ul>
+            </div>
+
+            <h4>Producer Company (ഉൽപ്പാദക കമ്പനി)</h4>
+            <div class="card">
+                <p><strong>Part IX A പ്രകാരം</strong> (1956-ലെ നിയമത്തിൽ നിന്ന് തുടർന്നത്)</p>
+                <p>കർഷകർ/ഉൽപ്പാദകർ തമ്മിലുള്ള സഹകരണത്തിന്</p>
+            </div>
+
+            <h4>Association Not For Profit (Section 8 കമ്പനികൾ)</h4>
+            <div class="card">
+                <ul>
+                    <li>ലാഭേച്ഛയില്ലാത്ത ലക്ഷ്യങ്ങൾ</li>
+                    <li>"ലിമിറ്റഡ്" എന്ന പദം പേരിൽ ഉപയോഗിക്കരുത്</li>
+                    <li>ലാഭം അംഗങ്ങൾക്ക് വിഭജിക്കരുത്</li>
+                    <li>മന്ത്രാലയ അനുമതി വേണം</li>
+                </ul>
+            </div>
+
+            <h4>Illegal Association (അനധികൃത സംഘടന)</h4>
+            <div class="card">
+                <p><strong>Section 464 പ്രകാരം:</strong></p>
+                <ul>
+                    <li>20 അംഗങ്ങളിൽ കൂടുതൽ ഉള്ള ബാങ്കിംഗ് അല്ലാത്ത സംഘടന</li>
+                    <li>10 അംഗങ്ങളിൽ കൂടുതൽ ഉള്ള ബാങ്കിംഗ് സംഘടന</li>
+                </ul>
+                <p><strong>പരിണാമം:</strong> കരാർ enforceable അല്ല, അംഗങ്ങൾക്ക് പരസ്പരം ഉത്തരവാദിത്തം</p>
+            </div>
+        </section>
+
+        <!-- MODULE 2 -->
+        <section class="section" id="mod2">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 2</span>
+                <h2>കമ്പനിയുടെ പ്രമോഷനും രൂപീകരണവും</h2>
+            </div>
+
+            <h3>2.1 Body Corporate (കോർപ്പറേറ്റ് സംഘടന)</h3>
+            <div class="highlight-box">
+                <p>നിയമപരമായ നിലനിൽപ്പുള്ള സംഘടന - ഇത് കമ്പനി, LLP, കോ-ഓപ്പറേറ്റീവ് സൊസൈറ്റി എന്നിവയായിരിക്കാം.</p>
+            </div>
+            <div class="card">
+                <p><strong>കമ്പനിയും Body Corporate-ഉം തമ്മിലുള്ള വ്യത്യാസം:</strong></p>
+                <ul>
+                    <li>എല്ലാ കമ്പനികളും Body Corporate ആണ്</li>
+                    <li>എന്നാൽ എല്ലാ Body Corporate-ഉം കമ്പനികളല്ല (LLP, Co-operative Society)</li>
+                </ul>
+            </div>
+
+            <h3>2.2 Promoter (പ്രമോട്ടർ)</h3>
+            <div class="card">
+                <p><strong>നിർവചനം (Section 2(69)):</strong> കമ്പനി രൂപീകരിക്കാൻ പ്രവർത്തിക്കുന്ന വ്യക്തി</p>
+                <p><strong>പ്രമോട്ടറുടെ കടമുകൾ:</strong></p>
+                <ol>
+                    <li>കമ്പനി രൂപീകരിക്കാൻ ആവശ്യമായ ഔപചാരികതകൾ പൂർത്തിയാക്കുക</li>
+                    <li>Memorandum & Articles തയ്യാറാക്കുക</li>
+                    <li>ആദ്യ ഡയറക്ടർമാരെ നിയമിക്കുക</li>
+                    <li>രജിസ്ട്രേഷൻ ഫീസ് അടയ്ക്കുക</li>
+                    <li>ആദ്യ ഓഹരികൾ വിതരണം ചെയ്യുക</li>
+                </ol>
+                <p><strong>പ്രമോട്ടറുടെ നിയമപരമായ സ്ഥാനം:</strong></p>
+                <ul>
+                    <li>ഫിഡ്യൂഷ്യറി (Fiduciary) ബന്ധം കമ്പനിയോടും ഭാവി അംഗങ്ങളോടും</li>
+                    <li>രഹസ്യ ലാഭം (Secret Profit) നേടരുത്</li>
+                    <li>സത്യസന്ധമായി പ്രവർത്തിക്കണം</li>
+                </ul>
+                <p><strong>പ്രമോട്ടറുടെ പ്രതിഫലം:</strong> പ്രത്യക്ഷമായോ പരോക്ഷമായോ പ്രതിഫലം നൽകാം, 5 വർഷത്തിനുള്ളിൽ പ്രമോഷൻ ചെലവുകൾ തിരികെ നൽകാം</p>
+            </div>
+
+            <h3>2.3 Memorandum of Association (എം.ഒ.എ)</h3>
+            <div class="highlight-box">
+                <p><strong>കമ്പനിയുടെ രൂപരേഖ (Charter)</strong> - കമ്പനിയുടെ അധികാര പരിധി നിർണ്ണയിക്കുന്നു</p>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>ക്ലോസ്</th>
+                        <th>വിശദീകരണം</th>
+                    </tr>
+                    <tr><td>Name Clause</td><td>കമ്പനിയുടെ പേര് (പ്രൈവറ്റ്/പബ്ലിക് ലിമിറ്റഡ്)</td></tr>
+                    <tr><td>Registered Office Clause</td><td>രജിസ്റ്റർ ചെയ്ത ഓഫീസിന്റെ സ്ഥലം</td></tr>
+                    <tr><td>Object Clause</td><td>ലക്ഷ്യങ്ങൾ - പ്രധാന, അനുബന്ധ, മറ്റുള്ളവ</td></tr>
+                    <tr><td>Liability Clause</td><td>അംഗങ്ങളുടെ ഉത്തരവാദിത്തം - ലിമിറ്റഡ്/അൺലിമിറ്റഡ്</td></tr>
+                    <tr><td>Capital Clause</td><td>ഷെയർ കാപിറ്റൽ, ഓഹരികളുടെ എണ്ണം</td></tr>
+                    <tr><td>Association Clause</td><td>അംഗങ്ങൾ തമ്മിലുള്ള ധാരണ</td></tr>
+                </table>
+            </div>
+            <div class="card">
+                <p><strong>എം.ഒ.എയുടെ ഭേദഗതി (Alteration):</strong></p>
+                <ul>
+                    <li>പേര് മാറ്റം: Special Resolution + ROC അനുമതി</li>
+                    <li>സ്ഥലം മാറ്റം: Special Resolution + Regional Director-ന്റെ അനുമതി</li>
+                    <li>ലക്ഷ്യങ്ങൾ മാറ്റം: Special Resolution</li>
+                    <li>കാപിറ്റൽ മാറ്റം: Ordinary Resolution</li>
+                </ul>
+            </div>
+
+            <h3>2.4 Articles of Association (എ.ഒ.എ)</h3>
+            <div class="card">
+                <p><strong>കമ്പനിയുടെ ആന്തരിക നിയമങ്ങൾ (Internal Regulations)</strong></p>
+                <p><strong>ഉള്ളടക്കം:</strong></p>
+                <ul>
+                    <li>ഡയറക്ടർമാരുടെ നിയമനം, അധികാരങ്ങൾ</li>
+                    <li>യോഗങ്ങൾ നടത്തുന്ന രീതി</li>
+                    <li>ഓഹരികളുടെ കൈമാറ്റം</li>
+                    <li>ലാഭവിഹിതം (Dividend)</li>
+                    <li>ഓഡിറ്റിംഗ്</li>
+                </ul>
+                <p><strong>എ.ഒ.എയുടെ ഭേദഗതി:</strong> Special Resolution വേണം</p>
+                <p><strong>Table F:</strong> കമ്പനികൾക്ക് മാതൃക എ.ഒ.എ (Schedule I-ൽ)</p>
+            </div>
+
+            <h3>2.5 Incorporation (രജിസ്ട്രേഷൻ)</h3>
+            <div class="card">
+                <p><strong>രജിസ്ട്രേഷനുള്ള പ്രധാന പ്രമാണങ്ങൾ:</strong></p>
+                <ol>
+                    <li>Memorandum of Association</li>
+                    <li>Articles of Association</li>
+                    <li>Declaration (Form INC-14)</li>
+                    <li>Affidavit from subscribers (Form INC-9)</li>
+                    <li>Address proof of registered office (Form INC-22)</li>
+                    <li>Identity & Address proof of subscribers & first directors</li>
+                </ol>
+                <p><strong>രജിസ്ട്രേഷൻ പ്രക്രിയ:</strong></p>
+                <ul>
+                    <li><strong>SPICe+</strong> (Simplified Proforma for Incorporating Company Electronically): ഓൺലൈൻ രജിസ്ട്രേഷൻ</li>
+                    <li><strong>DIN</strong> (Director Identification Number): ഡയറക്ടർമാർക്ക്</li>
+                    <li><strong>DSC</strong> (Digital Signature Certificate): ഡിജിറ്റൽ സാക്ഷ്യപ്പെടുത്തൽ</li>
+                    <li><strong>Name Reservation:</strong> RUN (Reserve Unique Name) സേവനം</li>
+                </ul>
+            </div>
+
+            <h3>2.6 CIN (Corporate Identification Number)</h3>
+            <div class="card">
+                <p><strong>ഘടന:</strong> L12345MH2023PLC000001</p>
+                <ul>
+                    <li><strong>L:</strong> ലിസ്റ്റഡ് (U = അൺലിസ്റ്റഡ്)</li>
+                    <li><strong>12345:</strong> വ്യവസായം</li>
+                    <li><strong>MH:</strong> സംസ്ഥാനം (Maharashtra)</li>
+                    <li><strong>2023:</strong> വർഷം</li>
+                    <li><strong>PLC:</strong> കമ്പനി തരം</li>
+                    <li><strong>000001:</strong> രജിസ്ട്രേഷൻ നമ്പർ</li>
+                </ul>
+            </div>
+
+            <h3>2.7 Companies With Charitable Objects (Section 8 കമ്പനികൾ)</h3>
+            <div class="card">
+                <ul>
+                    <li>ലാഭേച്ഛയില്ലാത്ത ലക്ഷ്യങ്ങൾ</li>
+                    <li>"ലിമിറ്റഡ്" എന്ന പദം പേരിൽ ഉപയോഗിക്കരുത്</li>
+                    <li>ലാഭം അംഗങ്ങൾക്ക് വിഭജിക്കരുത്</li>
+                    <li>മന്ത്രാലയ അനുമതി വേണം</li>
+                </ul>
+            </div>
+
+            <h3>2.8 പ്രധാന സിദ്ധാന്തങ്ങൾ (Doctrines)</h3>
+
+            <h4>Doctrine of Indoor Management (അകത്തള മാനേജ്മെന്റ് സിദ്ധാന്തം)</h4>
+            <div class="highlight-box">
+                <p>"കമ്പനിയുടെ ആന്തരിക പ്രവർത്തനങ്ങൾ പുറത്തുള്ളവർ അറിയേണ്ടതില്ല"</p>
+            </div>
+            <div class="card">
+                <ul>
+                    <li>റോയൽ ബ്രിട്ടീഷ് ബാങ്ക് v. തുർക്വന്റ് (1856) കേസിൽ സ്ഥാപിതം</li>
+                    <li>പുറത്തുള്ളവർ (Outsiders) എം.ഒ.എയും എ.ഒ.എയും പരിശോധിക്കണം</li>
+                    <li>എന്നാൽ ആന്തരിക പ്രക്രിയകൾ അറിയേണ്ടതില്ല</li>
+                    <li><strong>അപവാദങ്ങൾ:</strong> Forgery, Negligence, Knowledge of Irregularity</li>
+                </ul>
+            </div>
+
+            <h4>Constructive Notice (നിർമ്മിത അറിയിപ്പ്)</h4>
+            <div class="highlight-box">
+                <p>"എല്ലാവരും എം.ഒ.എയും എ.ഒ.എയും വായിച്ചതായി കരുതപ്പെടുന്നു"</p>
+            </div>
+            <div class="card">
+                <ul>
+                    <li>രജിസ്ട്രേഷൻ ചെയ്ത പ്രമാണങ്ങൾ പൊതു വായനയ്ക്ക് ലഭ്യമാണ്</li>
+                    <li>അതുകൊണ്ട് "അറിയില്ല" എന്ന് പറയാൻ കഴിയില്ല</li>
+                </ul>
+            </div>
+
+            <h4>Ultra Vires (അധികാരപരിധിക്ക് പുറത്തുള്ള പ്രവർത്തനങ്ങൾ)</h4>
+            <div class="highlight-box">
+                <p>"എം.ഒ.എയിൽ പറയാത്ത പ്രവർത്തനങ്ങൾ നിയമവിരുദ്ധമാണ്"</p>
+            </div>
+            <div class="card">
+                <ul>
+                    <li>അശ്ബറി റെയിൽവേ കാരിയേജ് & ഐറൺ കമ്പനി v. റിച്ചി (1875)</li>
+                    <li>അത്തരം കരാറുകൾ void ആണ്</li>
+                    <li>അംഗങ്ങൾക്ക് കോടതിയെ സമീപിക്കാം</li>
+                </ul>
+            </div>
+
+            <h4>Lifting of Corporate Veil (കോർപ്പറേറ്റ് തിരശ്ശീല ഉയർത്തൽ)</h4>
+            <div class="highlight-box">
+                <p>"കമ്പനിയുടെ കൃത്രിമ വ്യക്തിത്വം മറികടന്ന് യഥാർത്ഥ ഉടമകളെ കണ്ടെത്തൽ"</p>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>സാഹചര്യം</th>
+                        <th>ഉദാഹരണം</th>
+                    </tr>
+                    <tr><td>ധനകാര്യ തട്ടിപ്പ്</td><td>ടാക്സ് വെട്ടിച്ചിൽ</td></tr>
+                    <tr><td>ഏജൻസി ബന്ധം</td><td>ഹോൾഡിംഗ്-സബ്സിഡിയറി</td></tr>
+                    <tr><td>ട്രസ്റ്റ് ബന്ധം</td><td>യഥാർത്ഥ ഉടമയെ മറയ്ക്കൽ</td></tr>
+                    <tr><td>പൊതു താൽപ്പര്യം</td><td>ദേശസുരക്ഷ</td></tr>
+                    <tr><td>നിയമ ലംഘനം</td><td>ഷഡ്യന്ത്രം, തട്ടിപ്പ്</td></tr>
+                </table>
+            </div>
+
+            <h3>2.9 Conversion of Companies (കമ്പനികളുടെ പരിവർത്തനം)</h3>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>പ്രത്യേകത</th>
+                    </tr>
+                    <tr><td>പ്രൈവറ്റ്</td><td>പബ്ലിക്</td><td>Special Resolution + അംഗങ്ങൾ 7 ആക്കുക</td></tr>
+                    <tr><td>പബ്ലിക്</td><td>പ്രൈവറ്റ്</td><td>Special Resolution + Tribunal അനുമതി</td></tr>
+                    <tr><td>OPC</td><td>പ്രൈവറ്റ്</td><td>2 അംഗങ്ങളും 2 ഡയറക്ടർമാരും ആയാൽ</td></tr>
+                    <tr><td>Section 8</td><td>സാധാരണ</td><td>Special Resolution + Central Govt. അനുമതി</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- MODULE 3 -->
+        <section class="section" id="mod3">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 3</span>
+                <h2>ഷെയർ കാപിറ്റൽ</h2>
+            </div>
+
+            <h3>3.1 ഷെയറുകളുടെ ഇഷ്യൂ (Issue of Shares)</h3>
+
+            <h4>Equity Shares (സാമാന്യ ഓഹരികൾ)</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>വോട്ടവകാശം:</strong> 1 ഷെയർ = 1 വോട്ട്</li>
+                    <li><strong>ലാഭവിഹിതം:</strong> അനിശ്ചിതമായ നിരക്കിൽ</li>
+                    <li><strong>മൂലധന തിരിച്ചുനൽകൽ:</strong> കമ്പനി ലിക്വിഡേറ്റ് ചെയ്യുമ്പോൾ അവസാനം</li>
+                </ul>
+            </div>
+
+            <h4>Preference Shares (മുൻഗണന ഓഹരികൾ)</h4>
+            <div class="card">
+                <ul>
+                    <li><strong>മുൻഗണന:</strong> ലാഭവിഹിതത്തിലും മൂലധന തിരിച്ചുനൽകലിലും</li>
+                    <li><strong>വോട്ടവകാശം:</strong> സാധാരണയായി ഇല്ല (എന്നാൽ പ്രത്യേക സാഹചര്യങ്ങളിൽ)</li>
+                </ul>
+                <p><strong>വിഭാഗങ്ങൾ:</strong></p>
+                <ul>
+                    <li>Cumulative / Non-cumulative</li>
+                    <li>Participating / Non-participating</li>
+                    <li>Convertible / Non-convertible</li>
+                    <li>Redeemable / Irredeemable</li>
+                </ul>
+            </div>
+
+            <h4>Shares with Differential Voting Rights (DVR)</h4>
+            <div class="card">
+                <p><strong>Section 43 പ്രകാരം</strong></p>
+                <p>1 ഷെയറിന് 1 വോട്ടിന് പകരം വ്യത്യസ്ത വോട്ടവകാശം</p>
+                <p><strong>നിബന്ധനകൾ:</strong></p>
+                <ul>
+                    <li>3 വർഷത്തെ ലാഭകരമായ പ്രവർത്തനം</li>
+                    <li>3 വർഷത്തിനുള്ളിൽ ഡിഫോൾട്ട് ഇല്ല</li>
+                    <li>Special Resolution വേണം</li>
+                </ul>
+            </div>
+
+            <h3>3.2 Allotment of Shares (ഓഹരികളുടെ വിതരണം)</h3>
+            <div class="card">
+                <p><strong>പ്രോ-റാറ അലോട്ട്മെന്റ്:</strong> ഓഹരികൾ അപേക്ഷിച്ച അനുപാതത്തിൽ വിതരണം ചെയ്യുക</p>
+                <p><strong>ഉദാഹരണം:</strong> 100 ഓഹരി അപേക്ഷിച്ചു, 50 ലഭ്യമെങ്കിൽ 50% വീതം</p>
+                <p><strong>അലോട്ട്മെന്റിന്റെ നിയമങ്ങൾ:</strong></p>
+                <ul>
+                    <li><strong>Minimum Subscription:</strong> 90% ഓഹരികൾ അപേക്ഷിക്കണം</li>
+                    <li><strong>Application Money:</strong> കുറഞ്ഞത് 5% മുഴുവൻ മൂല്യത്തിന്റെ</li>
+                    <li><strong>Time Limit:</strong> 60 ദിവസത്തിനുള്ളിൽ അലോട്ട്മെന്റ്</li>
+                    <li><strong>Refund:</strong> അലോട്ട്മെന്റ് ഇല്ലെങ്കിൽ 15 ദിവസത്തിൽ</li>
+                </ul>
+            </div>
+
+            <h3>3.3 Forfeiture of Shares (ഓഹരികൾ റദ്ദാക്കൽ)</h3>
+            <div class="card">
+                <p><strong>എപ്പോൾ:</strong></p>
+                <ul>
+                    <li>അപേക്ഷാ തുക (Application Money) അടയ്ക്കാത്തപ്പോൾ</li>
+                    <li>അലോട്ട്മെന്റ് തുക അടയ്ക്കാത്തപ്പോൾ</li>
+                    <li>കോൾ തുക (Call Money) അടയ്ക്കാത്തപ്പോൾ</li>
+                </ul>
+                <p><strong>പ്രക്രിയ:</strong></p>
+                <ol>
+                    <li>Notice (14 ദിവസത്തെ നോട്ടീസ്)</li>
+                    <li>Board Resolution</li>
+                    <li>Forfeiture Resolution</li>
+                    <li>Entry in Register of Members</li>
+                </ol>
+                <p><strong>ഫോർഫീച്ചർ ചെയ്ത ഓഹരികൾ:</strong></p>
+                <ul>
+                    <li>കമ്പനിയുടെ സ്വത്തായി മാറുന്നു</li>
+                    <li>വീണ്ടും ഇഷ്യൂ ചെയ്യാം (Re-issue)</li>
+                    <li>അല്ലെങ്കിൽ Cancellation ചെയ്യാം</li>
+                </ul>
+            </div>
+
+            <h3>3.4 Re-issue of Shares (റദ്ദാക്കിയ ഓഹരികൾ വീണ്ടും നൽകൽ)</h3>
+            <div class="card">
+                <ul>
+                    <li>ഫോർഫീച്ചർ ചെയ്ത ഓഹരികൾ കുറഞ്ഞ വിലയിൽ വീണ്ടും നൽകാം</li>
+                    <li>എന്നാൽ മൂലധനത്തിന്റെ കുറവ് (Loss) General Reserve-ൽ നിന്ന് ക്രമീകരിക്കണം</li>
+                    <li>ലാഭം (Profit) Capital Reserve-ൽ കൈമാറണം</li>
+                </ul>
+            </div>
+
+            <h3>3.5 Transfer of Shares (Section 56 പ്രകാരം)</h3>
+            <div class="card">
+                <p><strong>പ്രക്രിയ:</strong></p>
+                <ol>
+                    <li>Transfer Deed (Form SH-4) ഒപ്പിട്ട് നൽകുക</li>
+                    <li>Share Certificate സമർപ്പിക്കുക</li>
+                    <li>കമ്പനി 1 മാസത്തിനുള്ളിൽ ട്രാൻസ്ഫർ രജിസ്റ്റർ ചെയ്യുക</li>
+                    <li>പുതിയ Share Certificate നൽകുക</li>
+                </ol>
+                <p><strong>റിഫ്യൂസൽ ചെയ്യാം:</strong></p>
+                <ul>
+                    <li>ഭേദഗതി ചെയ്ത എ.ഒ.എയിൽ അനുവദിച്ചിട്ടുണ്ടെങ്കിൽ</li>
+                    <li>കോടതിയുടെ ഇടപെടൽ വേണം</li>
+                </ul>
+            </div>
+
+            <h3>3.6 Transmission of Shares</h3>
+            <div class="card">
+                <p><strong>നിയമപ്രകാരം ഓഹരികൾ കൈമാറൽ:</strong></p>
+                <ul>
+                    <li>അംഗത്തിന്റെ മരണം</li>
+                    <li>അംഗം പൈശാചികമായി (Insolvent) ആയാൽ</li>
+                    <li>Official Assignee/Receiver-ന് ഓഹരികൾ കൈമാറുന്നു</li>
+                </ul>
+            </div>
+
+            <h3>3.7 Share Certificates</h3>
+            <div class="card">
+                <p><strong>ഡെലിവറി സമയപരിധി:</strong></p>
+                <ul>
+                    <li>അലോട്ട്മെന്റ്: 2 മാസം</li>
+                    <li>ട്രാൻസ്ഫർ/Transmission: 1 മാസം</li>
+                </ul>
+            </div>
+
+            <h3>3.8 Debentures (ഡിബെഞ്ചറുകൾ)</h3>
+            <div class="highlight-box">
+                <p><strong>കമ്പനിയുടെ കടപ്പാട് (Debt) - ഓഹരidakalല്ല</strong></p>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>തരം</th>
+                        <th>വിശദീകരണം</th>
+                    </tr>
+                    <tr><td>Secured</td><td>കമ്പനി സ്വത്ത് പണയം വെച്ചത്</td></tr>
+                    <tr><td>Unsecured</td><td>പണയമില്ലാത്തത്</td></tr>
+                    <tr><td>Convertible</td><td>ഓഹരികളാക്കി മാറ്റാം</td></tr>
+                    <tr><td>Non-convertible</td><td>ഓഹരികളാക്കി മാറ്റാനാവില്ല</td></tr>
+                    <tr><td>Redeemable</td><td>തിരിച്ചുനൽകും</td></tr>
+                    <tr><td>Irredeemable</td><td>തിരിച്ചുനൽകില്ല (Perpetual)</td></tr>
+                </table>
+            </div>
+            <div class="card">
+                <p><strong>ഡിബെഞ്ചർ ട്രസ്റ്റീ:</strong> ഡിബെഞ്ചർ ഹോൾഡർമാരുടെ താൽപ്പര്യം സംരക്ഷിക്കാൻ</p>
+            </div>
+
+            <h3>3.9 SEBI (Securities and Exchange Board of India)</h3>
+            <div class="card">
+                <p><strong>സ്ഥാപിതം:</strong> 1992 | <strong>സ്ഥാനം:</strong> മുംബൈ</p>
+                <p><strong>പ്രധാന ചുമതലകൾ:</strong></p>
+                <ul>
+                    <li>ഓഹരി വിപണി നിയന്ത്രണം</li>
+                    <li>നിക്ഷേപകരുടെ താൽപ്പര്യം സംരക്ഷിക്കൽ</li>
+                    <li>IPO/ FPO മാർഗനിർദ്ദേശങ്ങൾ</li>
+                    <li>Insider Trading തടയൽ</li>
+                    <li>Takeover Code നടപ്പാക്കൽ</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MODULE 4 -->
+        <section class="section" id="mod4">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 4</span>
+                <h2>കമ്പനിയിലെ അംഗത്വവും യോഗങ്ങളും</h2>
+            </div>
+
+            <h3>4.1 Membership (അംഗത്വം)</h3>
+            <div class="card">
+                <p><strong>അംഗത്വം നേടൽ:</strong></p>
+                <ol>
+                    <li>ഓഹരികൾ അലോട്ട് ചെയ്യപ്പെടുമ്പോൾ</li>
+                    <li>ഓഹരികൾ ട്രാൻസ്ഫർ ചെയ്യപ്പെടുമ്പോൾ</li>
+                    <li>ഓഹരികൾ Transmission വഴി ലഭിക്കുമ്പോൾ</li>
+                    <li>ഡിബെഞ്ചർ ഹോൾഡർ (ചില സാഹചര്യങ്ങളിൽ)</li>
+                </ol>
+                <p><strong>അംഗത്വം നഷ്ടപ്പെടൽ:</strong></p>
+                <ul>
+                    <li>ഷെയറുകൾ ഫോർഫീച്ചർ ചെയ്യപ്പെടുമ്പോൾ</li>
+                    <li>ഷെയറുകൾ വിൽക്കുമ്പോൾ</li>
+                    <li>ഷെയറുകൾ സ്വന്തം പേരിൽ Surrender ചെയ്യുമ്പോൾ</li>
+                    <li>മരണം/Insolvency</li>
+                    <li>കമ്പനി ലിക്വിഡേറ്റ് ചെയ്യുമ്പോൾ</li>
+                </ul>
+            </div>
+
+            <h3>4.2 Company Meetings (കമ്പനി യോഗങ്ങൾ)</h3>
+
+            <h4>Annual General Meeting (AGM - വാർഷിക പൊതുയോഗം)</h4>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>വിഷയം</th>
+                        <th>വിശദീകരണം</th>
+                    </tr>
+                    <tr><td>ആദ്യ AGM</td><td>രജിസ്ട്രേഷന് ശേഷം 9 മാസത്തിനുള്ളിൽ</td></tr>
+                    <tr><td>പിന്നീടുള്ള AGM</td><td>ഒരോ വർഷവും, 15 മാസം ഇടവേള</td></tr>
+                    <tr><td>സമയം</td><td>വ്യവസായ മണിക്കൂറുകളിൽ (9 AM - 6 PM)</td></tr>
+                    <tr><td>സ്ഥലം</td><td>രജിസ്റ്റർ ചെയ്ത ഓഫീസോ അതിന് സമീപമോ</td></tr>
+                    <tr><td>നോട്ടീസ്</td><td>കുറഞ്ഞത് 21 ദിവസം മുമ്പ്</td></tr>
+                </table>
+            </div>
+            <div class="card">
+                <p><strong>AGM-ൽ ചർച്ച ചെയ്യേണ്ട കാര്യങ്ങൾ:</strong></p>
+                <ol>
+                    <li>Financial Statements അംഗീകരിക്കൽ</li>
+                    <li>ലാഭവിഹിതം (Dividend) പ്രഖ്യാപിക്കൽ</li>
+                    <li>ഡയറക്ടർമാരുടെ നിയമനം/പുറത്താക്കൽ</li>
+                    <li>ഓഡിറ്റർമാരുടെ നിയമനം</li>
+                    <li>ഡയറക്ടർമാരുടെയും ഓഡിറ്റർമാരുടെയും റിപ്പോർട്ടുകൾ</li>
+                </ol>
+            </div>
+
+            <h4>Extraordinary General Meeting (EGM - അസാധാരണ പൊതുയോഗം)</h4>
+            <div class="card">
+                <p><strong>എപ്പോൾ:</strong></p>
+                <ul>
+                    <li>പ്രത്യേക കാര്യങ്ങൾ ചർച്ച ചെയ്യാൻ</li>
+                    <li>ബോർഡ് വിളിക്കുന്നു</li>
+                    <li>അംഗങ്ങളുടെ 1/10-ാം ഭാഗം Requisition നൽകാം</li>
+                    <li>Tribunal വിളിക്കാം</li>
+                </ul>
+                <p><strong>നോട്ടീസ്:</strong> 21 ദിവസം</p>
+            </div>
+
+            <h4>Board Meeting (ഡയറക്ടർ ബോർഡ് യോഗം)</h4>
+            <div class="card">
+                <p><strong>എത്ര തവണ:</strong></p>
+                <ul>
+                    <li>ആദ്യ വർഷം: കുറഞ്ഞത് 1</li>
+                    <li>പിന്നീട്: ഒരു കാലയളവിൽ (Calendar Quarter) 1</li>
+                </ul>
+                <p><strong>ക്വോറം:</strong></p>
+                <ul>
+                    <li>പബ്ലിക് കമ്പനി: 1/3 അല്ലെങ്കിൽ 2 ഡയറക്ടർമാർ</li>
+                    <li>പ്രൈവറ്റ് കമ്പനി: 2 ഡയറക്ടർമാർ</li>
+                </ul>
+            </div>
+
+            <h4>Class Meeting (വർഗ്ഗ യോഗം)</h4>
+            <div class="card">
+                <ul>
+                    <li>പ്രത്യേക ക്ലാസ് ഓഹരidakalക്കാർക്ക്</li>
+                    <li>ഓഹരidakalുടെ താൽപ്പര്യം ബാധിക്കുന്ന കാര്യങ്ങൾക്ക്</li>
+                </ul>
+            </div>
+
+            <h3>4.3 Notice (നോട്ടീസ്)</h3>
+            <div class="card">
+                <p><strong>ഉള്ളടക്കം:</strong></p>
+                <ul>
+                    <li>യോഗത്തിന്റെ തീയതി, സമയം, സ്ഥലം</li>
+                    <li>ചർച്ച ചെയ്യേണ്ട കാര്യങ്ങൾ (Agenda)</li>
+                    <li>Special Business-ന്റെ വിവരണം (Explanatory Statement)</li>
+                </ul>
+                <p><strong>സമയപരിധി:</strong></p>
+                <ul>
+                    <li>AGM: 21 ദിവസം</li>
+                    <li>EGM: 21 ദിവസം</li>
+                    <li>Short Notice: 95% അംഗങ്ങളുടെ സമ്മതത്തോടെ</li>
+                </ul>
+            </div>
+
+            <h3>4.4 Quorum (ക്വോറം)</h3>
+            <div class="highlight-box">
+                <p><strong>യോഗത്തിന് ആവശ്യമായ കുറഞ്ഞ അംഗസംഖ്യ</strong></p>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>കമ്പനി തരം</th>
+                        <th>AGM ക്വോറം</th>
+                    </tr>
+                    <tr><td>പബ്ലിക് കമ്പനി (≤1000 അംഗങ്ങൾ)</td><td>5 അംഗങ്ങൾ</td></tr>
+                    <tr><td>പബ്ലിക് കമ്പനി (1001-5000)</td><td>15 അംഗങ്ങൾ</td></tr>
+                    <tr><td>പബ്ലിക് കമ്പനി (>5000)</td><td>30 അംഗങ്ങൾ</td></tr>
+                    <tr><td>പ്രൈവറ്റ് കമ്പനി</td><td>2 അംഗങ്ങൾ</td></tr>
+                </table>
+            </div>
+            <div class="card">
+                <p><strong>ക്വോറം ലഭ്യമല്ലെങ്കിൽ:</strong></p>
+                <ul>
+                    <li>യോഗം മാറ്റിവെക്കാം</li>
+                    <li>അല്ലെങ്കിൽ അടുത്ത യോഗം അതേ അംഗസംഖ്യയിൽ നടത്താം</li>
+                </ul>
+            </div>
+
+            <h3>4.5 Proxy (പ്രതിനിധി)</h3>
+            <div class="card">
+                <p><strong>അംഗത്തിന് പകരം വോട്ട് ചെയ്യാൻ നിയമിക്കുന്ന വ്യക്തി</strong></p>
+                <p><strong>പ്രത്യേകതകൾ:</strong></p>
+                <ul>
+                    <li>പബ്ലിക് കമ്പനിയിൽ മാത്രം</li>
+                    <li>48 മണിക്കൂർ മുമ്പ് Form No. MGT-11 സമർപ്പിക്കണം</li>
+                    <li>ഒരു പ്രോക്സി ഒന്നിലധികം അംഗങ്ങൾക്ക് ആകാം</li>
+                    <li>ഒരു അംഗത്തിന് ഒന്നിലധികം പ്രോക്സി ആകില്ല</li>
+                    <li>പ്രോക്സിക്ക് വോട്ടവകാശം മാത്രം, ചർച്ചയിൽ പങ്കെടുക്കാനാവില്ല</li>
+                </ul>
+            </div>
+
+            <h3>4.6 Postal Ballot (തപാലിലൂടെ വോട്ടിംഗ്)</h3>
+            <div class="card">
+                <p><strong>Section 110 പ്രകാരം:</strong></p>
+                <ul>
+                    <li>എല്ലാ അംഗങ്ങളും പങ്കെടുക്കാൻ കഴിയാത്ത സാഹചര്യത്തിൽ</li>
+                    <li>Special Resolution-കൾ പോസ്റ്റൽ ബാലറ്റ് വഴി പാസാക്കാം</li>
+                </ul>
+                <p><strong>പ്രക്രിയ:</strong></p>
+                <ol>
+                    <li>Draft Resolution + Explanatory Statement</li>
+                    <li>Postal Ballot Notice</li>
+                    <li>Voting Paper</li>
+                    <li>Scrutinizer നിയമിക്കൽ</li>
+                    <li>Result പ്രഖ്യാപനം</li>
+                </ol>
+            </div>
+
+            <h3>4.7 Voting (വോട്ടിംഗ്)</h3>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>രീതി</th>
+                        <th>വിശദീകരണം</th>
+                    </tr>
+                    <tr><td>Show of Hands</td><td>കൈ ഉയർത്തൽ - 1 വ്യക്തി = 1 വോട്ട്</td></tr>
+                    <tr><td>Poll</td><td>ഓഹരി അടിസ്ഥാനത്തിൽ - 1 ഷെയർ = 1 വോട്ട്</td></tr>
+                    <tr><td>Electronic Voting</td><td>ഓൺലൈൻ വോട്ടിംഗ്</td></tr>
+                    <tr><td>Postal Ballot</td><td>തപാലിലൂടെ</td></tr>
+                </table>
+            </div>
+            <div class="card">
+                <p><strong>പോളിംഗ് (Poll):</strong></p>
+                <ul>
+                    <li>അംഗങ്ങളുടെ 1/10-ാം ഭാഗം അല്ലെങ്കിൽ ഷെയറുകളുടെ 1/10-ാം ഭാഗം ആവശ്യപ്പെട്ടാൽ</li>
+                    <li>ഓഹരidakalുടെ മൂല്യത്തിന് അനുസരിച്ച് വോട്ട്</li>
+                </ul>
+            </div>
+
+            <h3>4.8 Scrutinizer (സ്ക്രൂട്ടിനൈസർ)</h3>
+            <div class="card">
+                <p><strong>വോട്ടുകൾ പരിശോധിക്കുന്ന സ്വതന്ത്ര ഉദ്യോഗസ്ഥൻ</strong></p>
+                <p><strong>നിയമനം:</strong></p>
+                <ul>
+                    <li>ബോർഡ് യോഗത്തിൽ നിയമിക്കുന്നു</li>
+                    <li>സ്വതന്ത്രനും വിശ്വസ്തനും ആയിരിക്കണം</li>
+                    <li>ഓഡിറ്റർ അല്ലെങ്കിൽ അക്കൗണ്ടന്റ് ആകാം</li>
+                </ul>
+                <p><strong>ചുമതലകൾ:</strong></p>
+                <ul>
+                    <li>വോട്ടുകൾ എണ്ണുക</li>
+                    <li>സാധുത പരിശോധിക്കുക</li>
+                    <li>റിപ്പോർട്ട് തയ്യാറാക്കുക</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- MODULE 5 -->
+        <section class="section" id="mod5">
+            <div class="section-header">
+                <span class="section-number">മൊഡ്യൂൾ 5</span>
+                <h2>ഡയറക്ടർമാർ</h2>
+            </div>
+
+            <h3>5.1 ഡയറക്ടർമാരുടെ നിയമനം</h3>
+
+            <h4>Independent Director (സ്വതന്ത്ര ഡയറക്ടർ)</h4>
+            <div class="card">
+                <p><strong>Section 149 പ്രകാരം:</strong></p>
+                <ul>
+                    <li>പബ്ലിക് കമ്പനികൾക്ക് കുറഞ്ഞത് 1/3 ഡയറക്ടർമാർ</li>
+                    <li>Listed കമ്പനികൾക്ക് കുറഞ്ഞത് 1/3</li>
+                </ul>
+                <p><strong>യോഗ്യതകൾ:</strong></p>
+                <ul>
+                    <li>കമ്പനിയോട് യാതൊരു തരത്തിലുള്ള ബന്ധവും ഇല്ല</li>
+                    <li>5 വർഷത്തിനുള്ളിൽ കമ്പനിയിലെ ഡയറക്ടർ/ഉദ്യോഗസ്ഥൻ അല്ല</li>
+                    <li>കുടുംബാംഗങ്ങൾക്ക് കമ്പനിയുമായി ബന്ധമില്ല</li>
+                </ul>
+                <p><strong>കാലാവധി:</strong> 5 വർഷം (2 തവണ വരെ)</p>
+            </div>
+
+            <h4>Woman Director (സ്ത്രീ ഡയറക്ടർ)</h4>
+            <div class="card">
+                <p><strong>Section 149(1) പ്രകാരം:</strong></p>
+                <ul>
+                    <li>Listed കമ്പനികൾ</li>
+                    <li>പെയ്ഡ്-അപ്പ് കാപിറ്റൽ ₹10 കോടി അല്ലെങ്കിൽ ടേൺഓവർ ₹100 കോടി</li>
+                </ul>
+            </div>
+
+            <h4>Small Shareholders Director</h4>
+            <div class="card">
+                <p><strong>Section 151 പ്രകാരം:</strong></p>
+                <ul>
+                    <li>₹20,000 മൂല്യത്തിലധികം ഓഹരികളുള്ള ചെറു ഓഹരidakal</li>
+                    <li>1000 അല്ലെങ്കിൽ അതിൽ കൂടുതൽ ചെറു ഓഹരidakal ആവശ്യപ്പെട്ടാൽ</li>
+                </ul>
+            </div>
+
+            <h4>Additional Director (അധിക ഡയറക്ടർ)</h4>
+            <div class="card">
+                <ul>
+                    <li>എ.ഒ.എയിൽ അനുവദിച്ചിട്ടുണ്ടെങ്കിൽ</li>
+                    <li>AGM വരെ മാത്രം</li>
+                    <li>അടുത്ത AGM-ൽ അംഗീകരിക്കണം</li>
+                </ul>
+            </div>
+
+            <h4>Alternate Director (പകരം ഡയറക്ടർ)</h4>
+            <div class="card">
+                <ul>
+                    <li>ഡയറക്ടർ 3 മാസത്തിലധികം വിദേശത്തായാൽ</li>
+                    <li>അദ്ദേഹം തിരിച്ചെത്തുമ്പോൾ സ്ഥാനം ഒഴിയണം</li>
+                </ul>
+            </div>
+
+            <h3>5.2 ഡയറക്ടർമാരുടെ പദവികൾ</h3>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>പദവി</th>
+                        <th>വിശദീകരണം</th>
+                    </tr>
+                    <tr><td>Managing Director (MD)</td><td>കമ്പനിയുടെ മാനേജ്മെന്റ് നിയന്ത്രിക്കുന്നു</td></tr>
+                    <tr><td>Whole-time Director</td><td>പൂർണ്ണകാലം കമ്പനിയിൽ ജോലി ചെയ്യുന്നു</td></tr>
+                    <tr><td>Non-executive Director</td><td>ദിനനിത്യ പ്രവർത്തനങ്ങളിൽ പങ്കെടുക്കുന്നില്ല</td></tr>
+                    <tr><td>Independent Director</td><td>സ്വതന്ത്രനായ ഡയറക്ടർ</td></tr>
+                </table>
+            </div>
+
+            <h3>5.3 ഡയറക്ടർമാരുടെ അധികാരങ്ങളും കടമുകളും</h3>
+            <div class="card">
+                <p><strong>അധികാരങ്ങൾ:</strong></p>
+                <ul>
+                    <li>കമ്പനിയുടെ ബിസിനസ് നടത്തുക</li>
+                    <li>ഓഹരികൾ ഇഷ്യൂ ചെയ്യുക</li>
+                    <li>ഡിബെഞ്ചറുകൾ ഇഷ്യൂ ചെയ്യുക</li>
+                    <li>ബാങ്ക് അക്കൗണ്ടുകൾ തുറക്കുക</li>
+                    <li>കടങ്ങൾ എടുക്കുക</li>
+                    <li>നിക്ഷേപങ്ങൾ നടത്തുക</li>
+                </ul>
+                <p><strong>കടമുകൾ (Fiduciary Duties):</strong></p>
+                <ol>
+                    <li><strong>Act in Good Faith</strong> - സത്യസന്ധമായി പ്രവർത്തിക്കുക</li>
+                    <li><strong>Act in Best Interest</strong> - കമ്പനിയുടെ താൽപ്പര്യം മുൻനിർത്തുക</li>
+                    <li><strong>Exercise Due Care</strong> - ശ്രദ്ധയും കരുതലും പാലിക്കുക</li>
+                    <li><strong>Avoid Conflict of Interest</strong> - താൽപ്പര്യ സംഘർഷം ഒഴിവാക്കുക</li>
+                    <li><strong>Not to Make Secret Profit</strong> - രഹസ്യ ലാഭം നേടരുത്</li>
+                </ol>
+            </div>
+
+            <h3>5.4 Remuneration (വേതനം) - Section 197</h3>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>കമ്പനി</th>
+                        <th>MD/WTD/Manager-ന് പരമാവധി</th>
+                    </tr>
+                    <tr><td>പബ്ലിക് കമ്പനി</td><td>11% നെറ്റ് പ്രോഫിറ്റ്</td></tr>
+                    <tr><td>പ്രൈവറ്റ് കമ്പനി</td><td>പരിധി ഇല്ല (എ.ഒ.എയിൽ നിശ്ചയിക്കാം)</td></tr>
+                </table>
+            </div>
+            <div class="card">
+                <p><strong>Central Government അനുമതി:</strong></p>
+                <ul>
+                    <li>11% കവിഞ്ഞാൽ</li>
+                    <li>₹5 കോടി/വർഷം കവിഞ്ഞാൽ</li>
+                </ul>
+            </div>
+
+            <h3>5.5 Resignation (രാജി)</h3>
+            <div class="card">
+                <p><strong>പ്രക്രിയ:</strong></p>
+                <ol>
+                    <li>രാജി കത്ത് ബോർഡിന് നൽകുക</li>
+                    <li>30 ദിവസത്തെ നോട്ടീസ്</li>
+                    <li>Form DIR-12 ROC-ന് സമർപ്പിക്കുക</li>
+                    <li>രാജി കാരണം വെളിപ്പെടുത്തണം</li>
+                </ol>
+                <p><strong>പരിണാമം:</strong></p>
+                <ul>
+                    <li>രാജി തീയതി മുതൽ സ്ഥാനം ഒഴിയുന്നു</li>
+                    <li>കമ്പനിയുടെ കടബാധ്യതകൾ തുടരും</li>
+                </ul>
+            </div>
+
+            <h3>5.6 Removal (പുറത്താക്കൽ) - Section 169</h3>
+            <div class="card">
+                <p><strong>പ്രക്രിയ:</strong></p>
+                <ol>
+                    <li>അംഗങ്ങൾക്ക് Special Notice (14 ദിവസം മുമ്പ്)</li>
+                    <li>EGM വിളിക്കുക</li>
+                    <li>ഡയറക്ടർമാർക്ക് കേൾവി അവസരം</li>
+                    <li>Ordinary Resolution പാസാക്കുക</li>
+                </ol>
+                <p><strong>പുറത്താക്കാൻ കഴിയില്ല:</strong></p>
+                <ul>
+                    <li>Independent Director (5 വർഷം കഴിഞ്ഞാൽ മാത്രം)</li>
+                    <li>Tribunal നിയമിച്ച ഡയറക്ടർ</li>
+                    <li>Small Shareholders Director</li>
+                </ul>
+            </div>
+
+            <h3>5.7 Officer in Default (കുറ്റകരമായ ഉദ്യോഗസ്ഥൻ)</h3>
+            <div class="card">
+                <p><strong>Section 2(60) പ്രകാരം:</strong></p>
+                <ul>
+                    <li>Whole-time Director</li>
+                    <li>MD</li>
+                    <li>CEO</li>
+                    <li>CFO</li>
+                    <li>Company Secretary</li>
+                    <li>ഏതെങ്കിലും ഡയറക്ടർ (കമ്പനി Director-less ആകാതിരിക്കാൻ)</li>
+                </ul>
+                <p><strong>ഉത്തരവാദിത്തം:</strong> നിയമ ലംഘനത്തിന് ശിക്ഷ - Fine, Imprisonment, അല്ലെങ്കിൽ രണ്ടും</p>
+            </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <section class="section" id="summary">
+            <div class="section-header">
+                <span class="section-number">📋</span>
+                <h2>പ്രധാന പോയിന്റുകൾ ഓർമ്മിക്കാൻ</h2>
+            </div>
+
+            <div class="card">
+                <ol>
+                    <li><strong>Companies Act 2013</strong> - 29 അദ്ധ്യായങ്ങൾ, 470 സെക്ഷനുകൾ</li>
+                    <li><strong>OPC</strong> - ഒരാൾ മാത്രം, Section 2(62)</li>
+                    <li><strong>Small Company</strong> - ₹50 ലക്ഷം കാപിറ്റൽ, ₹2 കോടി ടേൺഓവർ</li>
+                    <li><strong>Section 8</strong> - ലാഭേച്ഛയില്ലാത്ത കമ്പനി</li>
+                    <li><strong>Indoor Management</strong> - പുറത്തുള്ളവർ ആന്തരിക കാര്യങ്ങൾ അറിയേണ്ടതില്ല</li>
+                    <li><strong>Constructive Notice</strong> - എല്ലാവരും എം.ഒ.എ വായിച്ചതായി കരുതുന്നു</li>
+                    <li><strong>Ultra Vires</strong> - അധികാരപരിധിക്ക് പുറത്തുള്ളത് void</li>
+                    <li><strong>Corporate Veil</strong> - തിരശ്ശീല ഉയർത്തി യഥാർത്ഥ ഉടമയെ കണ്ടെത്തൽ</li>
+                    <li><strong>AGM</strong> - വാർഷികം, 21 ദിവസ നോട്ടീസ്</li>
+                    <li><strong>Independent Director</strong> - Listed കമ്പനികൾക്ക് 1/3</li>
+                    <li><strong>SEBI</strong> - ഓഹരി വിപണി നിയന്ത്രണം</li>
+                    <li><strong>Proxy</strong> - 48 മണിക്കൂർ മുമ്പ്, പബ്ലിക് കമ്പനി മാത്രം</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>📘 കോർപ്പറേറ്റ് റെഗുലേഷൻസ് ആൻഡ് കംപ്ലയൻസ് - MG University</p>
+        <p>Course Code: MG1DSCBLW100 | Semester 1 | Credit 4</p>
+        <p>നോട്ടുകൾ പരീക്ഷാ പഠനത്തിനുള്ള ഒരു സഹായിക ഗ്രന്ഥം മാത്രമാണ്</p>
+        <p style="margin-top: 1rem;">Made with ❤️ albin baby</p>
+    </footer>
+
+    <div class="feedback-float">
+        <a href="https://www.instagram.com/albin___baby___/" target="_blank" class="feedback-btn" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+            <span>📩 ഫീഡ്ബാക്ക് നൽകുക</span>
+        </a>
+    </div>
+
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 500);
+        });
+
+        // Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        });
+
+        // Back to Top Button
+        window.addEventListener('scroll', () => {
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        // Scroll Animations using Intersection Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Navigation Dots
+        const sections = document.querySelectorAll('.section');
+        const navContainer = document.getElementById('navContainer');
+        const sectionTitles = [
+            'മൊഡ്യൂൾ 1 - കമ്പനി അടിസ്ഥാനങ്ങൾ',
+            'മൊഡ്യൂൾ 2 - പ്രമോഷനും രൂപീകരണവും',
+            'മൊഡ്യൂൾ 3 - ഷെയർ കാപിറ്റൽ',
+            'മൊഡ്യൂൾ 4 - അംഗത്വവും യോഗങ്ങളും',
+            'മൊഡ്യൂൾ 5 - ഡയറക്ടർമാർ',
+            'പ്രധാന പോയിന്റുകൾ'
+        ];
+
+        sections.forEach((section, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'nav-dot';
+            dot.setAttribute('data-title', sectionTitles[index] || 'Section');
+            dot.addEventListener('click', () => {
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+            navContainer.appendChild(dot);
+        });
+
+        // Active Navigation Dot
+        const navDots = document.querySelectorAll('.nav-dot');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = index;
+                }
+            });
+            navDots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+
+        // Search Functionality
+        const searchData = [];
+
+        // Build search index from content
+        document.querySelectorAll('.section').forEach((section, secIndex) => {
+            const sectionId = section.id;
+            const sectionTitle = section.querySelector('h2')?.textContent || '';
+
+            searchData.push({
+                id: sectionId,
+                title: sectionTitle,
+                text: sectionTitle,
+                type: 'section'
+            });
+
+            section.querySelectorAll('h3, h4').forEach(heading => {
+                const headingText = heading.textContent;
+                let previewText = headingText;
+                let nextEl = heading.nextElementSibling;
+                if (nextEl && (nextEl.tagName === 'P' || nextEl.classList.contains('card') || nextEl.classList.contains('highlight-box'))) {
+                    previewText = nextEl.textContent.substring(0, 150) + '...';
+                }
+
+                searchData.push({
+                    id: sectionId,
+                    title: headingText,
+                    text: previewText,
+                    type: 'topic'
+                });
+            });
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            if (query.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            const filtered = searchData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.text.toLowerCase().includes(query)
+            ).slice(0, 8);
+
+            if (filtered.length === 0) {
+                searchResults.innerHTML = '<div class="search-result-item" style="text-align:center;padding:2rem;"><div class="search-result-text" style="font-size:1.3rem;font-weight:600;">🔍 ഫലങ്ങൾ കണ്ടെത്തിയില്ല</div></div>';
+            } else {
+                searchResults.innerHTML = filtered.map(item => `
+                    <div class="search-result-item" onclick="scrollToSection('${item.id}')">
+                        <div class="search-result-title">${item.title}</div>
+                        <div class="search-result-text">${item.text}</div>
+                    </div>
+                `).join('');
+            }
+
+            searchResults.classList.add('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.classList.remove('active');
+            }
+        });
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                searchResults.classList.remove('active');
+                searchInput.value = '';
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            if (e.key === 'Escape') {
+                searchResults.classList.remove('active');
+                searchInput.blur();
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
